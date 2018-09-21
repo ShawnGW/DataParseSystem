@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+">
+    <bean id="deal" class="com.vtest.it.vtestDatalogDeal.StartDeal"/>
+    <bean id="jobDetail_1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          p:targetObject-ref="deal"
+          p:targetMethod="v50Deal"
+          p:concurrent="false"
+    />
+    <bean id="jobDetail_2" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          p:targetObject-ref="deal"
+          p:targetMethod="m7000Deal"
+          p:concurrent="false"
+    />
+    <bean id="jobDetail_3" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          p:targetObject-ref="deal"
+          p:targetMethod="T862Deal"
+          p:concurrent="false"
+    />
+    <bean id="jobDetail_4" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          p:targetObject-ref="deal"
+          p:targetMethod="ChromaDeal"
+          p:concurrent="false"
+    />
+    <bean id="cronTrigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobDetail_1"
+          p:cronExpression="0 */1 * * * ?"
+    />
+    <bean id="cronTrigger2" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobDetail_2"
+          p:cronExpression="0 */1 * * * ?"
+    />
+    <bean id="cronTrigger3" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobDetail_3"
+          p:cronExpression="0 */1 * * * ?"
+    />
+    <bean id="cronTrigger4" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobDetail_4"
+          p:cronExpression="0 */1 * * * ?"
+    />
+    <util:list id="trigger_list">
+        <ref bean="cronTrigger1"/>
+        <ref bean="cronTrigger2"/>
+        <ref bean="cronTrigger3"/>
+        <ref bean="cronTrigger4"/>
+    </util:list>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
+          p:triggers-ref="trigger_list"
+    />
+</beans>

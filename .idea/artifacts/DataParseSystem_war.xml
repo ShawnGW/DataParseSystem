@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="DataParseSystem:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="DataParseSystem.war">
+      <element id="artifact" artifact-name="DataParseSystem:war exploded" />
+    </root>
+  </artifact>
+</component>

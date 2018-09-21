@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtest.it.dao.PropertiesDAO">
+    <resultMap id="propertiesOrder" type="com.vtest.it.pojo.PropertiesOrderBean">
+        <result property="propertyOrder" column="property_order"/>
+        <result property="property" column="property"/>
+    </resultMap>
+    <select id="getOrder" resultMap="propertiesOrder">
+        SELECT * FROM  properties_order ORDER BY property_order;
+    </select>
+    <delete id="clearAllConfig">
+        DELETE FROM properties_order;
+    </delete>
+    <insert id="updateConfig">
+        INSERT INTO properties_order VALUES 
+      <trim suffix="" suffixOverrides=",">
+          <foreach collection="list" item="property">
+              (#{property.propertyOrder},#{property.property}),
+          </foreach>
+      </trim>
+    </insert>
+</mapper>

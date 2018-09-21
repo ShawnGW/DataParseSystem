@@ -1,0 +1,4 @@
+jdbc.Driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://192.168.10.218:3306/rawdatainfors?useSSL=false
+jdbc.username=root
+jdbc.password=VtestAdmin!234

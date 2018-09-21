@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtest.it.dao.SiteBinSumToDAO">
+    <insert id="SiteBinINS">
+        INSERT INTO rawdatainfors.sitesummary(customer_code,device,lot,cp,wafer_id,site_number,bin_number,bin_value,test_type) VALUES
+        <trim suffix="" suffixOverrides=",">
+            <foreach collection="siteMap" index="site" item="binMap" >
+                <foreach collection="binMap" index="bin" item="binNumber">
+                    (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{site},#{bin},#{binNumber},#{testType}),
+                </foreach>
+            </foreach>
+        </trim>
+    </insert>
+    <delete id="deleteSiteInfor">
+        DELETE FROM rawdatainfors.sitesummary WHERE customer_code =#{customerCode} AND device=#{device} AND lot=#{lot} AND cp=#{cp} AND wafer_id=#{waferId}
+    </delete>
+    <insert id="failDieInsert">
+        INSERT INTO rawdatainfors.BIN_INFO(customer_code, device,lot_id, cp_step, wafer_no, site_id, bin_no, x_coordinate, y_coordinate) VALUES
+        <trim suffix="" suffixOverrides=",">
+            <foreach collection="failDieList" item="failDie">
+                (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{failDie.siteId},#{failDie.binNumber},#{failDie.xCoordinate},#{failDie.yCoordinate}),
+            </foreach>
+        </trim>
+        ;
+    </insert>
+    <delete id="failDieDelete">
+        DELETE  FROM rawdatainfors.BIN_INFO WHERE customer_code=#{customerCode} AND device=#{device} AND lot_id=#{lot} AND cp_step=#{cp} AND wafer_no=#{waferId};
+    </delete>
+</mapper>
