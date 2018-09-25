@@ -15,7 +15,7 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 ">
-    <context:property-placeholder location="classpath:mysqlDataSource"/>
+    <context:property-placeholder location="classpath:mysqlDataSource.properties"/>
     <context:component-scan base-package="com.vtest.it.mestools"/>
     <context:component-scan base-package="com.vtest.it.mesinfors"/>
     <context:component-scan base-package="com.vtest.it.tools"/>
