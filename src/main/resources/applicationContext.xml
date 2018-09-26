@@ -15,7 +15,7 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 ">
-    <context:property-placeholder location="classpath:mysqlDataSource"/>
+    <context:property-placeholder location="classpath:mysqlDataSource.properties"/>
     <context:component-scan base-package="com.vtest.it.mestools"/>
     <context:component-scan base-package="com.vtest.it.mesinfors"/>
     <context:component-scan base-package="com.vtest.it.tools"/>
@@ -32,21 +32,6 @@
         p:username="${jdbc.username}"
         p:password="${jdbc.password}"
     />
-    <!---->
-    <!--<bean id="sqlserverDataBase" class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
-        <!--p:driverClassName=""-->
-        <!--p:url=""-->
-        <!--p:username=""-->
-        <!--p:password=""-->
-    <!--/>-->
-    <!--<bean id="sqlServerSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"-->
-        <!--p:dataSource-ref="sqlserverDataBase"-->
-        <!--p:configLocation=""-->
-    <!--/>-->
-    <!--<bean id="sqlServerSqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">-->
-        <!--<constructor-arg index="0" ref="sqlServerSqlSessionFactory"/>-->
-    <!--</bean>-->
-
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
         p:dataSource-ref="mysqlDataSource"
         p:configLocation="classpath:sqlMapConfig.xml"
