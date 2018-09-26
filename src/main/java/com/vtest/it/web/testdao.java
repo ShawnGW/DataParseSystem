@@ -5,6 +5,7 @@ import com.vtest.it.dao.MesConfigDAO;
 import com.vtest.it.dao.PropertiesDAO;
 import com.vtest.it.dao.SiteBinSumToDAO;
 import com.vtest.it.dao.VtComputerDAO;
+import com.vtest.it.mesdao.GetMesConfig;
 import com.vtest.it.pojo.PropertiesOrderBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,12 @@ public class testdao {
     private SiteBinSumToDAO siteBinSumToDAO;
     private VtComputerDAO vtComputerDAO;
     private PropertiesDAO propertiesDAO;
+    private GetMesConfig getMesConfig;
+
+    @Autowired
+    public void setGetMesConfig(GetMesConfig getMesConfig) {
+        this.getMesConfig = getMesConfig;
+    }
 
     @Autowired
     public void setPropertiesDAO(PropertiesDAO propertiesDAO) {
@@ -46,11 +53,27 @@ public class testdao {
     @ResponseBody
     public String test()
     {
+//
+//        LinkedHashMap<String,String> properties=new LinkedHashMap<>();
+//        LinkedList<PropertiesOrderBean> propertiesOrderBeans=propertiesDAO.getOrder();
+//        for (PropertiesOrderBean propertiesOrderBean: propertiesOrderBeans) {
+//            properties.put(propertiesOrderBean.getProperty(),"NA");
+//        }
+//        TestMesBean testMesBean=getMesConfig.getConfig();
+//        System.out.println(testMesBean.getWhShelfLoc());
+//        System.out.println(testMesBean.getWhName());
+//        System.out.println(testMesBean.getPartNumber());
+     return JSON.toJSONString(getMesConfig.getBean("AK79NG-05","CP1"));
+    }
+    @RequestMapping("/test2")
+    @ResponseBody
+    public String test2()
+    {
         LinkedHashMap<String,String> properties=new LinkedHashMap<>();
         LinkedList<PropertiesOrderBean> propertiesOrderBeans=propertiesDAO.getOrder();
         for (PropertiesOrderBean propertiesOrderBean: propertiesOrderBeans) {
             properties.put(propertiesOrderBean.getProperty(),"NA");
         }
-     return JSON.toJSONString(properties);
+        return JSON.toJSONString(properties);
     }
 }
