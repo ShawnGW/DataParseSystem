@@ -1,6 +1,6 @@
 package com.vtest.it.MappingParseTools;
 
-import com.vtest.it.rawdataBean.RawdataInitBean;
+import com.vtest.it.rawdatainformationBean.RawdataInitBean;
 import com.vtest.it.tools.GetRandomNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,9 @@ public class TskProberMappingParse {
 	public static void main(String[] args) throws  Exception{
 		TskProberMappingParse tskProberMappingParse=new TskProberMappingParse();
 		RawdataInitBean rawdataInitBean=new RawdataInitBean();
-		tskProberMappingParse.Get(new File("E:\\C\\2\\001.Test512-01"),0,rawdataInitBean);
+		tskProberMappingParse.Get(new File("E:\\C\\2\\001.WS983NG-1"),0,rawdataInitBean);
 		HashMap<String,String> testDieMap=rawdataInitBean.getTestDieMap();
+
 		Set<String> set=testDieMap.keySet();
 		PrintWriter p=new PrintWriter(new FileWriter(new File("E:\\C\\2\\22.raw")));
 		for (String key:set) {
@@ -39,7 +40,7 @@ public class TskProberMappingParse {
 	}
 	public  void Get(File file, int gpibBin, RawdataInitBean bean) throws IOException, NoSuchFieldException
 	{
-		LinkedHashMap<String,String> properties=bean.getProperties();
+		LinkedHashMap<String,String> properties=bean.getDataProperties();
 		HashMap<Integer,HashMap<Integer,Integer>> primarySiteBinSum=bean.getSiteBinSum();
 		HashMap<String,String> testDieMap=bean.getTestDieMap();
 		HashMap<String,String> skipAndMarkDieMap=bean.getSkipAndMarkDieMap();

@@ -1,4 +1,4 @@
-package com.vtest.it.rawdataBean;
+package com.vtest.it.rawdatainformationBean;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -14,19 +14,13 @@ public class RawdataInitBean implements Serializable{
     private HashMap<String,String> reTestDieMap;
     private HashMap<String,String> testDieMap;
     private HashMap<String,String> skipAndMarkDieMap;
-
-    public RawdataInitBean()
-    {
-        this.properties=new LinkedHashMap<>();
-        this.dataProperties=new LinkedHashMap<>();
-        this.siteBinSum=new HashMap<>();
-        this.primarySiteBinSum=new HashMap<>();
-        this.retestSiteBinSum=new HashMap<>();
-        this.primaryTestDieMap=new HashMap<>();
-        this.reTestDieMap=new HashMap<>();
-        this.testDieMap=new HashMap<>();
-        this.skipAndMarkDieMap=new HashMap<>();
-    }
+    private Integer primaryTouchDownTimes;
+    private Long primaryTouchDownDuringTime;
+    private Integer reTestTouchDownTimes;
+    private Long reTestTouchDownDuringTime;
+    private long singleTouchDownDuringTime;
+    private double reTestRate;
+    private long testDuringTime;
 
     public LinkedHashMap<String, String> getProperties() {
         return properties;
@@ -98,5 +92,60 @@ public class RawdataInitBean implements Serializable{
 
     public void setSkipAndMarkDieMap(HashMap<String, String> skipAndMarkDieMap) {
         this.skipAndMarkDieMap = skipAndMarkDieMap;
+    }
+    public Integer getPrimaryTouchDownTimes() {
+        return primaryTouchDownTimes;
+    }
+
+    public void setPrimaryTouchDownTimes(Integer primaryTouchDownTimes) {
+        this.primaryTouchDownTimes = primaryTouchDownTimes;
+    }
+
+    public Long getPrimaryTouchDownDuringTime() {
+        return primaryTouchDownDuringTime;
+    }
+
+    public void setPrimaryTouchDownDuringTime(Long primaryTouchDownDuringTime) {
+        this.primaryTouchDownDuringTime = primaryTouchDownDuringTime;
+    }
+
+    public Integer getReTestTouchDownTimes() {
+        return reTestTouchDownTimes;
+    }
+
+    public void setReTestTouchDownTimes(Integer reTestTouchDownTimes) {
+        this.reTestTouchDownTimes = reTestTouchDownTimes;
+    }
+
+    public Long getReTestTouchDownDuringTime() {
+        return reTestTouchDownDuringTime;
+    }
+
+    public void setReTestTouchDownDuringTime(Long reTestTouchDownDuringTime) {
+        this.reTestTouchDownDuringTime = reTestTouchDownDuringTime;
+    }
+
+    public long getSingleTouchDownDuringTime() {
+        return singleTouchDownDuringTime;
+    }
+
+    public void setSingleTouchDownDuringTime(long singleTouchDownDuringTime) {
+        this.singleTouchDownDuringTime = singleTouchDownDuringTime;
+    }
+
+    public double getReTestRate() {
+        return reTestRate;
+    }
+
+    public void setReTestRate(double reTestRate) {
+        this.reTestRate = reTestRate;
+    }
+
+    public long getTestDuringTime() {
+        return testDuringTime;
+    }
+
+    public void setTestDuringTime(long testDuringTime) {
+        this.testDuringTime = testDuringTime;
     }
 }

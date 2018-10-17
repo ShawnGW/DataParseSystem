@@ -2,7 +2,7 @@ package com.vtest.it.rawdataInitGenerate;
 
 
 import com.vtest.it.MappingParseTools.TskProberMappingParse;
-import com.vtest.it.rawdataBean.RawdataInitBean;
+import com.vtest.it.rawdatainformationBean.RawdataInitBean;
 import com.vtest.it.rawdataBean.rawdataInitParse;
 import com.vtest.it.rawdataInit.InitRawdataProperties;
 import org.springframework.beans.factory.annotation.Autowired;

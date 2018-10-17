@@ -32,7 +32,7 @@ public class DatalogDealParent implements DatalogDeal {
         this.uncompress = uncompress;
     }
     @Override
-    public void datalogBackup(File datalog, HashMap<String, String> nameMap) {
+    public void datalogBackup(File datalog, HashMap<String, String> nameMap,boolean dealStdf) {
         try {
         String customerCode=nameMap.get("customerCode");
         String device=nameMap.get("device");
@@ -41,7 +41,7 @@ public class DatalogDealParent implements DatalogDeal {
         String waferId=nameMap.get("waferId");
 
         HashMap<String,String> customerLotConfig=getSlotAndSequence.get(lot);
-        String waferIdNew=slotModify.modify(customerLotConfig,waferId);
+        String waferIdNew=slotModify.modify(customerLotConfig.get("sequence"),waferId);
         String unzipPath=path+customerCode+"/"+device+"/"+lot+"/"+cp+"/"+waferIdNew;
         File directory=new File(unzipPath);
         if (!directory.exists())
@@ -49,6 +49,11 @@ public class DatalogDealParent implements DatalogDeal {
               directory.mkdirs();
           }
           uncompress.Ucompress(datalog,unzipPath,waferId,waferIdNew);
+          if (dealStdf&&(datalog.getName().endsWith(".std.zip")||datalog.getName().endsWith(".stdf.zip")))
+          {
+              String tempPath="/server212/Manmap/STDF_extract_TestTime";
+              uncompress.Ucompress(datalog,tempPath,waferId,waferIdNew);
+          }
           datalog.delete();
         }catch (Exception e)
         {

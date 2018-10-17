@@ -1,4 +1,4 @@
-package com.vtest.it.dao;
+package com.vtest.it.dao.systemdao;
 
 import com.vtest.it.rawdataBean.RawdataPropertiesBean;
 import org.apache.ibatis.annotations.Param;

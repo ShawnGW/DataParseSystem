@@ -2,16 +2,13 @@ package com.vtest.it.mestools;
 
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
 public class SlotModify {
-	public  String modify(HashMap<String, String> customerLotConfig,String waferid)
+	public  String modify(String sequnce,String waferid)
 	{
-		String Type=customerLotConfig.get("readType");
-		if (Type.toUpperCase().equals("SLOT")){			
 			String regex1="^[0-9A-Z]{1,}-[0-9A-Z]{1,}-[0-9]{1,2}$";
 			String regex2="^[0-9A-Z]{1,}-[0-9A-Z]{1,}-[A-Z]{1}-[0-9]{1,}$";
 			String regex3="^[0-9A-Z]{1,}[\\.]{1}[0-9A-Z]{1,}-[0-9]{1,}$";
@@ -26,9 +23,7 @@ public class SlotModify {
 			Matcher matcher2=pattern2.matcher(waferid);
 			Matcher matcher3=pattern3.matcher(waferid);
 			Matcher matcher4=pattern4.matcher(waferid);			
-			
-			String sequnce=customerLotConfig.get("sequence");
-			
+
 			String partLot=null;
 			String value=null;
 			if (matcher1.find()) {
@@ -62,14 +57,9 @@ public class SlotModify {
 			}
 			waferid=partLot+"-"+value;
 			return waferid;
-		}else{
-			return waferid;
-		} 		
 		
 	}
-	public  String modifyTel(HashMap<String, String> customerLotConfig,String waferid) {
-		String Type=customerLotConfig.get("readType");
-		if (Type.toUpperCase().equals("SLOT")){			
+	public  String modifyTel(String sequnce,String waferid) {
 			String regex1="^[0-9A-Z]{1,}-[0-9A-Z]{1,}-[0-9]{2}$";
 			String regex2="^[0-9A-Z]{1,}-[0-9A-Z]{1,}-[A-Z]{1}-[0-9]{1,}$";
 			String regex3="^[0-9A-Z]{1,}-[0-9]{2}$";
@@ -81,9 +71,7 @@ public class SlotModify {
 			Matcher matcher1=pattern1.matcher(waferid);
 			Matcher matcher2=pattern2.matcher(waferid);
 			Matcher matcher3=pattern3.matcher(waferid);			
-			
-			String sequnce=customerLotConfig.get("sequence");
-			
+
 			String partLot=null;
 			String value=null;
 			if (matcher1.find()) {
@@ -105,9 +93,6 @@ public class SlotModify {
 			}
 			waferid=partLot+"-"+value;
 			return waferid;
-		}else{
-			return waferid;
-		} 
 	}
 	private  String modifyValue(String sequnce,String value)
 	{

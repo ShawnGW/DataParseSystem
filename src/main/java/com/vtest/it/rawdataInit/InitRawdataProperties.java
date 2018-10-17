@@ -1,6 +1,6 @@
 package com.vtest.it.rawdataInit;
 
-import com.vtest.it.dao.PropertiesDAO;
+import com.vtest.it.dao.systemdao.PropertiesDAO;
 import com.vtest.it.pojo.PropertiesOrderBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.vtest.it.TestItemRawdata;
+package com.vtest.it.testItemRawdata;
 
 import java.util.ArrayList;
 import java.util.TreeMap;

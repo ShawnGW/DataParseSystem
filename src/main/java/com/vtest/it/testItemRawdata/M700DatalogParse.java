@@ -1,4 +1,4 @@
-package com.vtest.it.TestItemRawdata;
+package com.vtest.it.testItemRawdata;
 
 import java.io.BufferedReader;
 import java.io.File;

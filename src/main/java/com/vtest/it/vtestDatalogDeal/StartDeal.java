@@ -53,21 +53,21 @@ public class StartDeal {
     }
     public void v50Deal()
     {
-        Deal(V50DataSource,v50DatalogParse);
+        Deal(V50DataSource,v50DatalogParse,false);
     }
     public void m7000Deal()
     {
-        Deal(M7000DataSource,m7000DatalogParse);
+        Deal(M7000DataSource,m7000DatalogParse,true);
     }
     public void T862Deal()
     {
-        Deal(T862DataSource,v50DatalogParse);
+        Deal(T862DataSource,v50DatalogParse,false);
     }
     public void ChromaDeal()
     {
-        Deal(ChromaDataSource,chromaDatalogParse);
+        Deal(ChromaDataSource,chromaDatalogParse,true);
     }
-    public void Deal(File dataSource, DatalogParse parse)
+    public void Deal(File dataSource, DatalogParse parse,boolean dealStdf)
     {
         try {
             File[] files=dataSource.listFiles();
@@ -80,7 +80,7 @@ public class StartDeal {
                         if (fileName.startsWith("VTEST"))
                         {
                             HashMap<String,String> nameMap=parse.parseName(fileName);
-                            datalogDealParent.datalogBackup(files[i],nameMap);
+                            datalogDealParent.datalogBackup(files[i],nameMap,dealStdf);
                         }else
                         {
                             files[i].delete();

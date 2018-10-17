@@ -1,6 +1,6 @@
 package com.vtest.it.RawdataGenerate;
 
-import com.vtest.it.rawdataBean.RawdataInitBean;
+import com.vtest.it.rawdatainformationBean.RawdataInitBean;
 import com.vtest.it.tools.GetRandomChar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

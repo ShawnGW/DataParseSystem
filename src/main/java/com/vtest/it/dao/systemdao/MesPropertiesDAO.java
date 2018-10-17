@@ -1,4 +1,4 @@
-package com.vtest.it.dao;
+package com.vtest.it.dao.systemdao;
 
 import com.vtest.it.pojo.MesProperties;
 import org.springframework.stereotype.Repository;
