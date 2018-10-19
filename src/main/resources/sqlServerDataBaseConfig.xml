@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util-4.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+">
+ <bean id="sqlServerDataBase" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+       p:driverClassName="${mic.jdbc.Driver}"
+       p:url="${mic.jdbc.url}"
+       p:username="${mic.jdbc.username}"
+       p:password="${mic.jdbc.password}"
+ />
+ <bean id="sqlServerSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"
+       p:configLocation="classpath:sqlServerMapConfig.xml"
+       p:dataSource-ref="sqlServerDataBase"
+ />
+ <bean id="sqlServerSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+  <constructor-arg index="0" ref="sqlServerSessionFactory"/>
+ </bean>
+ <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+       p:annotationClass="org.springframework.stereotype.Repository"
+       p:basePackage="com.vtest.it.dao.mesdao"
+       p:sqlSessionTemplateBeanName="sqlServerSessionTemplate"
+ />
+ <bean  id="sqlServerTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+  <property name="dataSource" ref="sqlServerDataBase"/>
+ </bean>
+ <tx:annotation-driven transaction-manager="sqlServerTxManager"/>
+</beans>
