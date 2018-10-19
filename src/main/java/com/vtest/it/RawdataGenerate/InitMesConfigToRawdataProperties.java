@@ -2,13 +2,17 @@ package com.vtest.it.RawdataGenerate;
 
 import com.vtest.it.pojo.MesConfigBean;
 import com.vtest.it.rawdatainformationBean.RawdataInitBean;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
 
+@Service
 public class InitMesConfigToRawdataProperties {
     public void initMesConfig(RawdataInitBean rawdataInitBean, MesConfigBean mesConfigBean)
     {
         LinkedHashMap<String,String> properties=new LinkedHashMap<>();
+        LinkedHashMap<String,String> dataProperties=rawdataInitBean.getDataProperties();
+
         properties.put("Lot ID",mesConfigBean.getLotId());
         properties.put("Inner Lot",mesConfigBean.getInnerLot());
         properties.put("Inner MotherLot",mesConfigBean.getInnerMontherlot());
@@ -94,9 +98,42 @@ public class InitMesConfigToRawdataProperties {
         properties.put("TestDieMinY",mesConfigBean.getTestDieMiny());
         properties.put("TestDieMaxX",mesConfigBean.getTestDieMaxx());
         properties.put("TestDieMaxY",mesConfigBean.getTestDieMaxy());
-    }
-    public void initDataConfig(RawdataInitBean rawdataInitBean)
-    {
 
+        properties.put("Operator", dataProperties.get("Operator"));
+        properties.put("CP Process", dataProperties.get("CP Process"));
+        properties.put("Test Start Time", dataProperties.get("Test Start Time"));
+        properties.put("Test End Time", dataProperties.get("Test End Time"));
+        properties.put("Gross Die", dataProperties.get("Gross Die"));
+        properties.put("Pass Die",dataProperties.get("Pass Die"));
+        properties.put("Fail Die", dataProperties.get("Fail Die"));
+        properties.put("Wafer Yield", dataProperties.get("Wafer Yield"));
+        properties.put("DataBase",dataProperties.get("DataBase"));
+        properties.put("TestTime", dataProperties.get("TestTime"));
+        if (!dataProperties.get("Index X(mm)").equals("NA"))
+        {
+            properties.put("Index X(mm)",dataProperties.get("Index X(mm)"));
+        }
+        if (!dataProperties.get("Index Y(mm)").equals("NA"))
+        {
+            properties.put("Index Y(mm)", dataProperties.get("Index Y(mm)"));
+        }
+        properties.put("Map Cols", dataProperties.get("Map Cols"));
+        properties.put("Map Rows", dataProperties.get("Map Rows"));
+        properties.put("Notch", dataProperties.get("Notch"));
+        properties.put("Retest Rate", dataProperties.get("Retest Rate"));
+        if (!dataProperties.get("WF_Size").equals("NA"))
+        {
+            properties.put("WF_Size", dataProperties.get("WF_Size"));
+        }
+        properties.put("MinX", dataProperties.get("MinX"));
+        properties.put("MinY", dataProperties.get("MinY"));
+        properties.put("MaxX", dataProperties.get("MaxX"));
+        properties.put("MaxY", dataProperties.get("MaxY"));
+        properties.put("TestDieMinX", dataProperties.get("TestDieMinX"));
+        properties.put("TestDieMinY", dataProperties.get("TestDieMinY"));
+        properties.put("TestDieMaxX", dataProperties.get("TestDieMaxX"));
+        properties.put("TestDieMaxY", dataProperties.get("TestDieMaxY"));
+
+        rawdataInitBean.setProperties(properties);
     }
 }

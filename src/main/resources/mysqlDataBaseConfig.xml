@@ -18,7 +18,7 @@
  <context:property-placeholder location="classpath:DataSource.properties"/>
  <bean id="mysqlDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
        p:driverClassName="${jdbc.Driver}"
-       p:url="${jdbc.url}"
+       p:url="${jdbc.maintain.url}"
        p:username="${jdbc.username}"
        p:password="${jdbc.password}"
  />

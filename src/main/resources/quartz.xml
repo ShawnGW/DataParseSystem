@@ -9,6 +9,9 @@
        http://www.springframework.org/schema/util/spring-util-4.0.xsd
 ">
     <bean id="deal" class="com.vtest.it.vtestDatalogDeal.StartDeal"/>
+    <bean id="tskPlatFormDataDeal" class="org.springframework.scheduling.quartz.JobDetailFactoryBean"
+        p:jobClass="com.vtest.it.vtestDatalogDeal.TskPlatformMappingDeal"
+    />
     <bean id="jobDetail_1" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
           p:targetObject-ref="deal"
           p:targetMethod="v50Deal"
@@ -45,11 +48,16 @@
           p:jobDetail-ref="jobDetail_4"
           p:cronExpression="0 */1 * * * ?"
     />
+    <bean id="cronTrigger5" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+        p:jobDetail-ref="tskPlatFormDataDeal"
+        p:cronExpression="0 */1 * * * ?"
+    />
     <util:list id="trigger_list">
         <ref bean="cronTrigger1"/>
         <ref bean="cronTrigger2"/>
         <ref bean="cronTrigger3"/>
         <ref bean="cronTrigger4"/>
+        <ref bean="cronTrigger5"/>
     </util:list>
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
           p:triggers-ref="trigger_list"

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtest.it.dao.testermapperdao.TesterDataDAO">
+    <insert id="insertEquipmentInforToeqCardSummary" parameterType="com.vtest.it.pojo.equipment.EquipmentBean">
+        INSERT INTO vtdatester.eq_card_summary(custom_code, device, lot_id, cp_step, wafer_no, tester_id, prober_id, card_id, first_touchDown, first_time_range, first_test_rate, retest_touchDown, retest_time_range, retest_rate, single_test_time, test_time) VALUES (
+        #{customerCode},#{device},#{lotId},#{cpStep},#{waferNo},#{testerId},#{proberId},#{cardId},#{firstTouchDown},#{firstTimeRange},#{firstTestRate},#{retestTouchDown},#{retestTimeRange},#{retestRate},#{singleTestTime},#{testTime}
+        )ON DUPLICATE KEY UPDATE tester_id=#{testerId}, prober_id=#{proberId}, card_id=#{cardId}, first_touchDown=#{firstTouchDown},first_time_range=#{firstTimeRange},first_test_rate=#{firstTestRate},retest_touchDown=#{retestTouchDown},retest_time_range=#{retestTimeRange},retest_rate=#{retestRate},single_test_time=#{singleTestTime},test_time=#{testTime},load_time=now();
+    </insert>
+    <insert id="insertWaferInforToBinWaferSummary" parameterType="com.vtest.it.pojo.binwaferinfors.BinWaferInforBean">
+        INSERT INTO vtdatester.bin_wafer_summary(custom_code, device, lot_id, cp_step, wafer_no, oprator, tester_program, tester_id, prober_id, Prober_card_id, pid_name, pid_version, start_time, gross_die, pass_die, fail_die, yield, end_time, check_status, map_cols, map_rows, min_x, min_y, others_params)
+        VALUES ( #{customerCode},#{device},#{lotId},#{cpStep},#{waferNo},#{oprator},#{testerProgram},#{testerId},#{proberId},#{proberCardId},#{pidName},#{pidVersion},#{startTime},#{grossDie},#{passDie},#{failDie},#{yield},#{endTime},#{checkStatus},#{mapCols},#{mapRows},#{minX},#{minY},#{othersParams})
+        ON DUPLICATE KEY UPDATE oprator=#{oprator}, tester_program=#{testerProgram}, tester_id=#{testerId}, prober_id=#{proberId}, Prober_card_id=#{proberCardId}, pid_name=#{pidName}, pid_version=#{pidVersion}, start_time=#{startTime}, gross_die=#{grossDie}, pass_die=#{passDie}, fail_die=#{failDie}, yield=#{yield}, end_time=#{endTime}, check_status=#{checkStatus}, map_cols=#{mapCols}, map_rows=#{mapRows}, min_x=#{minX}, min_y=#{minY}, others_params=#{othersParams},load_time=now();
+    </insert>
+    <delete id="deleteSiteInforToBinInfoSummary">
+          DELETE FROM vtdatester.bin_info_summary WHERE custom_code=#{customerCode} AND device=#{device} AND lot_id=#{lot} AND cp_step=#{cp} AND wafer_no =#{waferId};
+    </delete>
+    <insert id="insertSiteInforToBinInfoSummary">
+      INSERT INTO vtdatester.bin_info_summary(custom_code, device, lot_id, cp_step, wafer_no, site_id, soft_bin_no, bin_count, pass_fail, test_type)
+      VALUES
+      <trim suffix="" suffixOverrides=",">
+          <foreach collection="siteMap" index="site" item="binItem">
+              <foreach collection="binItem" index="binNo" item="binValue">
+                 <choose>
+                     <when test="passBins.contains(binNo)">
+                         (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{site},#{binNo},#{binValue},TRUE,#{testType}),
+                     </when>
+                     <otherwise>
+                         (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{site},#{binNo},#{binValue},FALSE,#{testType}),
+                     </otherwise>
+                 </choose>
+              </foreach>
+          </foreach>
+      </trim>
+        ;
+</insert>
+   <insert id="insertFailDieToBinInfo">
+       INSERT INTO vtdatester.bin_info(custom_code, device, lot_id, cp_step, wafer_no, site_id, bin_no, x_coordinate, y_coordinate)
+       VALUES
+       <trim suffix="" suffixOverrides=",">
+           <foreach collection="failDieList" item="failDie">
+               (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{failDie.siteId},#{failDie.binNumber},#{failDie.xCoordinate},#{failDie.yCoordinate}),
+           </foreach>
+       </trim>
+       ;
+   </insert>
+</mapper>

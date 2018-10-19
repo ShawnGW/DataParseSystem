@@ -1,6 +1,6 @@
 package com.vtest.it.dao.systemdao;
 
-import com.vtest.it.pojo.FailDieBean;
+import com.vtest.it.pojo.binwaferinfors.FailDieBean;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

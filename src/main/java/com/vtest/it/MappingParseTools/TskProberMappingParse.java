@@ -5,10 +5,11 @@ import com.vtest.it.tools.GetRandomNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Set;
 
 /**
  * 
@@ -19,20 +20,6 @@ import java.util.Set;
  */
 @Service
 public class TskProberMappingParse {
-	public static void main(String[] args) throws  Exception{
-		TskProberMappingParse tskProberMappingParse=new TskProberMappingParse();
-		RawdataInitBean rawdataInitBean=new RawdataInitBean();
-		tskProberMappingParse.Get(new File("E:\\C\\2\\001.WS983NG-1"),0,rawdataInitBean);
-		HashMap<String,String> testDieMap=rawdataInitBean.getTestDieMap();
-
-		Set<String> set=testDieMap.keySet();
-		PrintWriter p=new PrintWriter(new FileWriter(new File("E:\\C\\2\\22.raw")));
-		for (String key:set) {
-			p.print(key+testDieMap.get(key)+"\r\n");
-		}
-		p.flush();
-		p.close();
-	}
 	private GetRandomNumber getRandomNumber;
 	@Autowired
 	public void setGetRandomNumber(GetRandomNumber getRandomNumber) {
@@ -40,10 +27,10 @@ public class TskProberMappingParse {
 	}
 	public  void Get(File file, int gpibBin, RawdataInitBean bean) throws IOException, NoSuchFieldException
 	{
-		LinkedHashMap<String,String> properties=bean.getDataProperties();
-		HashMap<Integer,HashMap<Integer,Integer>> primarySiteBinSum=bean.getSiteBinSum();
-		HashMap<String,String> testDieMap=bean.getTestDieMap();
-		HashMap<String,String> skipAndMarkDieMap=bean.getSkipAndMarkDieMap();
+		LinkedHashMap<String,String> properties=new LinkedHashMap<>();
+		HashMap<Integer,HashMap<Integer,Integer>> siteBinSum=new HashMap<>();
+		HashMap<String,String> testDieMap=new HashMap<>();
+		HashMap<String,String> skipAndMarkDieMap=new HashMap<>();
 		HashMap<Integer,Integer> Bin_summary_Map =new HashMap<>();
 
 		int slot=0;
@@ -305,12 +292,12 @@ public class TskProberMappingParse {
 		Integer Hour2=Integer.valueOf(Test_End_Time.substring(6, 8));
 		Integer Second2=Integer.valueOf(Test_End_Time.substring(8,10));
 		Integer Test_Time=-((Year-Year2)*365*24*3600+(Mouth-Mouth2)*30*24*3600+(Day-Day2)*24*3600+(Hour-Hour2)*3600+(Second-Second2)*60);
-		Test_Start_Time="20"+Test_Start_Time+ /*getRandomNumber.getRandomNumber(2)*/"11";
-		Test_End_Time="20"+Test_End_Time+/*getRandomNumber.getRandomNumber(2)*/"12";
+		Test_Start_Time="20"+Test_Start_Time+getRandomNumber.getRandomNumber(2);
+		Test_End_Time="20"+Test_End_Time+getRandomNumber.getRandomNumber(2);
 
 		String cp=Device.substring(3,4);
 
-		primarySiteBinSum.put(0,Bin_summary_Map);
+		siteBinSum.put(0,Bin_summary_Map);
 
 		properties.put("Wafer ID", Wafer_ID.trim());
 		properties.put("Operator", OP.trim());
@@ -339,5 +326,10 @@ public class TskProberMappingParse {
 		properties.put("TestDieMinY", String.valueOf(testDieMinY));
 		properties.put("TestDieMaxX", String.valueOf(testDieMaxX));
 		properties.put("TestDieMaxY", String.valueOf(testDieMaxY));
+
+		bean.setDataProperties(properties);
+		bean.setSiteBinSum(siteBinSum);
+		bean.setTestDieMap(testDieMap);
+		bean.setSkipAndMarkDieMap(skipAndMarkDieMap);
 	}
 }

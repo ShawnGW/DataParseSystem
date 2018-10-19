@@ -1,4 +1,4 @@
-package com.vtest.it.pojo;
+package com.vtest.it.pojo.binwaferinfors;
 
 public class FailDieBean {
     private Integer xCoordinate;
