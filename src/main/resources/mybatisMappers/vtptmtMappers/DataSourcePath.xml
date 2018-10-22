@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vtest.it.dao.systemdao.GetDataSourceConfigDao">
+<mapper namespace="com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao">
     <select id="getConfig" resultType="com.vtest.it.pojo.DataSourceBean">
       SELECT source_path ,backup_source_path,backup_source_path_by_cp,rawdata_path FROM VTPTMT.data_source WHERE  platform=#{platform};
     </select>

@@ -1,4 +1,4 @@
-package com.vtest.it.dao.systemdao;
+package com.vtest.it.dao.vtptmtmapperdao;
 
 import com.vtest.it.pojo.DataSourceBean;
 import org.apache.ibatis.annotations.Param;

@@ -5,6 +5,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GetMesConfig {
+public interface GetMesConfigDAO {
     public MesConfigBean getBean(@Param("waferId") String waferId,@Param("cpProcess") String cpProcess);
 }

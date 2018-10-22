@@ -10,14 +10,8 @@
     </settings>
     <typeAliases>
         <typeAlias type="com.vtest.it.pojo.MesProperties" alias="properties"/>
-        <typeAlias type="com.vtest.it.pojo.ComputerBean" alias="computer"/>
     </typeAliases>
     <mappers>
-        <mapper resource="mybatisMappers/systemMappers/MesProperties.xml"/>
-        <mapper resource="mybatisMappers/systemMappers/MesItemMapper.xml"/>
-        <mapper resource="mybatisMappers/systemMappers/RawdataInforMapper.xml"/>
-        <mapper resource="mybatisMappers/systemMappers/ComputerMapper.xml"/>
-        <mapper resource="mybatisMappers/systemMappers/PropertiesMapper.xml"/>
-        <mapper resource="mybatisMappers/systemMappers/DataSourcePath.xml"/>
+    <mapper resource="mybatisMappers/vtptmtMappers/DataSourcePath.xml"/>
     </mappers>
 </configuration>

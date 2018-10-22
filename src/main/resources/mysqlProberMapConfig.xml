@@ -10,7 +10,6 @@
     </settings>
     <typeAliases>
         <typeAlias type="com.vtest.it.pojo.MesProperties" alias="properties"/>
-        <typeAlias type="com.vtest.it.pojo.ComputerBean" alias="computer"/>
     </typeAliases>
     <mappers>
         <mapper resource="mybatisMappers/proberMappers/RawdataInforMapper.xml"/>

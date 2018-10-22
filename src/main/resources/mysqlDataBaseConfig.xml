@@ -31,7 +31,7 @@
   <constructor-arg index="1" value="BATCH"/>
  </bean>
  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
-       p:basePackage="com.vtest.it.dao.systemdao"
+       p:basePackage="com.vtest.it.dao.vtptmtmapperdao"
        p:annotationClass="org.springframework.stereotype.Repository"
        p:sqlSessionTemplateBeanName="sqlSessionTemplate"
  />

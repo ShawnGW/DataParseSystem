@@ -24,6 +24,7 @@ public class StartDeal {
     private RemoveDoubleSpace removeDoubleSpace;
     private TimeCheck timeCheck;
 
+
     @Autowired
     public void setTimeCheck(TimeCheck timeCheck) {
         this.timeCheck = timeCheck;

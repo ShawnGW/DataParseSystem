@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.vtest.it.dao.mesdao.GetMesConfig">
+<mapper namespace="com.vtest.it.dao.mesdao.GetMesConfigDAO">
     <select id="getBean" statementType="CALLABLE" resultType="com.vtest.it.pojo.MesConfigBean">
         {call pro_GetWaferInfo(
           #{waferId,mode=IN,jdbcType=VARCHAR},#{cpProcess,mode =IN,jdbcType=VARCHAR}

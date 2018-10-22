@@ -2,9 +2,9 @@ package com.vtest.it.vtestDatalogDeal;
 
 import com.vtest.it.MappingParseTools.TskProberMappingParse;
 import com.vtest.it.RawdataGenerate.InitMesConfigToRawdataProperties;
-import com.vtest.it.dao.mesdao.GetMesConfig;
+import com.vtest.it.dao.mesdao.GetMesConfigDAO;
 import com.vtest.it.dao.mesdao.GetSlotAndSequenceDAO;
-import com.vtest.it.dao.systemdao.GetDataSourceConfigDao;
+import com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao;
 import com.vtest.it.mestools.SlotModify;
 import com.vtest.it.pojo.DataSourceBean;
 import com.vtest.it.pojo.MesConfigBean;
@@ -13,20 +13,19 @@ import com.vtest.it.rawdatafterdeal.RawDataDeal;
 import com.vtest.it.rawdatainformationBean.RawdataInitBean;
 import com.vtest.it.tools.TimeCheck;
 import org.apache.commons.io.FileUtils;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
 
-public class TskPlatformMappingDeal implements Job{
+@Service
+public class TskPlatformMappingDeal{
     private GetDataSourceConfigDao dataSourceConfig;
     private TimeCheck timeCheck;
     private GetSlotAndSequenceDAO getSlotAndSequence;
     private SlotModify slotModify;
-    private GetMesConfig getMesConfig;
+    private GetMesConfigDAO getMesConfigDAO;
     private TskProberMappingParse tskProberMappingParse;
     private InitMesConfigToRawdataProperties initMesConfigToRawdataProperties;
     private RawDataDeal rawDataDeal;
@@ -55,8 +54,8 @@ public class TskPlatformMappingDeal implements Job{
         this.dataSourceConfig = dataSourceConfig;
     }
     @Autowired
-    public void setGetMesConfig(GetMesConfig getMesConfig) {
-        this.getMesConfig = getMesConfig;
+    public void setGetMesConfigDAO(GetMesConfigDAO getMesConfigDAO) {
+        this.getMesConfigDAO = getMesConfigDAO;
     }
     @Autowired
     public void setTskProberMappingParse(TskProberMappingParse tskProberMappingParse) {
@@ -66,8 +65,8 @@ public class TskPlatformMappingDeal implements Job{
     public void setInitMesConfigToRawdataProperties(InitMesConfigToRawdataProperties initMesConfigToRawdataProperties) {
         this.initMesConfigToRawdataProperties = initMesConfigToRawdataProperties;
     }
-    @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void deal()
+    {
         DataSourceBean dataSourceConfigBean=dataSourceConfig.getConfig("TSK");
         File dataSource=new File(dataSourceConfigBean.getSourcePath());
         File[] files=dataSource.listFiles();
@@ -91,10 +90,10 @@ public class TskPlatformMappingDeal implements Job{
                                 RawdataInitBean rawdataInitBean=new RawdataInitBean();
                                 tskProberMappingParse.Get(wafer,Integer.valueOf(slotAndSequenceConfigBean.getGpibBin()),rawdataInitBean);
                                 String cpProcess=rawdataInitBean.getDataProperties().get("CP Process");
-                                MesConfigBean mesConfigBean= getMesConfig.getBean(waferId,cpProcess);
+                                MesConfigBean mesConfigBean= getMesConfigDAO.getBean(waferId,cpProcess);
                                 initMesConfigToRawdataProperties.initMesConfig(rawdataInitBean,mesConfigBean);
                                 rawDataDeal.Deal(rawdataInitBean);
-
+                                System.err.println(rawdataInitBean.getProperties());
                             }
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -113,5 +112,4 @@ public class TskPlatformMappingDeal implements Job{
             }
         }
     }
-
 }
