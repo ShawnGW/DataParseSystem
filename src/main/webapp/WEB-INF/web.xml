@@ -9,7 +9,7 @@
     <param-value>
       classpath:applicationContext.xml,classpath:sqlServerDataBaseConfig.xml,
       classpath:mysqlDataBaseConfig.xml,classpath:mysqlProberDataBaseConfig.xml
-      classpath:mysqlTesterDataBaseConfig.xml
+      classpath:mysqlTesterDataBaseConfig.xml,classpath:quartz.xml
     </param-value>
   </context-param>
   <listener>

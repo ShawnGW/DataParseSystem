@@ -23,7 +23,7 @@ public class StartDeal {
     private DatalogDealParent datalogDealParent;
     private RemoveDoubleSpace removeDoubleSpace;
     private TimeCheck timeCheck;
-
+    private TskPlatformMappingDeal tskPlatformMappingDeal;
 
     @Autowired
     public void setTimeCheck(TimeCheck timeCheck) {
@@ -51,6 +51,13 @@ public class StartDeal {
     @Autowired
     public void setM7000DatalogParse(M7000DatalogParse m7000DatalogParse) {
         this.m7000DatalogParse = m7000DatalogParse;
+    }
+    @Autowired
+    public void setTskPlatformMappingDeal(TskPlatformMappingDeal tskPlatformMappingDeal) {
+        this.tskPlatformMappingDeal = tskPlatformMappingDeal;
+    }
+    public void tskPlatformDeal(){
+        tskPlatformMappingDeal.deal();
     }
     public void v50Deal()
     {

@@ -30,7 +30,7 @@
  </bean>
  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
        p:annotationClass="org.springframework.stereotype.Repository"
-       p:basePackage="com.vtest.it.dao.mesdao"
+       p:basePackage="com.vtest.it.dao.vtmesdao"
        p:sqlSessionTemplateBeanName="sqlServerSessionTemplate"
  />
  <bean  id="sqlServerTxManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

@@ -25,6 +25,7 @@
     <context:component-scan base-package="com.vtest.it.rawdatafterdeal"/>
     <context:component-scan base-package="com.vtest.it.MappingParseTools"/>
     <context:component-scan base-package="com.vtest.it.vtestDatalogDeal"/>
+    <context:component-scan base-package="com.vtest.it.rawdatacheck"/>
 
     <util:list id="rawdataAfterDeal" value-type="com.vtest.it.vtestinterface.RawDataAfterDeal">
         <!--<bean class=""></bean>-->

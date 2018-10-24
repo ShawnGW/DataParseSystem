@@ -1,11 +1,12 @@
 package com.vtest.it.web;
 
 import com.alibaba.fastjson.JSON;
-import com.vtest.it.dao.mesdao.GetMesConfigDAO;
-import com.vtest.it.dao.mesdao.GetSlotAndSequenceDAO;
 import com.vtest.it.dao.testermapperdao.TesterDataDAO;
+import com.vtest.it.dao.vtmesdao.VtMesConfigDAO;
+import com.vtest.it.dao.vtmesdao.VtMesSlotAndSequenceDAO;
 import com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao;
 import com.vtest.it.pojo.mvcDieBean;
+import com.vtest.it.pojo.propertiescheckItemBean.DataParseIssueBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,17 +20,16 @@ import java.util.ArrayList;
 public class testdao {
     private GetDataSourceConfigDao getDataSourceConfigDao;
     private TesterDataDAO proberDataDAO;
-    private GetMesConfigDAO getMesConfigDAO;
-    private GetSlotAndSequenceDAO getSlotAndSequenceDAO;
+    private VtMesSlotAndSequenceDAO vtMesSlotAndSequenceDAO;
+    private VtMesConfigDAO vtMesConfigDAO;
 
     @Autowired
-    public void setGetSlotAndSequenceDAO(GetSlotAndSequenceDAO getSlotAndSequenceDAO) {
-        this.getSlotAndSequenceDAO = getSlotAndSequenceDAO;
+    public void setVtMesSlotAndSequenceDAO(VtMesSlotAndSequenceDAO vtMesSlotAndSequenceDAO) {
+        this.vtMesSlotAndSequenceDAO = vtMesSlotAndSequenceDAO;
     }
-
     @Autowired
-    public void setGetMesConfigDAO(GetMesConfigDAO getMesConfigDAO) {
-        this.getMesConfigDAO = getMesConfigDAO;
+    public void setVtMesConfigDAO(VtMesConfigDAO vtMesConfigDAO) {
+        this.vtMesConfigDAO = vtMesConfigDAO;
     }
 
     @Autowired
@@ -136,7 +136,6 @@ public class testdao {
 //        arrayList1.add(failDieBean2);
 //
 //        proberDataDAO.insertFailDieToBinInfo("AMC","GXLX_2","FA89-9932","CP1","FA899932-01",arrayList1);
-
         ArrayList<mvcDieBean> items=new ArrayList<>();
         for (int i = 0; i < 50; i++) {
             for (int j = 0; j < 50; j++) {
@@ -144,19 +143,47 @@ public class testdao {
                 die.setX(i);
                 die.setY(j);
                 die.setZ(0);
-                die.setHardbin(1);
-                die.setSoftbin(1);
+                die.setHardbin(i/10);
+                die.setSoftbin(i/10);
                 die.setSite(i/8);
-                die.setName("Bin1");
+                die.setName("Bin"+i/10);
                 items.add(die);
             }
         }
-     return  JSON.toJSONString(getMesConfigDAO.getBean(waferId,"CP1"));
+     return  JSON.toJSONString(items);
     }
     @RequestMapping("/test2")
     @ResponseBody
     public String test2()
     {
-        return JSON.toJSONString("dsada");
+        DataParseIssueBean systemIssueBean=new DataParseIssueBean();
+        systemIssueBean.setCustomCode("AMC");
+        systemIssueBean.setDevice("GXLX2");
+        systemIssueBean.setLotId("FA78-9876");
+        systemIssueBean.setCpStep("CP1");
+        systemIssueBean.setWaferNo("FA789876-10");
+        systemIssueBean.setIssueType("data check");
+        systemIssueBean.setIssuLevel(5);
+        systemIssueBean.setIssuePath("/errors/xxx");
+        systemIssueBean.setIssueDescription("test");
+        systemIssueBean.setDealFlag(0);
+
+        DataParseIssueBean systemIssueBean2=new DataParseIssueBean();
+        systemIssueBean2.setCustomCode("AMC");
+        systemIssueBean2.setDevice("GXLX2");
+        systemIssueBean2.setLotId("FA78-9876");
+        systemIssueBean2.setCpStep("CP1");
+        systemIssueBean2.setWaferNo("FA789876-09");
+        systemIssueBean2.setIssueType("data check");
+        systemIssueBean2.setIssuLevel(4);
+        systemIssueBean2.setIssuePath("/errors/xxx");
+        systemIssueBean2.setIssueDescription("test");
+        systemIssueBean2.setDealFlag(0);
+
+        ArrayList<DataParseIssueBean> arrayList=new ArrayList<>();
+        arrayList.add(systemIssueBean);
+        arrayList.add(systemIssueBean2);
+        getDataSourceConfigDao.dataErrorsRecord(arrayList);
+        return JSON.toJSONString(getDataSourceConfigDao.getCheckItemList());
     }
 }

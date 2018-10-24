@@ -25,7 +25,7 @@ public class InitMesConfigToRawdataProperties {
         properties.put("Tester Model",mesConfigBean.getTesterModel());
         properties.put("Chinese Name",mesConfigBean.getChineseName());
         properties.put("Chines Short Name",mesConfigBean.getChineseShortname());
-        properties.put("Part Num ",mesConfigBean.getPartNum());
+        properties.put("Part Num",mesConfigBean.getPartNum());
         properties.put("Process SPEC",mesConfigBean.getProcessSpec());
         properties.put("Process Revision",mesConfigBean.getProcessRevision());
         properties.put("Worker Order",mesConfigBean.getWorkerOrder());
@@ -34,13 +34,13 @@ public class InitMesConfigToRawdataProperties {
         properties.put("Wip Step",mesConfigBean.getWipStep());
         properties.put("PO Number",mesConfigBean.getPoNumber());
         properties.put("Part DESC",mesConfigBean.getPartDesc());
-        properties.put("Map Or Ink ",mesConfigBean.getMapOrInk());
-        properties.put("Is OTP",mesConfigBean.getIsOtp());
-        properties.put("Is COP",mesConfigBean.getIsCop());
+        properties.put("Map Or Ink",mesConfigBean.getMapOrInk());
+        properties.put("Is OTP",mesConfigBean.getIsOtp().equals("0")?"False":"True");
+        properties.put("Is COP",mesConfigBean.getIsCop().equals("0")?"False":"True");
         properties.put("Fab Device",mesConfigBean.getFabDevice());
         properties.put("Asy Device",mesConfigBean.getAsyDevice());
         properties.put("Assigned Testers",mesConfigBean.getAssignedTesters());
-        properties.put("Is Trimed",mesConfigBean.getIsTrimed());
+        properties.put("Is Trimed",mesConfigBean.getIsTrimed().equals("0")?"False":"True");
         properties.put("Load File",mesConfigBean.getLoadFile());
         properties.put("Customer Test Spec",mesConfigBean.getCustomerTesterSpec());
         properties.put("Map Reference",mesConfigBean.getMapReference());
@@ -60,7 +60,7 @@ public class InitMesConfigToRawdataProperties {
         properties.put("Prober Card ID",mesConfigBean.getProberCardId());
         properties.put("CP Process",mesConfigBean.getCpProcess());
         properties.put("Hold Count",mesConfigBean.getHoldCount());
-        properties.put("Test Start Time ",mesConfigBean.getTestStartTime());
+        properties.put("Test Start Time",mesConfigBean.getTestStartTime());
         properties.put("Test End Time",mesConfigBean.getTestEndTime());
         properties.put("MES Test Gross Die",mesConfigBean.getTestGrossDie());
         properties.put("MES Stand Gross Die",mesConfigBean.getStandGrossDie());
@@ -119,7 +119,10 @@ public class InitMesConfigToRawdataProperties {
         }
         properties.put("Map Cols", dataProperties.get("Map Cols"));
         properties.put("Map Rows", dataProperties.get("Map Rows"));
-        properties.put("Notch", dataProperties.get("Notch"));
+        if (!dataProperties.get("Notch").equals("NA"))
+        {
+            properties.put("Notch", dataProperties.get("Notch"));
+        }
         properties.put("Retest Rate", dataProperties.get("Retest Rate"));
         if (!dataProperties.get("WF_Size").equals("NA"))
         {

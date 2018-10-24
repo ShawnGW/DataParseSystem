@@ -2,7 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao">
+    <resultMap id="list" type="com.vtest.it.pojo.datainfortomes.DataInforToMesBean">
+        <result property="customCode" column="custom_code"/>
+        <result property="device" column="device"/>
+    </resultMap>
+    <resultMap id="itemsCheck" type="com.vtest.it.pojo.propertiescheckItemBean.CheckItemBean">
+        <result property="property" column="property"/>
+        <result property="checkIsNa" column="check_NA"/>
+        <result property="equalsItem" column="check_equals"/>
+        <result property="customCode" column="custom_code"/>
+        <result property="level" column="issue_level"/>
+    </resultMap>
     <select id="getConfig" resultType="com.vtest.it.pojo.DataSourceBean">
       SELECT source_path ,backup_source_path,backup_source_path_by_cp,rawdata_path FROM VTPTMT.data_source WHERE  platform=#{platform};
     </select>
+    <select id="getList" resultMap="list">
+        SELECT custom_code,device FROM VTPTMT.mes_data_from;
+    </select>
+    <select id="getCheckItemList" resultMap="itemsCheck">
+        SELECT property,check_NA,check_equals,custom_code,issue_level FROM  VTPTMT.rawdata_properties_check_items;
+    </select>
+    <insert id="dataErrorsRecord">
+        INSERT INTO VTPTMT.data_issue_record(custom_code, device, lot_id, cp_step, wafer_no, issue_type, issue_level, issue_path, issue_description, deal_flag)
+         VALUES
+         <trim suffix="" suffixOverrides=",">
+             <foreach collection="list" item="errorBean">
+                 (#{errorBean.customCode},#{errorBean.device},#{errorBean.lotId},#{errorBean.cpStep},#{errorBean.waferNo},#{errorBean.issueType},#{errorBean.issuLevel},#{errorBean.issuePath},#{errorBean.issueDescription},#{errorBean.dealFlag}),
+             </foreach>
+         </trim>;
+    </insert>
 </mapper>

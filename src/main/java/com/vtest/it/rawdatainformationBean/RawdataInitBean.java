@@ -20,6 +20,7 @@ public class RawdataInitBean implements Serializable{
     private Long reTestTouchDownDuringTime;
     private long singleTouchDownDuringTime;
     private double reTestRate;
+    private double primaryRate;
     private long testDuringTime;
 
     public LinkedHashMap<String, String> getProperties() {
@@ -139,6 +140,14 @@ public class RawdataInitBean implements Serializable{
 
     public void setReTestRate(double reTestRate) {
         this.reTestRate = reTestRate;
+    }
+
+    public double getPrimaryRate() {
+        return primaryRate;
+    }
+
+    public void setPrimaryRate(double primaryRate) {
+        this.primaryRate = primaryRate;
     }
 
     public long getTestDuringTime() {
