@@ -28,7 +28,7 @@
     <context:component-scan base-package="com.vtest.it.rawdatacheck"/>
 
     <util:list id="rawdataAfterDeal" value-type="com.vtest.it.vtestinterface.RawDataAfterDeal">
-        <!--<bean class=""></bean>-->
+        <bean class="com.vtest.it.rawdatafterdeal.HtsMarkDieToPassDeal"/>
     </util:list>
     <bean id="rawDataDealBean" class="com.vtest.it.pojo.rawdataafterdeal.RawDataDealBean"
     p:dealList-ref="rawdataAfterDeal"

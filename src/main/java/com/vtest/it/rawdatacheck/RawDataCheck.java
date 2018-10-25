@@ -23,9 +23,8 @@ public class RawDataCheck {
         this.getDataSourceConfigDao = getDataSourceConfigDao;
     }
 
-    public  ArrayList<DataParseIssueBean> check(File rawdata)
+    public  ArrayList<DataParseIssueBean> check(File rawdata,ArrayList<DataParseIssueBean> issueBeans)
     {
-        ArrayList<DataParseIssueBean> issueBeans=new ArrayList<>();
         HashMap<String,String> waferInfor=new HashMap<>();
         try {
             ArrayList<CheckItemBean> checkItems=getDataSourceConfigDao.getCheckItemList();

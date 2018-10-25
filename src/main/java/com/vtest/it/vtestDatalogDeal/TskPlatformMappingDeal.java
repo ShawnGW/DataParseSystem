@@ -126,6 +126,7 @@ public class TskPlatformMappingDeal{
                             String lotNum=lot.getName();
                             File[] wafers=lot.listFiles();
                             for (File wafer :wafers) {
+                                ArrayList<DataParseIssueBean> issueBeans=new ArrayList<>();
                                 String waferId=wafer.getName().substring(4);
                                 SlotAndSequenceConfigBean slotAndSequenceConfigBean=vtMesSlotAndSequenceDAO.getConfig(lotNum);
                                 if (slotAndSequenceConfigBean.getReadType().equals("SLOT"));
@@ -140,7 +141,7 @@ public class TskPlatformMappingDeal{
                                 rawDataDeal.Deal(rawdataInitBean);
                                 dataToVtDB(rawdataInitBean,lotNum,cpProcess,waferId);
                                 File rawFile= generateRawdata.generate(rawdataInitBean);
-                                ArrayList<DataParseIssueBean> issueBeans=rawDataCheck.check(rawFile);
+                                rawDataCheck.check(rawFile,issueBeans);
                             }
                         } catch (IOException e) {
                             e.printStackTrace();

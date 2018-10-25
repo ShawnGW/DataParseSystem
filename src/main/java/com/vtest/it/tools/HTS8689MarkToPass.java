@@ -44,7 +44,7 @@ public class HTS8689MarkToPass {
 			}
 		}
 	}
-	public  Boolean dieCheck(Integer coordinateX,Integer coordinateY,String[][] map,Integer row)
+	private Boolean dieCheck(Integer coordinateX,Integer coordinateY,String[][] map,Integer row)
 	{
 		boolean upCheck=false;
 		boolean downCheck=false;
