@@ -40,4 +40,5 @@
 <mvc:annotation-driven/>
 <mvc:resources mapping="/resources/Font/**" location="/WEB-INF/font-awesome-4.7.0/"/>
 <mvc:resources mapping="/resources/jqurey/**" location="/WEB-INF/jqurey/"/>
+<mvc:resources mapping="/resources/xufeng/**" location="/WEB-INF/axufengTest/"/>
 </beans>

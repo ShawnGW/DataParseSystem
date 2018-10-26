@@ -45,7 +45,7 @@ public class testdao {
 
     @RequestMapping("/test")
     @ResponseBody
-    public String test(@RequestParam("waferId") String waferId)
+    public String test(@RequestParam("x")Integer x,@RequestParam("y") Integer y)
     {
 //
 //        LinkedHashMap<String,String> properties=new LinkedHashMap<>();
@@ -137,8 +137,8 @@ public class testdao {
 //
 //        proberDataDAO.insertFailDieToBinInfo("AMC","GXLX_2","FA89-9932","CP1","FA899932-01",arrayList1);
         ArrayList<mvcDieBean> items=new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            for (int j = 0; j < 50; j++) {
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
                 mvcDieBean die=new mvcDieBean();
                 die.setX(i);
                 die.setY(j);
@@ -185,5 +185,10 @@ public class testdao {
         arrayList.add(systemIssueBean2);
         getDataSourceConfigDao.dataErrorsRecord(arrayList);
         return JSON.toJSONString(getDataSourceConfigDao.getCheckItemList());
+    }
+    @RequestMapping("/mapping")
+    public String getmapping()
+    {
+        return "mapping";
     }
 }
