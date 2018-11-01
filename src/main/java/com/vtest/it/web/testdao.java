@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.vtest.it.dao.testermapperdao.TesterDataDAO;
 import com.vtest.it.dao.vtmesdao.VtMesConfigDAO;
 import com.vtest.it.dao.vtmesdao.VtMesSlotAndSequenceDAO;
+import com.vtest.it.dao.vtmesdao.VtSiteYieldToMes;
 import com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao;
+import com.vtest.it.dao.vtptmtmapperdao.MesPropertiesDAO;
+import com.vtest.it.pojo.datainfortomes.SiteYieldToMes;
 import com.vtest.it.pojo.mvcDieBean;
 import com.vtest.it.pojo.propertiescheckItemBean.DataParseIssueBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/DAO")
@@ -22,6 +26,18 @@ public class testdao {
     private TesterDataDAO proberDataDAO;
     private VtMesSlotAndSequenceDAO vtMesSlotAndSequenceDAO;
     private VtMesConfigDAO vtMesConfigDAO;
+    private VtSiteYieldToMes vtSiteYieldToMes;
+    private MesPropertiesDAO propertiesDAO;
+
+    @Autowired
+    public void setPropertiesDAO(MesPropertiesDAO propertiesDAO) {
+        this.propertiesDAO = propertiesDAO;
+    }
+
+    @Autowired
+    public void setVtSiteYieldToMes(VtSiteYieldToMes vtSiteYieldToMes) {
+        this.vtSiteYieldToMes = vtSiteYieldToMes;
+    }
 
     @Autowired
     public void setVtMesSlotAndSequenceDAO(VtMesSlotAndSequenceDAO vtMesSlotAndSequenceDAO) {
@@ -190,5 +206,30 @@ public class testdao {
     public String getmapping()
     {
         return "mapping";
+    }
+    @RequestMapping("/testDao")
+    @ResponseBody
+    public String testdao()
+    {
+        SiteYieldToMes siteYieldToMes=new SiteYieldToMes();
+        siteYieldToMes.setLot("1QUHB00000");
+        siteYieldToMes.setCpStep("CP1");
+        siteYieldToMes.setWaferId("W3DAMGG");
+        HashMap<String,String> hashMap=new HashMap<>();
+        hashMap.put("Site0","99.99,0.00");
+        hashMap.put("Site1","99.72,0.11");
+        hashMap.put("Site2","99.67,0.06");
+        hashMap.put("Site3","99.89,0.00");
+        hashMap.put("Site4","99.66,0.06");
+        hashMap.put("Site5","99.66,0.11");
+        hashMap.put("Site6","99.83,0.11");
+        hashMap.put("Site7","100.00,0.00");
+        siteYieldToMes.setSiteYieldSummary(hashMap);
+        HashMap<String,String> siteInfor=new HashMap<>();
+        siteInfor.put("infor",JSON.toJSONString(siteYieldToMes));
+        vtSiteYieldToMes.siteYieldToMes(siteInfor);
+        System.err.println(JSON.toJSONString(siteYieldToMes));
+        System.err.println(siteInfor.get("flag"));
+        return siteInfor.get("flag");
     }
 }

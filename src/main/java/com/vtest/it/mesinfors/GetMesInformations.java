@@ -1,9 +1,5 @@
 package com.vtest.it.mesinfors;
 
-import java.io.BufferedReader;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-
 import com.vtest.it.mestools.GetLotConfigFromMes;
 import com.vtest.it.properties.GetStreamFromMes;
 import com.vtest.it.tools.GetRandomChar;
@@ -11,7 +7,9 @@ import com.vtest.it.vtestinterface.MesInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import java.io.BufferedReader;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 @Service
 public class GetMesInformations {
@@ -21,6 +19,13 @@ public class GetMesInformations {
 	public  static final String TYPE_TESTERANDPROBER="TESTERANDPROBER";
 	public  static final String TYPE_TESTERANDPROBER_NEW="TESTERANDPROBERNEW";
 	public  static final String TYPE_INNERLOT="INNERLOT";
+
+	private GetStreamFromMes getStreamFromMes;
+	@Autowired
+	public void setGetStreamFromMes(GetStreamFromMes getStreamFromMes) {
+		this.getStreamFromMes = getStreamFromMes;
+	}
+
 
 	private GetRandomChar getRandomChar;
 	private GetLotConfigFromMes getLotConfigFromMes;
@@ -38,7 +43,7 @@ public class GetMesInformations {
 	{
 		 LinkedHashMap<String, String> result=new LinkedHashMap<>();
 		try {
-			BufferedReader bufferedReader= GetStreamFromMes.getStream(mesInterface.getURL());
+			BufferedReader bufferedReader= getStreamFromMes.getStream(mesInterface.getURL());
 			StringBuffer SB=new StringBuffer();
 			String content=null;
 			while((content=bufferedReader.readLine())!=null)

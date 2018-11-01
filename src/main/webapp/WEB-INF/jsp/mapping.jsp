@@ -4,23 +4,22 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title></title>
+		<title>V-Test Map</title>
+		<script src="<c:url value="/resources/xufeng/js/highcharts.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/xufeng/js/exporting.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/xufeng/js/highcharts-zh_CN.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/xufeng/js/highcharts-more.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/xufeng/js/boost.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/xufeng/js/boost-canvas.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/xufeng/js/jquery.min.js"/>" type="text/javascript" charset="utf-8"></script>
 	</head>
-	<script src="<c:url value="/resources/xufeng/js/highcharts.js"/>" type="text/javascript" charset="utf-8"></script>
-	<script src="<c:url value="/resources/xufeng/js/exporting.js"/>" type="text/javascript" charset="utf-8"></script>
-	<script src="<c:url value="/resources/xufeng/js/highcharts-zh_CN.js"/>" type="text/javascript" charset="utf-8"></script>
-	<script src="<c:url value="/resources/xufeng/js/highcharts-more.js"/>" type="text/javascript" charset="utf-8"></script>
-	<script src="<c:url value="/resources/xufeng/js/boost.js"/>" type="text/javascript" charset="utf-8"></script>
-	<script src="<c:url value="/resources/xufeng/js/boost-canvas.js"/>" type="text/javascript" charset="utf-8"></script>
-	<script src="<c:url value="/resources/xufeng/js/jquery.min.js"/>" type="text/javascript" charset="utf-8"></script>
-
 	<body>
 		<div id="container" style="width:1200px;height:1200px"></div>
 		<script type="text/javascript">
             var binSummary = [];
             var binSet = new Set();
             $.ajax({
-                url: '/vtest/DAO/test?x=200&y=350',
+                url: '/vtest/DAO/test?x=240&y=230',
                 async: false,
                 type: 'GET',
                 dataType: 'json',

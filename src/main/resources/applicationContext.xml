@@ -26,9 +26,11 @@
     <context:component-scan base-package="com.vtest.it.MappingParseTools"/>
     <context:component-scan base-package="com.vtest.it.vtestDatalogDeal"/>
     <context:component-scan base-package="com.vtest.it.rawdatacheck"/>
+    <context:component-scan base-package="com.vtest.it.properties"/>
 
-    <util:list id="rawdataAfterDeal" value-type="com.vtest.it.vtestinterface.RawDataAfterDeal">
+    <util:list id="rawdataAfterDeal" value-type="com.vtest.it.rawdatafterdeal.AbstractRawDataAfterDeal">
         <bean class="com.vtest.it.rawdatafterdeal.HtsMarkDieToPassDeal"/>
+        <bean class="com.vtest.it.rawdatafterdeal.FinRawDataDeal"/>
     </util:list>
     <bean id="rawDataDealBean" class="com.vtest.it.pojo.rawdataafterdeal.RawDataDealBean"
     p:dealList-ref="rawdataAfterDeal"

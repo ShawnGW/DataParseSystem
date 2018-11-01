@@ -23,11 +23,11 @@
         SELECT property,check_NA,check_equals,custom_code,issue_level FROM  VTPTMT.rawdata_properties_check_items;
     </select>
     <insert id="dataErrorsRecord">
-        INSERT INTO VTPTMT.data_issue_record(custom_code, device, lot_id, cp_step, wafer_no, issue_type, issue_level, issue_path, issue_description, deal_flag)
+        INSERT INTO VTPTMT.data_issue_record(custom_code, device, lot_id, cp_step, wafer_no,resource,issue_type, issue_level, issue_path, issue_description, deal_flag)
          VALUES
          <trim suffix="" suffixOverrides=",">
              <foreach collection="list" item="errorBean">
-                 (#{errorBean.customCode},#{errorBean.device},#{errorBean.lotId},#{errorBean.cpStep},#{errorBean.waferNo},#{errorBean.issueType},#{errorBean.issuLevel},#{errorBean.issuePath},#{errorBean.issueDescription},#{errorBean.dealFlag}),
+                 (#{errorBean.customCode},#{errorBean.device},#{errorBean.lotId},#{errorBean.cpStep},#{errorBean.waferNo},#{errorBean.resource},#{errorBean.issueType},#{errorBean.issuLevel},#{errorBean.issuePath},#{errorBean.issueDescription},#{errorBean.dealFlag}),
              </foreach>
          </trim>;
     </insert>

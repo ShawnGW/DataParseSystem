@@ -7,6 +7,7 @@ import com.vtest.it.dao.probermapperdao.ProberDataDAO;
 import com.vtest.it.dao.vtmesdao.VtMesConfigDAO;
 import com.vtest.it.dao.vtmesdao.VtMesSlotAndSequenceDAO;
 import com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao;
+import com.vtest.it.mesinfors.WaferIdBinSummaryWrite;
 import com.vtest.it.mestools.SlotModify;
 import com.vtest.it.pojo.DataSourceBean;
 import com.vtest.it.pojo.MesConfigBean;
@@ -48,7 +49,17 @@ public class TskPlatformMappingDeal{
     private GenerateRawdata generateRawdata;
     private CheckIfInforToMes checkIfInforToMes;
     private RawDataCheck rawDataCheck;
+    private WaferIdBinSummaryWrite waferIdBinSummaryWrite;
+    private DatalogBackupAndRawDataDeal datalogBackupAndRawDataDeal;
 
+    @Autowired
+    public void setDatalogBackupAndRawDataDeal(DatalogBackupAndRawDataDeal datalogBackupAndRawDataDeal) {
+        this.datalogBackupAndRawDataDeal = datalogBackupAndRawDataDeal;
+    }
+    @Autowired
+    public void setWaferIdBinSummaryWrite(WaferIdBinSummaryWrite waferIdBinSummaryWrite) {
+        this.waferIdBinSummaryWrite = waferIdBinSummaryWrite;
+    }
     @Autowired
     public void setRawDataCheck(RawDataCheck rawDataCheck) {
         this.rawDataCheck = rawDataCheck;
@@ -126,23 +137,39 @@ public class TskPlatformMappingDeal{
                             String lotNum=lot.getName();
                             File[] wafers=lot.listFiles();
                             for (File wafer :wafers) {
-                                ArrayList<DataParseIssueBean> issueBeans=new ArrayList<>();
-                                String waferId=wafer.getName().substring(4);
-                                SlotAndSequenceConfigBean slotAndSequenceConfigBean=vtMesSlotAndSequenceDAO.getConfig(lotNum);
-                                if (slotAndSequenceConfigBean.getReadType().equals("SLOT"));
-                                {
-                                    waferId=slotModify.modify(slotAndSequenceConfigBean.getSequence(),waferId);
+                                try {
+                                    ArrayList<DataParseIssueBean> issueBeans=new ArrayList<>();
+                                    String waferId=wafer.getName().substring(4);
+                                    SlotAndSequenceConfigBean slotAndSequenceConfigBean=vtMesSlotAndSequenceDAO.getConfig(lotNum);
+                                    if (slotAndSequenceConfigBean.getReadType().equals("SLOT"));
+                                    {
+                                        waferId=slotModify.modify(slotAndSequenceConfigBean.getSequence(),waferId);
+                                    }
+                                    RawdataInitBean rawdataInitBean=new RawdataInitBean();
+                                    tskProberMappingParse.Get(wafer,Integer.valueOf(slotAndSequenceConfigBean.getGpibBin()),rawdataInitBean);
+                                    String cpProcess=rawdataInitBean.getDataProperties().get("CP Process");
+                                    MesConfigBean mesConfigBean= vtMesConfigDAO.getBean(waferId,cpProcess);
+                                    initMesConfigToRawdataProperties.initMesConfig(rawdataInitBean,mesConfigBean);
+                                    rawDataDeal.Deal(rawdataInitBean);
+                                    File rawFile= generateRawdata.generate(rawdataInitBean);
+                                    rawDataCheck.check(rawFile,issueBeans);
+
+                                    LinkedHashMap<String,String> properties=rawdataInitBean.getProperties();
+                                    HashMap<String,String> resultMap=new HashMap<>();
+                                    resultMap.put("customCode",properties.get("Customer Code"));
+                                    resultMap.put("device",properties.get("Device Name"));
+                                    resultMap.put("passBins",properties.get("Pass Bins"));
+                                    resultMap.put("lot", lotNum);
+                                    resultMap.put("waferId", waferId);
+                                    resultMap.put("cp", cpProcess);
+                                    dataToVtDB(rawdataInitBean,resultMap);
+                                    datalogBackupAndRawDataDeal.datalogBackup(dataSourceConfigBean.getBackupSourcePathByCp(),wafer,resultMap);
+                                    datalogBackupAndRawDataDeal.rawdataDeal(dataSourceConfigBean.getRawdataPath(),rawFile,resultMap);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 }
-                                RawdataInitBean rawdataInitBean=new RawdataInitBean();
-                                tskProberMappingParse.Get(wafer,Integer.valueOf(slotAndSequenceConfigBean.getGpibBin()),rawdataInitBean);
-                                String cpProcess=rawdataInitBean.getDataProperties().get("CP Process");
-                                MesConfigBean mesConfigBean= vtMesConfigDAO.getBean(waferId,cpProcess);
-                                initMesConfigToRawdataProperties.initMesConfig(rawdataInitBean,mesConfigBean);
-                                rawDataDeal.Deal(rawdataInitBean);
-                                dataToVtDB(rawdataInitBean,lotNum,cpProcess,waferId);
-                                File rawFile= generateRawdata.generate(rawdataInitBean);
-                                rawDataCheck.check(rawFile,issueBeans);
                             }
+                            FileUtils.deleteDirectory(lot);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -160,12 +187,15 @@ public class TskPlatformMappingDeal{
             }
         }
     }
-    public void dataToVtDB(RawdataInitBean rawdataInitBean,String lotNum,String cpProcess,String waferId)
+    public void dataToVtDB(RawdataInitBean rawdataInitBean,HashMap<String,String> resultMap)
     {
-        LinkedHashMap<String,String> properties=rawdataInitBean.getProperties();
-        String customerCode=properties.get("Customer Code");
-        String device=properties.get("Device Name");
-        String[] passBins=properties.get("Pass Bins").split(",");
+        String[] passBins=resultMap.get("passBins").split(",");
+        String customerCode=resultMap.get("customCode");
+        String device=resultMap.get("device");
+        String lotNum=resultMap.get("lot");
+        String cpProcess=resultMap.get("cp");
+        String waferId=resultMap.get("waferId");
+
         ArrayList<Integer> passBinsArray=new ArrayList<>();
         for (int i = 0; i < passBins.length; i++) {
             passBinsArray.add(Integer.valueOf(passBins[i]));
@@ -195,10 +225,9 @@ public class TskPlatformMappingDeal{
         BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
         generateWaferInforBean.generate(rawdataInitBean,binWaferInforBean);
         proberDataDAO.insertWaferInforToBinWaferSummary(binWaferInforBean);
-
         if (!checkIfInforToMes.check(customerCode,device))
         {
-            // bin infor write to mes
+            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
         }
     }
 }

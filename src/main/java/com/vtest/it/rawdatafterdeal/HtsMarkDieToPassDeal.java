@@ -2,12 +2,11 @@ package com.vtest.it.rawdatafterdeal;
 
 import com.vtest.it.rawdatainformationBean.RawdataInitBean;
 import com.vtest.it.tools.HTS8689MarkToPass;
-import com.vtest.it.vtestinterface.RawDataAfterDeal;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.LinkedHashMap;
 
-public class HtsMarkDieToPassDeal implements RawDataAfterDeal{
+public class HtsMarkDieToPassDeal extends AbstractRawDataAfterDeal{
     private HTS8689MarkToPass hts8689MarkToPass;
 
     @Autowired
@@ -24,5 +23,6 @@ public class HtsMarkDieToPassDeal implements RawDataAfterDeal{
         {
             hts8689MarkToPass.modifyMap(rawdataInitBean.getTestDieMap());
         }
+        perfectDeal(rawdataInitBean);
     }
 }

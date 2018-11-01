@@ -6,6 +6,7 @@ public class DataParseIssueBean {
     private String lotId;
     private String cpStep;
     private String waferNo;
+    private String resource;
     private String issueType;
     private int issuLevel;
     private String issuePath;
@@ -50,6 +51,14 @@ public class DataParseIssueBean {
 
     public void setWaferNo(String waferNo) {
         this.waferNo = waferNo;
+    }
+
+    public String getResource() {
+        return resource;
+    }
+
+    public void setResource(String resource) {
+        this.resource = resource;
     }
 
     public String getIssueType() {

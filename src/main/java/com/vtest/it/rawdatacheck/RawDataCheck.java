@@ -90,6 +90,7 @@ public class RawDataCheck {
             waferInfor.put("cpStep",properties.get("CP Process"));
             waferInfor.put("waferNo",properties.get("Wafer ID"));
             waferInfor.put("lot",properties.get("Lot ID"));
+            waferInfor.put("resource",properties.get("DataBase"));
 
             propertiesCheck(properties,checkItems,issueBeans,waferInfor);
             markAndSkipDieCheck(markAndSkipDieMap,issueBeans,waferInfor);
@@ -213,6 +214,7 @@ public class RawDataCheck {
         dataParseIssueBean.setLotId(waferInfor.get("lot"));
         dataParseIssueBean.setCpStep(waferInfor.get("cpStep"));
         dataParseIssueBean.setWaferNo(waferInfor.get("waferNo"));
+        dataParseIssueBean.setResource(waferInfor.get("resource"));
         dataParseIssueBean.setIssueType("data Check");
         dataParseIssueBean.setIssuLevel(level);
         dataParseIssueBean.setIssuePath("na");
