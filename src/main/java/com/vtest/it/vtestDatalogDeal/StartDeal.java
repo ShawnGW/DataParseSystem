@@ -24,6 +24,12 @@ public class StartDeal {
     private RemoveDoubleSpace removeDoubleSpace;
     private TimeCheck timeCheck;
     private TskPlatformMappingDeal tskPlatformMappingDeal;
+    private TelPlatformMappingDeal telPlatformMappingDeal;
+
+    @Autowired
+    public void setTelPlatformMappingDeal(TelPlatformMappingDeal telPlatformMappingDeal) {
+        this.telPlatformMappingDeal = telPlatformMappingDeal;
+    }
 
     @Autowired
     public void setTimeCheck(TimeCheck timeCheck) {
@@ -58,6 +64,10 @@ public class StartDeal {
     }
     public void tskPlatformDeal(){
         tskPlatformMappingDeal.deal();
+    }
+    public void telPlatformDeal()
+    {
+        telPlatformMappingDeal.deal();
     }
     public void v50Deal()
     {

@@ -11,13 +11,14 @@ import java.util.HashMap;
 
 @Service
 public class DatalogBackupAndRawDataDeal {
-    public void datalogBackup(String path, File mapping, HashMap<String,String> resultMap)
+    public String datalogBackup(String path, File mapping, HashMap<String,String> resultMap)
     {
+        String finPath=null;
         try {
             String customCode=resultMap.get("customCode");
             String device=resultMap.get("device");
             String lot=resultMap.get("lot");
-            String cp=resultMap.get("cp");
+            String cp=resultMap.get("cpStep");
 
             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMddhhmmss");
             File releaseDirectory=new File(path+"/"+customCode+"/"+device+"/"+lot+"/"+cp);
@@ -27,9 +28,11 @@ public class DatalogBackupAndRawDataDeal {
             }
             File destFile=new File(path+"/"+customCode+"/"+device+"/"+lot+"/"+cp+"/"+mapping.getName()+"_"+simpleDateFormat.format(new Date()));
             FileUtils.copyFile(mapping,destFile);
+            finPath=destFile.getPath();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return finPath;
     }
     public void rawdataDeal(String path, File rawdata,HashMap<String,String> resultMap)
     {
@@ -37,7 +40,7 @@ public class DatalogBackupAndRawDataDeal {
             String customCode=resultMap.get("customCode");
             String device=resultMap.get("device");
             String lot=resultMap.get("lot");
-            String cp=resultMap.get("cp");
+            String cp=resultMap.get("cpStep");
             String waferId=resultMap.get("waferId");
 
             File releaseDirectory=new File(path+"/"+customCode+"/"+device+"/"+lot+"/"+cp);

@@ -1,19 +1,19 @@
-package com.vtest.it.dataParse;
+package com.vtest.it.MappingParseTools;
 
+import com.vtest.it.rawdatainformationBean.RawdataInitBean;
+import com.vtest.it.tools.GetRandomNumber;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Set;
-import java.util.TreeSet;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.xml.sax.SAXException;
-
-import com.vtest.it.tools.GetRandomNumber;
 
 /**
  * @author shawn_Sun;
@@ -22,6 +22,7 @@ import com.vtest.it.tools.GetRandomNumber;
  * @since 2017.7.2;
  */
 
+@Service
 public class TelProberMappingNormalParse {
 
 	private GetRandomNumber getRandomNumber;
@@ -31,10 +32,14 @@ public class TelProberMappingNormalParse {
 	}
 
 	private  final String[] Negative_Coordinate_X={"ffff:-1","fffe:-2","fffd:-3","fffc:-4","fffb:-5","fffa:-6","fff9:-7","fff8:-8","fff7:-9","fff6:-10"};
-	public  HashMap<String, String> Get(File file,HashMap<Integer, Integer> Bin_summary_Map,HashMap<String, String> DieMap,HashMap<String, String> skipAndMarkDieMap)throws IOException, ParserConfigurationException, SAXException
+	public void Get(File file,RawdataInitBean bean,String op,String cp)throws IOException, ParserConfigurationException, SAXException
 	{
-		HashMap<String, String> resultMap=new HashMap<>();
-		HashMap<String, String> Negative_Values=new HashMap<String,String>();
+		LinkedHashMap<String,String> properties=new LinkedHashMap<>();
+		HashMap<Integer,HashMap<Integer,Integer>> siteBinSum=new HashMap<>();
+		HashMap<String,String> testDieMap=new HashMap<>();
+		HashMap<String,String> skipAndMarkDieMap=new HashMap<>();
+		HashMap<Integer,Integer> Bin_summary_Map =new HashMap<>();
+		HashMap<String, String> Negative_Values=new HashMap<>();
 		
 		for (int i = 0; i < Negative_Coordinate_X.length; i++) {
 			Negative_Values.put(Negative_Coordinate_X[i].split(":")[0], Negative_Coordinate_X[i].split(":")[1]);
@@ -189,11 +194,11 @@ public class TelProberMappingNormalParse {
 						if(dieType.equals("40")||dieType.equals("00")){
 							   // pass die
 							passdies++;
-							DieMap.put(key, String.format("%4s", dieValue)+String.format("%4s", dieValue)+String.format("%4s", "0"));
+							testDieMap.put(key, String.format("%4s", dieValue)+String.format("%4s", dieValue)+String.format("%4s", "0"));
 						}else {
 							//others are normal test die
 							faildies++;
-							DieMap.put(key, String.format("%4s", dieValue)+String.format("%4s", dieValue)+String.format("%4s", "0"));
+							testDieMap.put(key, String.format("%4s", dieValue)+String.format("%4s", dieValue)+String.format("%4s", "0"));
 					    }
 					}					
 				}
@@ -248,35 +253,40 @@ public class TelProberMappingNormalParse {
 		Integer Test_Time=-((Year1-Year2)*365*24*3600+(Mouth1-Mouth2)*30*24*3600+(Day1-Day2)*24*3600+(Hour1-Hour2)*3600+(Second1-Second2)*60);
 		Test_Start_Time="20"+Test_Start_Time+getRandomNumber.getRandomNumber(2);
 		Test_End_Time="20"+Test_End_Time+getRandomNumber.getRandomNumber(2);
-				
-		resultMap.put("Wafer ID", waferid.trim());
-		resultMap.put("Operator", "NA");
-		resultMap.put("CP Process", "NA");
-		resultMap.put("Test Start Time", Test_Start_Time);
-		resultMap.put("Test End Time", Test_End_Time);
-		resultMap.put("Gross Die", String.valueOf(passdies+faildies));
-		resultMap.put("Pass Die", String.valueOf(passdies));
-		resultMap.put("Fail Die", String.valueOf(faildies));
-		resultMap.put("Wafer Yield", String.format("%4.2f", (double)passdies*100/(passdies+faildies))+"%");
-		resultMap.put("DataBase", "TEL");
-		resultMap.put("TestTime", String.format("%.0f", ((float)Test_Time/60)));
-		resultMap.put("Index X(mm)", "NA");
-		resultMap.put("Index Y(mm)", "NA");
-		resultMap.put("Map Cols", String.valueOf(maxX-MinX+1));
-		resultMap.put("Map Rows", String.valueOf(Row_Sum));
-		resultMap.put("Notch", "NA");
-		resultMap.put("Retest Rate", "0");
-		resultMap.put("WF_Size", "NA");
-		resultMap.put("Slot", String.valueOf(slot));
-		resultMap.put("MinX", String.valueOf(MinX));
-		resultMap.put("MinY", String.valueOf(MinY));
-		resultMap.put("MaxX", String.valueOf(maxX));
-		resultMap.put("MaxY", String.valueOf(maxY));
-		resultMap.put("TestDieMinX", String.valueOf(testDieMinX));
-		resultMap.put("TestDieMinY", String.valueOf(testDieMinY));
-		resultMap.put("TestDieMaxX", String.valueOf(testDieMaxX));
-		resultMap.put("TestDieMaxY", String.valueOf(testDieMaxY));
-		
-		return resultMap;
+
+		properties.put("Wafer ID", waferid.trim());
+		properties.put("Operator", op);
+		properties.put("CP Process", cp);
+		properties.put("Test Start Time", Test_Start_Time);
+		properties.put("Test End Time", Test_End_Time);
+		properties.put("Gross Die", String.valueOf(passdies+faildies));
+		properties.put("Pass Die", String.valueOf(passdies));
+		properties.put("Fail Die", String.valueOf(faildies));
+		properties.put("Wafer Yield", String.format("%4.2f", (double)passdies*100/(passdies+faildies))+"%");
+		properties.put("DataBase", "TEL");
+		properties.put("TestTime", String.format("%.0f", ((float)Test_Time/60)));
+		properties.put("Index X(mm)", "NA");
+		properties.put("Index Y(mm)", "NA");
+		properties.put("Map Cols", String.valueOf(maxX-MinX+1));
+		properties.put("Map Rows", String.valueOf(Row_Sum));
+		properties.put("Notch", "NA");
+		properties.put("Retest Rate", "0");
+		properties.put("WF_Size", "NA");
+		properties.put("Slot", String.valueOf(slot));
+		properties.put("MinX", String.valueOf(MinX));
+		properties.put("MinY", String.valueOf(MinY));
+		properties.put("MaxX", String.valueOf(maxX));
+		properties.put("MaxY", String.valueOf(maxY));
+		properties.put("TestDieMinX", String.valueOf(testDieMinX));
+		properties.put("TestDieMinY", String.valueOf(testDieMinY));
+		properties.put("TestDieMaxX", String.valueOf(testDieMaxX));
+		properties.put("TestDieMaxY", String.valueOf(testDieMaxY));
+
+		siteBinSum.put(0,Bin_summary_Map);
+
+		bean.setDataProperties(properties);
+		bean.setSiteBinSum(siteBinSum);
+		bean.setTestDieMap(testDieMap);
+		bean.setSkipAndMarkDieMap(skipAndMarkDieMap);
 	}
 }

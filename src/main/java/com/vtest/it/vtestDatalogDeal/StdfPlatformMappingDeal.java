@@ -19,7 +19,7 @@ import com.vtest.it.rawdatafterdeal.RawDataDeal;
 import com.vtest.it.tools.TimeCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class StdfPlatformMappingDeal {
+public class StdfPlatformMappingDeal extends PlatformMappingDeal{
     private GetDataSourceConfigDao dataSourceConfig;
     private TimeCheck timeCheck;
     private SlotModify slotModify;

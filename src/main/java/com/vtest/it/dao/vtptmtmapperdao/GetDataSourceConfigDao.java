@@ -1,6 +1,7 @@
 package com.vtest.it.dao.vtptmtmapperdao;
 
 import com.vtest.it.pojo.DataSourceBean;
+import com.vtest.it.pojo.MarkAndSkipToPassBean;
 import com.vtest.it.pojo.datainfortomes.DataInforToMesBean;
 import com.vtest.it.pojo.propertiescheckItemBean.CheckItemBean;
 import com.vtest.it.pojo.propertiescheckItemBean.DataParseIssueBean;
@@ -15,4 +16,5 @@ public interface GetDataSourceConfigDao {
     public ArrayList<DataInforToMesBean> getList();
     public ArrayList<CheckItemBean> getCheckItemList();
     public int dataErrorsRecord(@Param("list")ArrayList<DataParseIssueBean> list);
+    public ArrayList<MarkAndSkipToPassBean> getMarkAndSkipToPassConfig();
 }

@@ -1,14 +1,18 @@
-package com.vtest.it.dataParse;
+package com.vtest.it.MappingParseTools;
 
+import com.vtest.it.rawdatainformationBean.RawdataInitBean;
 import com.vtest.it.tools.GetRandomNumber;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
+@Service
 public class TelProberMappingSmallDieParse {
 
 	private GetRandomNumber getRandomNumber;
@@ -16,9 +20,13 @@ public class TelProberMappingSmallDieParse {
 	public void setGetRandomNumber(GetRandomNumber getRandomNumber) {
 		this.getRandomNumber = getRandomNumber;
 	}
-	public  HashMap<String, String> Get(File file,HashMap<String, String> waferIdDaResultMap,HashMap<Integer, Integer> Bin_summary_Map,HashMap<String, String> DieMap,HashMap<String, String> skipAndMarkDieMap) throws IOException
+	public  void Get(File file, HashMap<String, String> waferIdDaResultMap, RawdataInitBean bean,String cp,String op) throws IOException
 	{
-		HashMap<String, String> resultMap=new HashMap<>();				
+		LinkedHashMap<String,String> properties=new LinkedHashMap<>();
+		HashMap<Integer,HashMap<Integer,Integer>> siteBinSum=new HashMap<>();
+		HashMap<String,String> testDieMap=new HashMap<>();
+		HashMap<String,String> skipAndMarkDieMap=new HashMap<>();
+		HashMap<Integer,Integer> Bin_summary_Map =new HashMap<>();
 		FileInputStream fins=new FileInputStream(file);
 		byte[] bs=new byte[1000000];
 		fins.read(bs);
@@ -143,7 +151,7 @@ public class TelProberMappingSmallDieParse {
 					}else {
 						Bin_summary_Map.put(NumberValue, 1);
 					}
-					DieMap.put(key, String.format("%4s", NumberValue)+String.format("%4s", NumberValue)+String.format("%4s", "0"));
+					testDieMap.put(key, String.format("%4s", NumberValue)+String.format("%4s", NumberValue)+String.format("%4s", "0"));
 				}
 				DieStartIndex+=5;
 				Coordinate_X++;
@@ -174,35 +182,39 @@ public class TelProberMappingSmallDieParse {
 		Test_Start_Time="20"+Test_Start_Time+ getRandomNumber.getRandomNumber(2);
 		Test_End_Time="20"+Test_End_Time+getRandomNumber.getRandomNumber(2);
 
-		
-		resultMap.put("Wafer ID", waferid.trim());
-		resultMap.put("Operator", "NA");
-		resultMap.put("CP Process", "NA");
-		resultMap.put("Test Start Time", Test_Start_Time);
-		resultMap.put("Test End Time", Test_End_Time);
-		resultMap.put("Gross Die", "NA");
-		resultMap.put("Pass Die", "NA");
-		resultMap.put("Fail Die","NA");
-		resultMap.put("Wafer Yield", "NA");
-		resultMap.put("DataBase", "TEL");
-		resultMap.put("TestTime", String.format("%.0f", ((float)Test_Time/60)));
-		resultMap.put("Index X(mm)", "NA");
-		resultMap.put("Index Y(mm)", "NA");
-		resultMap.put("Map Cols", String.valueOf(cols));
-		resultMap.put("Map Rows", String.valueOf(Rows));
-		resultMap.put("Notch", "NA");
-		resultMap.put("Retest Rate", "0");
-		resultMap.put("WF_Size", "NA");
-		resultMap.put("Slot", String.valueOf(slot));
-		resultMap.put("MinX", String.valueOf(MinX));
-		resultMap.put("MinY", String.valueOf(MinY));
-		resultMap.put("MaxX", String.valueOf(maxX));
-		resultMap.put("MaxY", String.valueOf(maxY));
-		resultMap.put("TestDieMinX", String.valueOf(testDieMinX));
-		resultMap.put("TestDieMinY", String.valueOf(testDieMinY));
-		resultMap.put("TestDieMaxX", String.valueOf(testDieMaxX));
-		resultMap.put("TestDieMaxY", String.valueOf(testDieMaxY));	
-		
-		return resultMap;
+
+		properties.put("Wafer ID", waferid.trim());
+		properties.put("Operator", op);
+		properties.put("CP Process", cp);
+		properties.put("Test Start Time", Test_Start_Time);
+		properties.put("Test End Time", Test_End_Time);
+		properties.put("Gross Die", "NA");
+		properties.put("Pass Die", "NA");
+		properties.put("Fail Die","NA");
+		properties.put("Wafer Yield", "NA");
+		properties.put("DataBase", "TEL");
+		properties.put("TestTime", String.format("%.0f", ((float)Test_Time/60)));
+		properties.put("Index X(mm)", "NA");
+		properties.put("Index Y(mm)", "NA");
+		properties.put("Map Cols", String.valueOf(cols));
+		properties.put("Map Rows", String.valueOf(Rows));
+		properties.put("Notch", "NA");
+		properties.put("Retest Rate", "0");
+		properties.put("WF_Size", "NA");
+		properties.put("Slot", String.valueOf(slot));
+		properties.put("MinX", String.valueOf(MinX));
+		properties.put("MinY", String.valueOf(MinY));
+		properties.put("MaxX", String.valueOf(maxX));
+		properties.put("MaxY", String.valueOf(maxY));
+		properties.put("TestDieMinX", String.valueOf(testDieMinX));
+		properties.put("TestDieMinY", String.valueOf(testDieMinY));
+		properties.put("TestDieMaxX", String.valueOf(testDieMaxX));
+		properties.put("TestDieMaxY", String.valueOf(testDieMaxY));
+		siteBinSum.put(0,Bin_summary_Map);
+
+		bean.setDataProperties(properties);
+		bean.setSiteBinSum(siteBinSum);
+		bean.setTestDieMap(testDieMap);
+		bean.setSkipAndMarkDieMap(skipAndMarkDieMap);
 	}
 }	

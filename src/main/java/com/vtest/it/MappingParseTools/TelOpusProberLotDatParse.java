@@ -1,12 +1,15 @@
-package com.vtest.it.dataParse;
+package com.vtest.it.MappingParseTools;
+
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
+@Service
 public class TelOpusProberLotDatParse {
-	public static HashMap<String, String> Get(File file) throws IOException
+	public HashMap<String, String> Get(File file) throws IOException
 	{
 		HashMap<String, String> resultMap=new HashMap<>();
 		FileInputStream fios=new FileInputStream(file);

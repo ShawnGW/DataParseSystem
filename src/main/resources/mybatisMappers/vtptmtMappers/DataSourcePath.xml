@@ -31,4 +31,7 @@
              </foreach>
          </trim>;
     </insert>
+    <select id="getMarkAndSkipToPassConfig" resultType="com.vtest.it.pojo.MarkAndSkipToPassBean">
+        SELECT custom_code,device FROM VTPTMT.mark_and_skip_to_pass;
+    </select>
 </mapper>

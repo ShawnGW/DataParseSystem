@@ -1,23 +1,17 @@
 package com.vtest.it.dataParse;
 
+import com.vtest.it.tools.GetRandomNumber;
+import com.vtest.it.tools.HTS8689MarkToPass;
+import com.vtest.it.tools.getSlotFromMappingDat;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.vtest.it.tools.GetRandomNumber;
-import com.vtest.it.tools.HTS8689MarkToPass;
-import com.vtest.it.tools.getSlotFromMappingDat;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.*;
 
 public class StdfTesterMappingParse {
 	public String Test_End_Time;
@@ -53,128 +47,6 @@ public class StdfTesterMappingParse {
 		String lot=inforsResultMap.get("lot");
 		String cp=inforsResultMap.get("cp");
 		String op=inforsResultMap.get("op");
-		File slotDataSource=null;
-		String slot="NA";
-		if (slot.equals("NA")) {
-			try {
-				File[] tskFiles=new File("/server212/prod/prober/TSK/mapdown/"+lot).listFiles();
-				String regex="[0-9]{3}\\."+waferId;
-				Pattern pattern=Pattern.compile(regex);
-				for (File file : tskFiles) {
-					String fileName=file.getName();
-					Matcher matcher=pattern.matcher(fileName);
-					if (file.isFile()&&(matcher.find())) {
-						slotDataSource=file;
-					}
-				}
-				if (slotDataSource!=null) 
-				{
-					slot=String.valueOf(Integer.valueOf(slotDataSource.getName().substring(0,3)));
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-			
-		}
-		if (slot.equals("NA")) {
-			try {
-				File[] tskFiles=new File("/server212/prod/prober/TEL/mapdown/"+lot).listFiles();
-				for (File file : tskFiles) {
-					String fileName=file.getName();
-					if (file.isFile()&&(fileName.contains(waferId))) {
-						if (fileName.contains("DAT")||fileName.contains("DA")) {
-							slotDataSource=file;
-						}
-					}
-				}
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			if (slotDataSource!=null) {
-				if (slotDataSource.getName().contains("DAT")) {
-					slot=getSlotFromMappingDat.get(slotDataSource);
-				}else {
-					slot=TelOpusProberMappingDaParse.GetResult(slotDataSource).get("slot");
-				}
-			}
-		}
-		File dataSource=new File("/server212/prod/BackupMap/"+customerCode+"/"+device+"/"+lot+"/"+cp);
-		if (dataSource.exists()) {
-			File[] datas=dataSource.listFiles();
-			for (File file : datas) {
-				String fileName=file.getName();
-				if (file.isFile()&&(fileName.contains(waferId))) {
-					if (fileName.contains("DAT")||fileName.contains("DA")) {
-						slotDataSource=file;
-					}
-				}
-			}
-		}
-		if (slot.equals("NA")) {
-			if (slotDataSource!=null) {
-				if (slotDataSource.getName().contains("DAT")) {
-					slot=getSlotFromMappingDat.get(slotDataSource);
-				}else {
-					slot=TelOpusProberMappingDaParse.GetResult(slotDataSource).get("slot");
-				}
-			}
-		}		
-		if (slot.equals("NA")) {
-			if (dataSource.exists()) {
-				String regex="[0-9]{3}\\."+waferId+"_.*";
-				Pattern pattern=Pattern.compile(regex);
-				for (File file : dataSource.listFiles()) {
-					String fileName=file.getName();
-					Matcher matcher=pattern.matcher(fileName);
-					if (file.isFile()&&(matcher.find())) {
-						slotDataSource=file;
-					}
-				}
-				if (slotDataSource!=null) 
-				{
-					slot=String.valueOf(Integer.valueOf(slotDataSource.getName().substring(0,3)));
-				}
-			}
-		}
-		if (slot.equals("NA"))
-		{
-			 dataSource=new File("/server212/prod/BackupMap/NA/NA/"+lot+"/"+cp);
-			 if (dataSource.exists()) {
-					File[] datas=dataSource.listFiles();
-					for (File file : datas) {
-						String fileName=file.getName();
-						if (file.isFile()&&(fileName.contains(waferId))&&fileName.contains("DA")) {
-								slotDataSource=file;
-						}
-					}
-					if (slotDataSource!=null) 
-					{
-						slot=TelOpusProberMappingDaParse.GetResult(slotDataSource).get("slot");
-					}
-				}
-		}
-		if (slot.equals("NA"))
-		{
-			 dataSource=new File("/server212/SeriousEorrMapping/"+lot);
-			 if (dataSource.exists()) {
-					File[] datas=dataSource.listFiles();
-					for (File file : datas) {
-						String fileName=file.getName();
-						if (file.isFile()&&(fileName.contains(waferId))) {
-								slotDataSource=file;
-						}
-					}
-					if (slotDataSource!=null) 
-					{
-						if (slotDataSource.getName().endsWith("DAT")) {
-							slot=getSlotFromMappingDat.get(slotDataSource);
-						}else {
-							slot=String.valueOf(Integer.valueOf(slotDataSource.getName().substring(0,3)));
-						}
-					}
-				}
-		}
 		
 		boolean reTestFlag=true;
 		for (File file : mapping) {
@@ -312,7 +184,7 @@ public class StdfTesterMappingParse {
 		resultMap.put("Notch", "NA");
 		resultMap.put("Retest Rate", String.format("%4.2f", (double)reTestDies*100/(passDies+failDies))+"%");
 		resultMap.put("WF_Size", "NA");
-		resultMap.put("Slot", String.valueOf(slot));
+		resultMap.put("Slot", "NA");
 		resultMap.put("MinX", String.valueOf(testDieMinX));
 		resultMap.put("MinY", String.valueOf(testDieMinY));
 		resultMap.put("MaxX", String.valueOf(testDieMaxX));

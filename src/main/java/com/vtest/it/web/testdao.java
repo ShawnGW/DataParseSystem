@@ -7,6 +7,7 @@ import com.vtest.it.dao.vtmesdao.VtMesSlotAndSequenceDAO;
 import com.vtest.it.dao.vtmesdao.VtSiteYieldToMes;
 import com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao;
 import com.vtest.it.dao.vtptmtmapperdao.MesPropertiesDAO;
+import com.vtest.it.pojo.MarkAndSkipToPassBean;
 import com.vtest.it.pojo.datainfortomes.SiteYieldToMes;
 import com.vtest.it.pojo.mvcDieBean;
 import com.vtest.it.pojo.propertiescheckItemBean.DataParseIssueBean;
@@ -203,9 +204,11 @@ public class testdao {
         return JSON.toJSONString(getDataSourceConfigDao.getCheckItemList());
     }
     @RequestMapping("/mapping")
+    @ResponseBody
     public String getmapping()
     {
-        return "mapping";
+        ArrayList<MarkAndSkipToPassBean> markandSkipToPassBeans=getDataSourceConfigDao.getMarkAndSkipToPassConfig();
+       return JSON.toJSONString(markandSkipToPassBeans);
     }
     @RequestMapping("/testDao")
     @ResponseBody

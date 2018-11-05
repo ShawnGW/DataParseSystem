@@ -34,6 +34,11 @@
         p:targetMethod="tskPlatformDeal"
         p:concurrent="false"
     />
+    <bean id="jobDetail_6" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"
+          p:targetObject-ref="deal"
+          p:targetMethod="telPlatformDeal"
+          p:concurrent="false"
+    />
     <bean id="cronTrigger1" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
           p:jobDetail-ref="jobDetail_1"
           p:cronExpression="0 */1 * * * ?"
@@ -54,12 +59,16 @@
         p:jobDetail-ref="jobDetail_5"
         p:cronExpression="0 */1 * * * ?"
     />
+    <bean id="cronTrigger6" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean"
+          p:jobDetail-ref="jobDetail_6"
+          p:cronExpression="0 */1 * * * ?"
+    />
     <util:list id="trigger_list">
         <ref bean="cronTrigger1"/>
         <ref bean="cronTrigger2"/>
         <ref bean="cronTrigger3"/>
         <ref bean="cronTrigger4"/>
-        <ref bean="cronTrigger5"/>
+        <ref bean="cronTrigger6"/>
     </util:list>
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
           p:triggers-ref="trigger_list"

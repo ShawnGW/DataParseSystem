@@ -1,4 +1,6 @@
-package com.vtest.it.dataParse;
+package com.vtest.it.MappingParseTools;
+
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,8 +8,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+@Service
 public class TelOpusProberMappingDaParse {
-	public static HashMap<String, String> GetResult(File file)throws IOException {	
+	public  HashMap<String, String> GetResult(File file)throws IOException {
 		HashMap<String, String> resultMap=new HashMap<>();
 		FileReader reader=new FileReader(file);
 		BufferedReader bufferedReader=new BufferedReader(reader);
