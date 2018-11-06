@@ -25,6 +25,12 @@ public class StartDeal {
     private TimeCheck timeCheck;
     private TskPlatformMappingDeal tskPlatformMappingDeal;
     private TelPlatformMappingDeal telPlatformMappingDeal;
+    private StdfPlatformMappingDeal stdfPlatformMappingDeal;
+
+    @Autowired
+    public void setStdfPlatformMappingDeal(StdfPlatformMappingDeal stdfPlatformMappingDeal) {
+        this.stdfPlatformMappingDeal = stdfPlatformMappingDeal;
+    }
 
     @Autowired
     public void setTelPlatformMappingDeal(TelPlatformMappingDeal telPlatformMappingDeal) {
@@ -68,6 +74,10 @@ public class StartDeal {
     public void telPlatformDeal()
     {
         telPlatformMappingDeal.deal();
+    }
+    public void stdfPlatformDeal()
+    {
+        stdfPlatformMappingDeal.deal();
     }
     public void v50Deal()
     {
