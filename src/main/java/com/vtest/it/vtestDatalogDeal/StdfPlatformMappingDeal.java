@@ -1,5 +1,6 @@
 package com.vtest.it.vtestDatalogDeal;
 
+import com.alibaba.fastjson.JSON;
 import com.vtest.it.MappingParseTools.StdfTesterMappingParse;
 import com.vtest.it.RawdataGenerate.GenerateRawdata;
 import com.vtest.it.RawdataGenerate.InitMesConfigToRawdataProperties;
@@ -13,6 +14,7 @@ import com.vtest.it.pojo.DataSourceBean;
 import com.vtest.it.pojo.MesConfigBean;
 import com.vtest.it.pojo.binwaferinfors.BinWaferInforBean;
 import com.vtest.it.pojo.binwaferinfors.FailDieBean;
+import com.vtest.it.pojo.datainfortomes.SiteYieldToMes;
 import com.vtest.it.pojo.equipment.EquipmentBean;
 import com.vtest.it.pojo.propertiescheckItemBean.DataParseIssueBean;
 import com.vtest.it.rawdatacheck.CheckIfInforToMes;
@@ -208,6 +210,7 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
                                                    resultMap.put("customCode",properties.get("Customer Code"));
                                                    resultMap.put("device",properties.get("Device Name"));
                                                    resultMap.put("passBins",properties.get("Pass Bins"));
+                                                   resultMap.put("osBins",properties.get("OS Bins"));
                                                    try {
                                                        dataToVtDB(rawdataInitBean,resultMap);
                                                    } catch (Exception e) {
@@ -275,7 +278,16 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
     }
     private void dataToVtDB(RawdataInitBean rawdataInitBean,HashMap<String,String> resultMap)
     {
+        ArrayList<Integer> passBinArray=new ArrayList<>();
+        ArrayList<Integer> osBinArray=new ArrayList<>();
         String[] passBins=resultMap.get("passBins").split(",");
+        for (int i = 0; i < passBins.length; i++) {
+            passBinArray.add(Integer.valueOf(passBins[i]));
+        }
+        String[] osBins=resultMap.get("osBins").split(",");
+        for (int i = 0; i <osBins.length ; i++) {
+            osBinArray.add(Integer.valueOf(osBins[i]));
+        }
         String customerCode=resultMap.get("customCode");
         String device=resultMap.get("device");
         String lotNum=resultMap.get("lot");
@@ -318,11 +330,41 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
         EquipmentBean equipmentBean=new EquipmentBean();
         generateEquipmentInforBean.generate(rawdataInitBean,equipmentBean);
         testerDataDAO.insertEquipmentInforToeqCardSummary(equipmentBean);
-//        if (checkIfInforToMes.check(customerCode,device))
-//        {
-//            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
-//            stdfTouchDownWrite.write(resultMap,rawdataInitBean);
-//            vtSiteYieldToMes.siteYieldToMes();
-//        }
+
+        if (checkIfInforToMes.check(customerCode,device))
+        {
+            SiteYieldToMes siteYieldToMes=new SiteYieldToMes();
+            siteYieldToMes.setLot(lotNum);
+            siteYieldToMes.setCpStep(cpProcess);
+            siteYieldToMes.setWaferId(waferId);
+            HashMap<String,String> siteOsAndPassMap=new HashMap<>();
+            HashMap<Integer,HashMap<Integer,Integer>> siteBinMap=rawdataInitBean.getSiteBinSum();
+            Set<Integer> sites=siteBinMap.keySet();
+            for (Integer site : sites) {
+                HashMap<Integer, Integer> binMap=siteBinMap.get(site);
+                Set<Integer> binSet=binMap.keySet();
+                Integer totalBin=0;
+                Integer totalPassBin=0;
+                Integer totalOSBin=0;
+                for (Integer bin : binSet) {
+                    Integer binValue=binMap.get(bin);
+                    totalBin+=binValue;
+                    if (passBinArray.contains(bin)) {
+                        totalPassBin+=binValue;
+                    }
+                    if(osBinArray.contains(bin))
+                    {
+                        totalOSBin+=binValue;
+                    }
+                }
+                siteOsAndPassMap.put("Site"+site,String.format("%.2f", (double)(totalPassBin*100)/totalBin)+","+String.format("%.2f", (double)(totalOSBin*100)/totalBin));
+            }
+            siteYieldToMes.setSiteYieldSummary(siteOsAndPassMap);
+            HashMap<String,String> siteInfor=new HashMap<>();
+            siteInfor.put("infor", JSON.toJSONString(siteYieldToMes));
+            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
+            stdfTouchDownWrite.write(resultMap,rawdataInitBean);
+            vtSiteYieldToMes.siteYieldToMes(siteInfor);
+        }
     }
 }
