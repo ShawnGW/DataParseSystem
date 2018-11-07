@@ -89,7 +89,7 @@ public class StartDeal {
     }
     public void T862Deal()
     {
-        Deal(T862DataSource,v50DatalogParse,false);
+        Deal(T862DataSource,v50DatalogParse,true);
     }
     public void ChromaDeal()
     {
