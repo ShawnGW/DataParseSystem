@@ -19,7 +19,7 @@
             var binSummary = [];
             var binSet = new Set();
             $.ajax({
-                url: '/vtest/DAO/test?x=240&y=230',
+                url: '/DataParseSystem/DAO/test?x=240&y=230',
                 async: false,
                 type: 'GET',
                 dataType: 'json',
@@ -29,17 +29,17 @@
                             x:item.x,
                             y:item.y,
                             z:item.z,
-                            name:item.name.toString(),
-                            hardbin:item.hardbin,
-                            softbin:item.softbin,
-                            site:item.site,
+                            name:item.n.toString(),
+                            hardbin:item.h,
+                            softbin:item.s,
+                            site:item.t,
                         };
-                        if(!binSet.has(item.name)) {
-                            binSet.add(item.name);
+                        if(!binSet.has(item.n)) {
+                            binSet.add(item.n);
                             var binInfo = new Object();
                             binInfo.animation = false;
                             binInfo.turboThreshold =0;
-                            binInfo.name = item.name;
+                            binInfo.name = item.n;
                             var marker = new Object();
                             marker.symbol = 'square';
                             binInfo.marker = marker;
@@ -48,7 +48,7 @@
                             binSummary.push(binInfo);
                         } else {
                             for(var i = 0; i < binSummary.length; i++) {
-                                if(binSummary[i].name === item.name) {
+                                if(binSummary[i].name === item.n) {
                                     binSummary[i].data.push(dieInforObj);
                                 }
                             }

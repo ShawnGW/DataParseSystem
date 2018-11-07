@@ -4,10 +4,10 @@ public class mvcDieBean {
     private Integer x;
     private Integer y;
     private Integer z;
-    private String name;
-    private Integer hardbin;
-    private Integer softbin;
-    private Integer site;
+    private String n;
+    private Integer h;
+    private Integer s;
+    private Integer t;
 
     public Integer getX() {
         return x;
@@ -33,35 +33,35 @@ public class mvcDieBean {
         this.z = z;
     }
 
-    public String getName() {
-        return name;
+    public String getN() {
+        return n;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setN(String n) {
+        this.n = n;
     }
 
-    public Integer getHardbin() {
-        return hardbin;
+    public Integer getH() {
+        return h;
     }
 
-    public void setHardbin(Integer hardbin) {
-        this.hardbin = hardbin;
+    public void setH(Integer h) {
+        this.h = h;
     }
 
-    public Integer getSoftbin() {
-        return softbin;
+    public Integer getS() {
+        return s;
     }
 
-    public void setSoftbin(Integer softbin) {
-        this.softbin = softbin;
+    public void setS(Integer s) {
+        this.s = s;
     }
 
-    public Integer getSite() {
-        return site;
+    public Integer getT() {
+        return t;
     }
 
-    public void setSite(Integer site) {
-        this.site = site;
+    public void setT(Integer t) {
+        this.t = t;
     }
 }

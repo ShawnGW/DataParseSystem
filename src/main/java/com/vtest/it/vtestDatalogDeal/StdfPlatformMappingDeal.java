@@ -130,120 +130,123 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
         DataSourceBean dataSourceConfigBean=dataSourceConfig.getConfig("STDF");
         File dataSource=new File(dataSourceConfigBean.getSourcePath());
         File[] files=dataSource.listFiles();
-        for (File customerCodeFile: files)
+        if (files.length>0)
         {
-            if (checkDirectory(customerCodeFile))
+            for (File customerCodeFile: files)
             {
-                File[] deviceFiles=customerCodeFile.listFiles();
-                for (File deviceFile : deviceFiles)
+                if (checkDirectory(customerCodeFile))
                 {
-                   if (checkDirectory(deviceFile))
-                   {
-                       File[] lotFiles=deviceFile.listFiles();
-                       for (File lotFile : lotFiles)
-                       {
-                           if (checkDirectory(lotFile))
-                           {
-                               String lotNum=lotFile.getName();
-                               File[] cpFiles=lotFile.listFiles();
-                               for (File cpFile : cpFiles)
-                               {
-                                   if (checkDirectory(cpFile))
-                                   {
-                                       String cpProcess=cpFile.getName();
+                    File[] deviceFiles=customerCodeFile.listFiles();
+                    for (File deviceFile : deviceFiles)
+                    {
+                        if (checkDirectory(deviceFile))
+                        {
+                            File[] lotFiles=deviceFile.listFiles();
+                            for (File lotFile : lotFiles)
+                            {
+                                if (checkDirectory(lotFile))
+                                {
+                                    String lotNum=lotFile.getName();
+                                    File[] cpFiles=lotFile.listFiles();
+                                    for (File cpFile : cpFiles)
+                                    {
+                                        if (checkDirectory(cpFile))
+                                        {
+                                            String cpProcess=cpFile.getName();
 
-                                       File[] waferIdFiles=cpFile.listFiles();
-                                       for (File waferIdFile : waferIdFiles)
-                                       {
-                                           if (checkDirectory(waferIdFile)) {
-                                               try {
-                                                   String waferId=waferIdFile.getName();
-                                                   File[] waferIdTexts=waferIdFile.listFiles();
-                                                   if (!timeCheck.check(waferIdFile,60)) {
-                                                       continue;
-                                                   }
-                                                   ArrayList<File> waferIdOrderList= getOrder.Order(waferIdTexts);
-                                                   HashMap<String,String> resultMap=getResultMap("STDF");
-                                                   ArrayList<DataParseIssueBean> issueBeans=new ArrayList<>();
-                                                   resultMap.put("lot", lotNum);
-                                                   resultMap.put("waferId", waferId);
-                                                   resultMap.put("cpStep", cpProcess);
-                                                   if (!checkCpProcess(cpProcess))
-                                                   {
-                                                       dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,"there are error in cpProcess","cp_process",5);
-                                                       continue;
-                                                   }
-                                                   RawdataInitBean rawdataInitBean=new RawdataInitBean();
-                                                   try {
-                                                       stdfTesterMappingParse.get(waferIdOrderList,rawdataInitBean);
-                                                   } catch (Exception e) {
-                                                       dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,"there are error in file coding","code_error",5);
-                                                       continue;
-                                                   }
-                                                   MesConfigBean mesConfigBean= vtMesConfigDAO.getBean(waferId,cpProcess);
-                                                   if (null==mesConfigBean)
-                                                   {
-                                                       dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,"can't find this wafer in mes system","call_proc",5);
-                                                       continue;
-                                                   }
-                                                   initMesConfigToRawdataProperties.initMesConfig(rawdataInitBean,mesConfigBean);
-                                                   try {
-                                                       rawDataDeal.Deal(rawdataInitBean);
-                                                   } catch (Exception e) {
-                                                       dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,e.getMessage(),"deal_bean",5);
-                                                       continue;
-                                                   }
-                                                   File rawFile= generateRawdata.generate(rawdataInitBean);
-                                                   rawDataCheck.check(rawFile,issueBeans);
-                                                   for (DataParseIssueBean issueBean: issueBeans) {
-                                                       if (issueBean.getIssuLevel()==99)
-                                                       {
-                                                           continue;
-                                                       }
-                                                   }
-                                                   if (issueBeans.size()>0)
-                                                   {
-                                                       dataSourceConfig.dataErrorsRecord(issueBeans);
-                                                   }
+                                            File[] waferIdFiles=cpFile.listFiles();
+                                            for (File waferIdFile : waferIdFiles)
+                                            {
+                                                if (checkDirectory(waferIdFile)) {
+                                                    try {
+                                                        String waferId=waferIdFile.getName();
+                                                        File[] waferIdTexts=waferIdFile.listFiles();
+                                                        if (!timeCheck.check(waferIdFile,60)) {
+                                                            continue;
+                                                        }
+                                                        ArrayList<File> waferIdOrderList= getOrder.Order(waferIdTexts);
+                                                        HashMap<String,String> resultMap=getResultMap("STDF");
+                                                        ArrayList<DataParseIssueBean> issueBeans=new ArrayList<>();
+                                                        resultMap.put("lot", lotNum);
+                                                        resultMap.put("waferId", waferId);
+                                                        resultMap.put("cpStep", cpProcess);
+                                                        if (!checkCpProcess(cpProcess))
+                                                        {
+                                                            dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,"there are error in cpProcess","cp_process",5);
+                                                            continue;
+                                                        }
+                                                        RawdataInitBean rawdataInitBean=new RawdataInitBean();
+                                                        try {
+                                                            stdfTesterMappingParse.get(waferIdOrderList,rawdataInitBean);
+                                                        } catch (Exception e) {
+                                                            dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,"there are error in file coding","code_error",5);
+                                                            continue;
+                                                        }
+                                                        MesConfigBean mesConfigBean= vtMesConfigDAO.getBean(waferId,cpProcess);
+                                                        if (null==mesConfigBean)
+                                                        {
+                                                            dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,"can't find this wafer in mes system","call_proc",5);
+                                                            continue;
+                                                        }
+                                                        initMesConfigToRawdataProperties.initMesConfig(rawdataInitBean,mesConfigBean);
+                                                        try {
+                                                            rawDataDeal.Deal(rawdataInitBean);
+                                                        } catch (Exception e) {
+                                                            dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,e.getMessage(),"deal_bean",5);
+                                                            continue;
+                                                        }
+                                                        File rawFile= generateRawdata.generate(rawdataInitBean);
+                                                        rawDataCheck.check(rawFile,issueBeans);
+                                                        for (DataParseIssueBean issueBean: issueBeans) {
+                                                            if (issueBean.getIssuLevel()==99)
+                                                            {
+                                                                continue;
+                                                            }
+                                                        }
+                                                        if (issueBeans.size()>0)
+                                                        {
+                                                            dataSourceConfig.dataErrorsRecord(issueBeans);
+                                                        }
 
-                                                   LinkedHashMap<String,String> properties=rawdataInitBean.getProperties();
-                                                   resultMap.put("customCode",properties.get("Customer Code"));
-                                                   resultMap.put("device",properties.get("Device Name"));
-                                                   resultMap.put("passBins",properties.get("Pass Bins"));
-                                                   resultMap.put("osBins",properties.get("OS Bins"));
-                                                   try {
-                                                       dataToVtDB(rawdataInitBean,resultMap);
-                                                   } catch (Exception e) {
-                                                       continue;
-                                                   }
-                                                   try {
-                                                       datalogBackupAndRawDataDeal.rawdataDeal(dataSourceConfigBean.getRawdataPath(),rawFile,resultMap);
-                                                   } catch (Exception e) {
-                                                       continue;
-                                                   }
-                                                   try {
-                                                       for (int i = 0; i < waferIdTexts.length; i++) {
-                                                           FileUtils.forceDelete(waferIdTexts[i]);
-                                                       }
-                                                   } catch (IOException e) {
-                                                       e.printStackTrace();
-                                                   }
-                                               } catch (Exception e) {
-                                                   // TODO: handle exception
-                                                   e.printStackTrace();
-                                               }
-                                               try {
-                                                   FileUtils.deleteDirectory(waferIdFile);
-                                               } catch (IOException e) {
-                                                   e.printStackTrace();
-                                               }
-                                           }
-                                       }
-                                   }
-                               }
-                           }
-                       }
-                   }
+                                                        LinkedHashMap<String,String> properties=rawdataInitBean.getProperties();
+                                                        resultMap.put("customCode",properties.get("Customer Code"));
+                                                        resultMap.put("device",properties.get("Device Name"));
+                                                        resultMap.put("passBins",properties.get("Pass Bins"));
+                                                        resultMap.put("osBins",properties.get("OS Bins"));
+                                                        try {
+                                                            dataToVtDB(rawdataInitBean,resultMap);
+                                                        } catch (Exception e) {
+                                                            continue;
+                                                        }
+                                                        try {
+                                                            datalogBackupAndRawDataDeal.rawdataDeal(dataSourceConfigBean.getRawdataPath(),rawFile,resultMap);
+                                                        } catch (Exception e) {
+                                                            continue;
+                                                        }
+                                                        try {
+                                                            for (int i = 0; i < waferIdTexts.length; i++) {
+                                                                FileUtils.forceDelete(waferIdTexts[i]);
+                                                            }
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    } catch (Exception e) {
+                                                        // TODO: handle exception
+                                                        e.printStackTrace();
+                                                    }
+                                                    try {
+                                                        FileUtils.deleteDirectory(waferIdFile);
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
