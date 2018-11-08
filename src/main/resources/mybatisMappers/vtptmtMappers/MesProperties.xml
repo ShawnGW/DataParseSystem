@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtest.it.dao.vtptmtmapperdao.MesPropertiesDAO">
-    <select id="getProperties" resultType="properties">
+    <select id="getProperties" resultType="com.vtest.it.pojo.MesProperties">
       SELECT host,init_url,acode FROM VTPTMT.mesconfig;
     </select>
     <update id="updateProperties" parameterType="properties">

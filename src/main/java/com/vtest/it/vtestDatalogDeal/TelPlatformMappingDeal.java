@@ -606,9 +606,9 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
         BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
         generateWaferInforBean.generate(rawdataInitBean,binWaferInforBean);
         proberDataDAO.insertWaferInforToBinWaferSummary(binWaferInforBean);
-/*        if (!checkIfInforToMes.check(customerCode,device))
+        if (!checkIfInforToMes.check(customerCode,device))
         {
             waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
-        }*/
+        }
     }
 }

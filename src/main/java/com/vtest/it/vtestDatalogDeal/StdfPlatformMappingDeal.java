@@ -303,7 +303,10 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
         }
         testerDataDAO.deleteSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId);
         testerDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getPrimarySiteBinSum(),"P",passBinsArray);
-        testerDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getRetestSiteBinSum(),"R",passBinsArray);
+        if(rawdataInitBean.getRetestSiteBinSum().size()>0)
+        {
+            testerDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getRetestSiteBinSum(),"R",passBinsArray);
+        }
         testerDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"F",passBinsArray);
 
         ArrayList<FailDieBean> failDies=new ArrayList<>();

@@ -21,7 +21,7 @@ public class WaferIdBinSummaryWrite {
 	public void write(HashMap<String, String> resultMap, RawdataInitBean rawdataInitBean)
 	{
 		String lotNum=resultMap.get("lot");
-		String cp=resultMap.get("cp");
+		String cp=resultMap.get("cpStep");
 		String waferId=resultMap.get("waferId");
 
 		HashMap<Integer,HashMap<Integer,Integer>> siteBinSmmary=rawdataInitBean.getSiteBinSum();

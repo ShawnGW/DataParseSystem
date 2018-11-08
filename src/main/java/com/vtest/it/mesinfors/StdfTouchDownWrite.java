@@ -18,7 +18,7 @@ public class StdfTouchDownWrite {
 
 	public void write(HashMap<String, String> resultMap, RawdataInitBean bean) {
 		String lotNum=resultMap.get("lot");
-		String cp=resultMap.get("cp");
+		String cp=resultMap.get("cpStep");
 		String waferId=resultMap.get("waferId");		
 		StringBuilder inforsBuilder=new StringBuilder();
 		inforsBuilder.append("|FirstTestCnt:"+bean.getPrimaryTouchDownTimes());
