@@ -2,6 +2,7 @@ package com.vtest.it.vtestDatalogDeal;
 
 import com.alibaba.fastjson.JSON;
 import com.vtest.it.MappingParseTools.StdfTesterMappingParse;
+import com.vtest.it.RawdataGenerate.GeneratePrimaryAndReTestMap;
 import com.vtest.it.RawdataGenerate.GenerateRawdata;
 import com.vtest.it.RawdataGenerate.InitMesConfigToRawdataProperties;
 import com.vtest.it.dao.testermapperdao.TesterDataDAO;
@@ -55,8 +56,12 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
     private GetOrder getOrder;
     private StdfTesterMappingParse stdfTesterMappingParse;
     private DatalogBackupAndRawDataDeal datalogBackupAndRawDataDeal;
+    private GeneratePrimaryAndReTestMap generatePrimaryAndReTestMap;
 
-
+    @Autowired
+    public void setGeneratePrimaryAndReTestMap(GeneratePrimaryAndReTestMap generatePrimaryAndReTestMap) {
+        this.generatePrimaryAndReTestMap = generatePrimaryAndReTestMap;
+    }
     @Autowired
     public void setDatalogBackupAndRawDataDeal(DatalogBackupAndRawDataDeal datalogBackupAndRawDataDeal) {
         this.datalogBackupAndRawDataDeal = datalogBackupAndRawDataDeal;
@@ -195,6 +200,11 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
                                                             dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,e.getMessage(),"deal_bean",5);
                                                             continue;
                                                         }
+                                                        try {
+                                                            generatePrimaryAndReTestMap.generate(rawdataInitBean);
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
                                                         File rawFile= generateRawdata.generate(rawdataInitBean);
                                                         rawDataCheck.check(rawFile,issueBeans);
                                                         for (DataParseIssueBean issueBean: issueBeans) {
@@ -216,6 +226,7 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
                                                         try {
                                                             dataToVtDB(rawdataInitBean,resultMap);
                                                         } catch (Exception e) {
+                                                            e.printStackTrace();
                                                             continue;
                                                         }
                                                         try {

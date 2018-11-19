@@ -49,6 +49,8 @@ public class StdfTesterMappingParse {
 		HashMap<Integer,HashMap<Integer,Integer>> primarySiteBinSum=new HashMap<>();
 		HashMap<Integer,HashMap<Integer,Integer>> retestSiteBinSum=new HashMap<>();
 		HashMap<String,String> DieMap=new HashMap<>();
+		HashMap<String,String> primaryDieMap=new HashMap<>();
+		HashMap<String,String> reTestDieMap=new HashMap<>();
 		HashMap<String,String> skipAndMarkDieMap=new HashMap<>();
 		HashMap<Integer,Integer> Bin_summary_Map =new HashMap<>();
 
@@ -122,6 +124,13 @@ public class StdfTesterMappingParse {
 						if (passFlag.equals("true")) {
 							passSet.add(Integer.valueOf(softBin));
 						}
+					}
+					if (primaryDieMap.containsKey(key))
+					{
+						reTestDieMap.put(key, String.format("%4s", hardBin)+String.format("%4s", softBin)+String.format("%4s", siteNumber));
+					}else
+					{
+						primaryDieMap.put(key, String.format("%4s", hardBin)+String.format("%4s", softBin)+String.format("%4s", siteNumber));
 					}
 					tempDieMap.put(key, String.format("%4s", hardBin)+String.format("%4s", softBin)+String.format("%4s", siteNumber));				
 				}
@@ -254,6 +263,8 @@ public class StdfTesterMappingParse {
 		bean.setSkipAndMarkDieMap(skipAndMarkDieMap);
 		bean.setPrimarySiteBinSum(primarySiteBinSum);
 		bean.setRetestSiteBinSum(retestSiteBinSum);
+		bean.setPrimaryTestDieMap(primaryDieMap);
+		bean.setReTestDieMap(reTestDieMap);
 
 		long primaryTouchDownDuringTime=0;
 		long reTestTouchDownDuringTime=0;

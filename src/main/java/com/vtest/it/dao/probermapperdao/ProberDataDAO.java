@@ -2,6 +2,8 @@ package com.vtest.it.dao.probermapperdao;
 
 import com.vtest.it.pojo.binwaferinfors.BinWaferInforBean;
 import com.vtest.it.pojo.binwaferinfors.FailDieBean;
+import com.vtest.it.pojo.binwaferinfors.waferIdInforBean;
+import com.vtest.it.pojo.binwaferinfors.waferYieldBean;
 import com.vtest.it.pojo.equipment.EquipmentBean;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,4 +18,6 @@ public interface ProberDataDAO {
     public int deleteSiteInforToBinInfoSummary(@Param("customerCode")String customerCode, @Param("device") String device, @Param("lot")String lot, @Param("cp")String cp, @Param("waferId")String waferId);
     public int insertEquipmentInforToeqCardSummary(EquipmentBean equipmentBean);
     public int insertWaferInforToBinWaferSummary(BinWaferInforBean binWaferInforBean);
+    public ArrayList<waferYieldBean> getWaferBinSummary(@Param("customerCode")String customerCode, @Param("device") String device, @Param("lot")String lot, @Param("cp")String cp, @Param("waferId")String waferId);
+    public ArrayList<waferIdInforBean> getOthersParam(@Param("customerCode")String customerCode, @Param("device") String device, @Param("lot")String lot, @Param("cp")String cp, @Param("waferId")String waferId);
 }

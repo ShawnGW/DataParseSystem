@@ -1,12 +1,13 @@
 package com.vtest.it.web;
 
 import com.alibaba.fastjson.JSON;
-import com.vtest.it.dao.testermapperdao.TesterDataDAO;
+import com.vtest.it.dao.probermapperdao.ProberDataDAO;
 import com.vtest.it.dao.vtmesdao.VtMesConfigDAO;
 import com.vtest.it.dao.vtmesdao.VtMesSlotAndSequenceDAO;
 import com.vtest.it.dao.vtmesdao.VtSiteYieldToMes;
 import com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao;
 import com.vtest.it.dao.vtptmtmapperdao.MesPropertiesDAO;
+import com.vtest.it.pojo.binwaferinfors.waferIdInforBean;
 import com.vtest.it.pojo.datainfortomes.SiteYieldToMes;
 import com.vtest.it.pojo.mvcDieBean;
 import com.vtest.it.pojo.propertiescheckItemBean.DataParseIssueBean;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 @RequestMapping("/DAO")
 public class testdao {
     private GetDataSourceConfigDao getDataSourceConfigDao;
-    private TesterDataDAO proberDataDAO;
+    private ProberDataDAO proberDataDAO;
     private VtMesSlotAndSequenceDAO vtMesSlotAndSequenceDAO;
     private VtMesConfigDAO vtMesConfigDAO;
     private VtSiteYieldToMes vtSiteYieldToMes;
@@ -49,7 +50,7 @@ public class testdao {
     }
 
     @Autowired
-    public void setProberDataDAO(TesterDataDAO proberDataDAO) {
+    public void setProberDataDAO(ProberDataDAO proberDataDAO) {
         this.proberDataDAO = proberDataDAO;
     }
 
@@ -201,6 +202,13 @@ public class testdao {
         arrayList.add(systemIssueBean2);
         getDataSourceConfigDao.dataErrorsRecord(arrayList);
         return JSON.toJSONString(getDataSourceConfigDao.getCheckItemList());
+    }
+    @RequestMapping("/getYield")
+    @ResponseBody
+    public String getMapInfor(@RequestParam("customer")String customer,@RequestParam("device")String device,@RequestParam("lot")String lot,@RequestParam("cp")String cp,@RequestParam(value = "wafer",required = false)String wafer)
+    {
+        ArrayList<waferIdInforBean> summary=proberDataDAO.getOthersParam(customer,device,lot,cp,wafer);
+        return  JSON.toJSONString(summary);
     }
     @RequestMapping("/mapping")
     public String getmapping()

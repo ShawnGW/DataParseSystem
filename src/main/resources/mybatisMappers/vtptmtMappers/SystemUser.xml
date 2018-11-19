@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtest.it.dao.vtptmtmapperdao.UserValidate">
+    <resultMap id="userMap" type="com.vtest.it.pojo.systemyuser.SystemUser">
+        <result column="user_name" property="userName"/>
+        <result column="password" property="password"/>
+        <result column="v_group" property="vGroup"/>
+        <result column="level" property="level"/>
+        <result column="status" property="status"/>
+        <result column="register_time" property="registerTime"/>
+    </resultMap>
+    <insert id="register" parameterType="com.vtest.it.pojo.systemyuser.SystemUser">
+        INSERT INTO VTPTMT.system_user(user_name, password, v_group, email, level) VALUE(#{userName},#{password},#{vGroup},#{email},#{level});
+    </insert>
+    <delete id="cancel">
+        DELETE FROM VTPTMT.system_user WHERE user_name=#{userName};
+    </delete>
+    <select id="validate" resultMap="userMap">
+        select * from VTPTMT.system_user WHERE user_name=#{userName};
+    </select>
+</mapper>

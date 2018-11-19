@@ -17,6 +17,7 @@
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/system/css/normalize.css"/>">
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/system/css/default.css"/>">
     <link rel="stylesheet" type="text/css" href="<c:url value="/resources/system/css/styles.css"/>">
+    <%--<script src="<c:url value="/resources/system/js/jquery-1.11.0.min.js"/>" type="text/javascript" charset="utf-8"></script>--%>
 </head>
 <body background-image="/">
 <div class="htmleaf-container">
@@ -93,5 +94,10 @@
         </div>
     </div>
 </div>
+<%--<script type="text/javascript">--%>
+    <%--$(function () {--%>
+
+    <%--})--%>
+<%--</script>--%>
 </body>
 </html>

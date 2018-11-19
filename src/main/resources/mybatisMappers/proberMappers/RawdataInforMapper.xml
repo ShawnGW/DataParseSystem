@@ -2,6 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtest.it.dao.probermapperdao.ProberDataDAO">
+    <resultMap id="waferYieldMap" type="com.vtest.it.pojo.binwaferinfors.waferYieldBean">
+        <result property="customCode" column="custom_code"/>
+        <result property="device" column="device"/>
+        <result property="lotId" column="lot_id"/>
+        <result property="cpStep" column="cp_step"/>
+        <result property="waferNo" column="wafer_no"/>
+        <result property="siteId" column="site_id"/>
+        <result property="softBinNo" column="soft_bin_no"/>
+        <result property="binCount" column="bin_count"/>
+        <result property="passFail" column="pass_fail"/>
+    </resultMap>
+    <resultMap id="idMap" type="com.vtest.it.pojo.binwaferinfors.waferIdInforBean">
+        <result column="wafer_no" property="waferId"/>
+        <result column="others_params" property="params"/>
+    </resultMap>
     <insert id="insertEquipmentInforToeqCardSummary" parameterType="com.vtest.it.pojo.equipment.EquipmentBean">
         INSERT INTO vtdaprober.eq_card_summary(custom_code, device, lot_id, cp_step, wafer_no, tester_id, prober_id, card_id, first_touchDown, first_time_range, first_test_rate, retest_touchDown, retest_time_range, retest_rate, single_test_time, test_time) VALUES (
         #{customerCode},#{device},#{lotId},#{cpStep},#{waferNo},#{testerId},#{proberId},#{cardId},#{firstTouchDown},#{firstTimeRange},#{firstTestRate},#{retestTouchDown},#{retestTimeRange},#{retestRate},#{singleTestTime},#{testTime}
@@ -44,4 +59,28 @@
        </trim>
        ;
    </insert>
+    <select id="getWaferBinSummary" resultMap="waferYieldMap">
+        SELECT custom_code,device,lot_id,cp_step,wafer_no,site_id,soft_bin_no,bin_count,pass_fail FROM vtdaprober.bin_info_summary
+        WHERE custom_code=#{customerCode} AND device=#{device} AND lot_id=#{lot} AND cp_step=#{cp} AND test_type='F'
+        <if test="waferId!=null">
+            AND wafer_no=#{waferId}
+        </if>
+        ;
+    </select>
+    <select id="getOthersParam" resultMap="idMap">
+        SELECT wafer_no,others_params FROM vtdaprober.bin_wafer_summary WHERE custom_code=#{customerCode}
+        <if test="device!=null">
+          AND device=#{device}
+        </if>
+        <if test="lot!=null">
+            AND lot_id=#{lot}
+        </if>
+        <if test="cp!=null">
+            AND cp_step=#{cp}
+        </if>
+        <if test="waferId!=null">
+            AND wafer_no=#{waferId}
+        </if>
+        ;
+    </select>
 </mapper>

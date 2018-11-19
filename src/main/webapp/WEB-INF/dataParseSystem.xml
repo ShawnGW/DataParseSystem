@@ -39,6 +39,18 @@
  />
 <mvc:annotation-driven/>
 <mvc:resources mapping="/resources/Font/**" location="/WEB-INF/font-awesome-4.7.0/"/>
+    <mvc:resources mapping="/resources/bootstrap/**" location="/WEB-INF/bootstrap/"/>
 <mvc:resources mapping="/resources/jqurey/**" location="/WEB-INF/jqurey/"/>
-<mvc:resources mapping="/resources/xufeng/**" location="/WEB-INF/axufengTest/"/>
+<mvc:resources mapping="/resources/system/**" location="/WEB-INF/systemResources/"/>
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/system/login"/>
+            <mvc:exclude-mapping path="/system/register"/>
+            <mvc:exclude-mapping path="/system/validate"/>
+            <mvc:exclude-mapping path="/system/registerUser"/>
+            <mvc:exclude-mapping path="/resources/system/**"/>
+            <bean class="com.vtest.it.web.LoginIntercepter"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

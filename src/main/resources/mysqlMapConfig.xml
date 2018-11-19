@@ -14,5 +14,6 @@
     <mappers>
     <mapper resource="mybatisMappers/vtptmtMappers/DataSourcePath.xml"/>
     <mapper resource="mybatisMappers/vtptmtMappers/MesProperties.xml"/>
+    <mapper resource="mybatisMappers/vtptmtMappers/SystemUser.xml"/>
     </mappers>
 </configuration>

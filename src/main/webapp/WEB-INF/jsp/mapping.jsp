@@ -1,17 +1,17 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
 		<title>V-Test Map</title>
-		<script src="<c:url value="/resources/xufeng/js/highcharts.js"/>" type="text/javascript" charset="utf-8"></script>
-		<script src="<c:url value="/resources/xufeng/js/exporting.js"/>" type="text/javascript" charset="utf-8"></script>
-		<script src="<c:url value="/resources/xufeng/js/highcharts-zh_CN.js"/>" type="text/javascript" charset="utf-8"></script>
-		<script src="<c:url value="/resources/xufeng/js/highcharts-more.js"/>" type="text/javascript" charset="utf-8"></script>
-		<script src="<c:url value="/resources/xufeng/js/boost.js"/>" type="text/javascript" charset="utf-8"></script>
-		<script src="<c:url value="/resources/xufeng/js/boost-canvas.js"/>" type="text/javascript" charset="utf-8"></script>
-		<script src="<c:url value="/resources/xufeng/js/jquery.min.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/system/js/jquery.min.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/system/js/highcharts.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/system/js/exporting.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/system/js/highcharts-zh_CN.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/system/js/highcharts-more.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/system/js/boost.js"/>" type="text/javascript" charset="utf-8"></script>
+		<script src="<c:url value="/resources/system/js/boost-canvas.js"/>" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
 		<div id="container" style="width:1200px;height:1200px"></div>
@@ -19,7 +19,7 @@
             var binSummary = [];
             var binSet = new Set();
             $.ajax({
-                url: '/DataParseSystem/DAO/test?x=240&y=230',
+                url: '/DataParseSystem/GetWaferMap/Mapping?code=SNU&device=A383&lot=TCUT360100&cp=CP1&waferId=TCUT360101',
                 async: false,
                 type: 'GET',
                 dataType: 'json',

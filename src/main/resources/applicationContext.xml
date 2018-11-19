@@ -27,6 +27,7 @@
     <context:component-scan base-package="com.vtest.it.vtestDatalogDeal"/>
     <context:component-scan base-package="com.vtest.it.rawdatacheck"/>
     <context:component-scan base-package="com.vtest.it.properties"/>
+    <context:component-scan base-package="com.vtest.it.rawdataParse"/>
 
     <util:list id="rawdataAfterDeal" value-type="com.vtest.it.rawdatafterdeal.AbstractRawDataAfterDeal">
         <bean class="com.vtest.it.rawdatafterdeal.MarkDieToPassDeal"/>

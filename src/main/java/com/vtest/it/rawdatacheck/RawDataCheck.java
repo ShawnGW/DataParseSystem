@@ -137,7 +137,7 @@ public class RawDataCheck {
                     }else {
                         if (!properties.get(dbPrperty).equals(properties.get(equalsItem)))
                         {
-                            DataParseIssueBean dataParseIssueBean= getDatabean(waferInfor,5,"it's different from : "+dbPrperty+" and "+itemBean);
+                            DataParseIssueBean dataParseIssueBean= getDatabean(waferInfor,5,"it's different from : "+dbPrperty+" and "+equalsItem);
                             issueBeans.add(dataParseIssueBean);
                         }
                     }
