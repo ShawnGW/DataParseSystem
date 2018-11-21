@@ -23,6 +23,7 @@ public class MesConfigBean implements Serializable {
     private String wipStage;
     private String wipStep;
     private String poNumber;
+    private String customerToCustomerPoNumber;
     private String partDesc;
     private String mapOrInk;
     private String isOtp;
@@ -247,6 +248,14 @@ public class MesConfigBean implements Serializable {
 
     public void setPoNumber(String poNumber) {
         this.poNumber = poNumber;
+    }
+
+    public String getCustomerToCustomerPoNumber() {
+        return customerToCustomerPoNumber;
+    }
+
+    public void setCustomerToCustomerPoNumber(String customerToCustomerPoNumber) {
+        this.customerToCustomerPoNumber = customerToCustomerPoNumber;
     }
 
     public String getPartDesc() {

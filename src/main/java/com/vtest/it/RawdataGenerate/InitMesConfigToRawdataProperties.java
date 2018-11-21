@@ -33,6 +33,7 @@ public class InitMesConfigToRawdataProperties {
         properties.put("Wip Stage",mesConfigBean.getWipStage());
         properties.put("Wip Step",mesConfigBean.getWipStep());
         properties.put("PO Number",mesConfigBean.getPoNumber());
+        properties.put("CTC PO Number",mesConfigBean.getCustomerToCustomerPoNumber());
         properties.put("Part DESC",mesConfigBean.getPartDesc());
         properties.put("Map Or Ink",mesConfigBean.getMapOrInk());
         properties.put("Is OTP",mesConfigBean.getIsOtp().equals("0")?"False":"True");
