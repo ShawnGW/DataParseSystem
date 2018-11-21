@@ -1,6 +1,8 @@
 package com.vtest.it.pojo.propertiescheckItemBean;
 
-public class DataParseIssueBean {
+import java.io.Serializable;
+
+public class DataParseIssueBean implements Serializable {
     private String customCode;
     private String device;
     private String lotId;

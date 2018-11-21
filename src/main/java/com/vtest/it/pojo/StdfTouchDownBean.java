@@ -1,6 +1,8 @@
 package com.vtest.it.pojo;
 
-public class StdfTouchDownBean {
+import java.io.Serializable;
+
+public class StdfTouchDownBean  implements Serializable {
 	private Integer primaryTouchDownTimes;
 	private Long primaryTouchDownDuringTime;
 	private Integer reTestTouchDownTimes;

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="ehcache.xsd"
+         updateCheck="false">
+
+    <diskStore path="java.io.tmpdir"/>
+
+    <defaultCache maxElementsInMemory="10000"
+                  eternal="false"
+                  timeToIdleSeconds="120"
+                  timeToLiveSeconds="120"
+                  diskPersistent="false"
+                  diskExpiryThreadIntervalSeconds="120"
+                  overflowToDisk="true"
+                  memoryStoreEvictionPolicy="LRU"
+    />
+    <cache name="lotinfos"
+           maxElementsInMemory="20000"
+           eternal="true"
+           diskPersistent="false"
+           timeToLiveSeconds="0"
+           overflowToDisk="true"
+           maxEntriesLocalHeap="10000"
+           diskExpiryThreadIntervalSeconds="120"
+    />
+</ehcache>

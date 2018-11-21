@@ -1,5 +1,6 @@
 package com.vtest.it.web;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
@@ -11,11 +12,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/getSource")
 public class GetSoftWare {
-    @RequestMapping("/{SourceName:.+}")
+    @RequestMapping("/download/{SourceName:.+}")
     @ResponseBody
     public void getSource(@PathVariable("SourceName") String sourceName, OutputStream outputStream) {
         try {
@@ -26,5 +28,17 @@ public class GetSoftWare {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @RequestMapping("/getSourceList")
+    @ResponseBody
+    public String getSourcesList()
+    {
+        ArrayList<String> sources=new ArrayList<>();
+        File file=new File("/vtestSoftSource/");
+        File[] files=file.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            sources.add(files[i].getName());
+        }
+        return JSON.toJSONString(sources);
     }
 }

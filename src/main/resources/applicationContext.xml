@@ -29,6 +29,14 @@
     <context:component-scan base-package="com.vtest.it.properties"/>
     <context:component-scan base-package="com.vtest.it.rawdataParse"/>
 
+    <cache:annotation-driven/>
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+        p:configLocation="classpath:ehcache.xml"
+    />
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+          p:cacheManager-ref="ehcache"
+    />
+
     <util:list id="rawdataAfterDeal" value-type="com.vtest.it.rawdatafterdeal.AbstractRawDataAfterDeal">
         <bean class="com.vtest.it.rawdatafterdeal.MarkDieToPassDeal"/>
         <bean class="com.vtest.it.rawdatafterdeal.FinRawDataDeal"/>

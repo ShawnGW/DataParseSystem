@@ -1,6 +1,8 @@
 package com.vtest.it.pojo.datainfortomes;
 
-public class DataInforToMesBean {
+import java.io.Serializable;
+
+public class DataInforToMesBean implements Serializable {
     private String customCode;
     private String device;
 

@@ -1,6 +1,8 @@
 package com.vtest.it.pojo;
 
-public class MesProperties {
+import java.io.Serializable;
+
+public class MesProperties implements Serializable {
     private String host;
     private String initUrl;
     private String acode;

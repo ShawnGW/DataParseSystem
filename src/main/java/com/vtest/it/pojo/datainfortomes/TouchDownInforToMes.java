@@ -1,6 +1,8 @@
 package com.vtest.it.pojo.datainfortomes;
 
-public class TouchDownInforToMes {
+import java.io.Serializable;
+
+public class TouchDownInforToMes implements Serializable {
     private String lot;
     private String cpStep;
     private String waferId;

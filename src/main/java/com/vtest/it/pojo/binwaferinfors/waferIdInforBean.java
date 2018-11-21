@@ -1,6 +1,8 @@
 package com.vtest.it.pojo.binwaferinfors;
 
-public class waferIdInforBean {
+import java.io.Serializable;
+
+public class waferIdInforBean implements Serializable {
     private String waferId;
     private String params;
 

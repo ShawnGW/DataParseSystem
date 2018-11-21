@@ -1,6 +1,8 @@
 package com.vtest.it.pojo;
 
-public class PropertiesOrderBean {
+import java.io.Serializable;
+
+public class PropertiesOrderBean implements Serializable {
     private Integer propertyOrder;
     private String  property;
 

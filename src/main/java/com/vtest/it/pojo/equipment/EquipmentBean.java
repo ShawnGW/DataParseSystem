@@ -1,6 +1,8 @@
 package com.vtest.it.pojo.equipment;
 
-public class EquipmentBean {
+import java.io.Serializable;
+
+public class EquipmentBean implements Serializable {
     private String customerCode;
     private String device;
     private String lotId;

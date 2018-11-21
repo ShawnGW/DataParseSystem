@@ -1,6 +1,8 @@
 package com.vtest.it.pojo;
 
-public class DataSourceBean {
+import java.io.Serializable;
+
+public class DataSourceBean implements Serializable {
     private String sourcePath;
     private String backupSourcePath;
     private String backupSourcePathByCp;

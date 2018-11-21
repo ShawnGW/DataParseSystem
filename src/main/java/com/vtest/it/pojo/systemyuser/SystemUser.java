@@ -1,8 +1,9 @@
 package com.vtest.it.pojo.systemyuser;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class SystemUser {
+public class SystemUser implements Serializable {
     private String userName;
     private String password;
     private String vGroup;

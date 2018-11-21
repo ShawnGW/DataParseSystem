@@ -1,6 +1,8 @@
 package com.vtest.it.pojo;
 
-public class MarkAndSkipToPassBean {
+import java.io.Serializable;
+
+public class MarkAndSkipToPassBean implements Serializable {
     private String customCode;
     private String device;
 

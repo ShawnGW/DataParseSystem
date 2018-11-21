@@ -1,8 +1,9 @@
 package com.vtest.it.pojo.datainfortomes;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class SiteYieldToMes {
+public class SiteYieldToMes implements Serializable {
     private String lot;
     private String cpStep;
     private String waferId;

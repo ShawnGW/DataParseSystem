@@ -1,6 +1,8 @@
 package com.vtest.it.pojo.binwaferinfors;
 
-public class FailDieBean {
+import java.io.Serializable;
+
+public class FailDieBean implements Serializable {
     private Integer xCoordinate;
     private Integer yCoordinate;
     private Integer binNumber;

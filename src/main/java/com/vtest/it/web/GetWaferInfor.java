@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.vtest.it.dao.probermapperdao.ProberDataDAO;
 import com.vtest.it.pojo.binwaferinfors.waferIdInforBean;
 import com.vtest.it.pojo.binwaferinfors.waferYieldBean;
+import com.vtest.it.pojo.vtdbInfors.CustomerAndDevicesBean;
+import com.vtest.it.pojo.vtdbInfors.LotAndCpsBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,10 +18,51 @@ import java.util.*;
 @RequestMapping("/getWaferInfor")
 public class GetWaferInfor {
     private ProberDataDAO proberDataDAO;
-
     @Autowired
     public void setProberDataDAO(ProberDataDAO proberDataDAO) {
         this.proberDataDAO = proberDataDAO;
+    }
+    @RequestMapping("/getCustomerAndDevices")
+    @ResponseBody
+    public String getCustomerAndDevice()
+    {
+        HashMap<String,ArrayList<String>> result=new HashMap<>();
+        ArrayList<CustomerAndDevicesBean> list=proberDataDAO.getCustomerAndDevices();
+        for (CustomerAndDevicesBean bean: list) {
+            if (result.containsKey(bean.getCustomerCode()))
+            {
+                ArrayList<String> devices=result.get(bean.getCustomerCode());
+                devices.add(bean.getDevice());
+                result.put(bean.getCustomerCode(),devices);
+            }else
+            {
+                ArrayList<String> devices=new ArrayList<>();
+                devices.add(bean.getDevice());
+                result.put(bean.getCustomerCode(),devices);
+            }
+        }
+        return JSON.toJSONString(result);
+    }
+    @RequestMapping("/getLotAndCps")
+    @ResponseBody
+    public String getLotAndCps(@RequestParam("customer")String customer,@RequestParam("device")String device)
+    {
+        HashMap<String,ArrayList<String>> result=new HashMap<>();
+        ArrayList<LotAndCpsBean> list=proberDataDAO.getLotAndCp(customer,device);
+        for (LotAndCpsBean bean: list) {
+            if (result.containsKey(bean.getLot()))
+            {
+                ArrayList<String> cps=result.get(bean.getLot());
+                cps.add(bean.getCp());
+                result.put(bean.getLot(),cps);
+            }else
+            {
+                ArrayList<String> cps=new ArrayList<>();
+                cps.add(bean.getCp());
+                result.put(bean.getLot(),cps);
+            }
+        }
+        return JSON.toJSONString(result);
     }
 
     @RequestMapping("/getYields")

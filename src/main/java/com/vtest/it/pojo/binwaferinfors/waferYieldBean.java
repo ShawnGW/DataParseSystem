@@ -1,6 +1,8 @@
 package com.vtest.it.pojo.binwaferinfors;
 
-public class waferYieldBean {
+import java.io.Serializable;
+
+public class waferYieldBean implements Serializable {
     private String customCode;
     private String device;
     private String lotId;

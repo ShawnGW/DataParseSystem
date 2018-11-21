@@ -1,6 +1,8 @@
 package com.vtest.it.pojo;
 
-public class SlotAndSequenceConfigBean {
+import java.io.Serializable;
+
+public class SlotAndSequenceConfigBean implements Serializable {
     private String readType;
     private String sequence;
     private String gpibBin;

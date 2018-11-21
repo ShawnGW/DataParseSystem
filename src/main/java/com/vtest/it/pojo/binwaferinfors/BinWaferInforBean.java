@@ -1,8 +1,9 @@
 package com.vtest.it.pojo.binwaferinfors;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BinWaferInforBean {
+public class BinWaferInforBean implements Serializable {
     private String customerCode;
     private String device;
     private String lotId;

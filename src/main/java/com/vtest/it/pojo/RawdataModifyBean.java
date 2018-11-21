@@ -1,6 +1,8 @@
 package com.vtest.it.pojo;
 
-public class RawdataModifyBean {
+import java.io.Serializable;
+
+public class RawdataModifyBean implements Serializable {
     private String fileName;
     private String status;
     private String reason;

@@ -1,6 +1,8 @@
 package com.vtest.it.pojo;
 
-public class MesConfigBean {
+import java.io.Serializable;
+
+public class MesConfigBean implements Serializable {
     private String lotId;
     private String innerLot;
     private String innerMontherlot;

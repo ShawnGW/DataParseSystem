@@ -17,6 +17,14 @@
         <result column="wafer_no" property="waferId"/>
         <result column="others_params" property="params"/>
     </resultMap>
+    <resultMap id="deviceAndCustomer" type="com.vtest.it.pojo.vtdbInfors.CustomerAndDevicesBean">
+        <result column="device" property="device"/>
+        <result column="custom_code" property="customerCode"/>
+    </resultMap>
+    <resultMap id="lotAndCp" type="com.vtest.it.pojo.vtdbInfors.LotAndCpsBean">
+        <result column="lot_id" property="lot"/>
+        <result column="cp_step" property="cp"/>
+    </resultMap>
     <insert id="insertEquipmentInforToeqCardSummary" parameterType="com.vtest.it.pojo.equipment.EquipmentBean">
         INSERT INTO vtdaprober.eq_card_summary(custom_code, device, lot_id, cp_step, wafer_no, tester_id, prober_id, card_id, first_touchDown, first_time_range, first_test_rate, retest_touchDown, retest_time_range, retest_rate, single_test_time, test_time) VALUES (
         #{customerCode},#{device},#{lotId},#{cpStep},#{waferNo},#{testerId},#{proberId},#{cardId},#{firstTouchDown},#{firstTimeRange},#{firstTestRate},#{retestTouchDown},#{retestTimeRange},#{retestRate},#{singleTestTime},#{testTime}
@@ -82,5 +90,11 @@
             AND wafer_no=#{waferId}
         </if>
         ;
+    </select>
+    <select id="getCustomerAndDevices" resultMap="deviceAndCustomer">
+        select distinct device ,custom_code from  vtdaprober.bin_wafer_summary where custom_code in (SELECT distinct custom_code FROM vtdaprober.bin_wafer_summary);
+    </select>
+    <select id="getLotAndCp"  resultMap="lotAndCp">
+        select distinct lot_id,cp_step from vtdaprober.bin_wafer_summary where  device=#{device} and custom_code=#{custom};
     </select>
 </mapper>

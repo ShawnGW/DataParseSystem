@@ -24,13 +24,22 @@
     <!--jSide Skins-->
     <link rel="stylesheet" href="<c:url value="/resources/system/css/jside-skins.css"/>" />
     <link rel="stylesheet" href="<c:url value="/resources/system/css/demo-only.css"/>" />
+    <link rel="stylesheet" href="<c:url value="/resources/system/css/button.css"/>" />
     <link rel="stylesheet" href="<c:url value="/resources/system/css/sb-admin-2.min.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/Font/css/font-awesome.min.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/>">
     <script src="<c:url value="/resources/system/js/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/js/jquery.jside.menu.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/js/demo-only.js"/>" type="text/javascript"></script>
-    <script type="text/javascript" src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/>"></script>
+    <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/>" type="text/javascript"></script>
+
+    <script src="<c:url value="/resources/system/js/mapping.js"/>" type="text/javascript"></script>
+    <script src="<c:url value="/resources/system/js/highcharts.js"/>" type="text/javascript" charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/exporting.js"/>" type="text/javascript" charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/highcharts-zh_CN.js"/>" type="text/javascript" charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/highcharts-more.js"/>" type="text/javascript" charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/boost.js"/>" type="text/javascript" charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/boost-canvas.js"/>" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 <menu class="menubar">
@@ -268,19 +277,19 @@
         <li> <span class="item-icon"> <i class="zmdi zmdi-apple"></i> </span> <a href="#1">
             Main item two </a></li>
         <li class="has-sub"> <span class="item-icon"> <i class="fa fa-bar-chart" style="color: white"></i> </span>
-            <span class="dropdown-heading">
-	 Item three with dropdown </span>
+            <span class="dropdown-heading">Data Analysis</span>
             <ul>
-                <li> <span class="item-icon"> <i class="fa fa-pie-chart" style="color: black"></i></span><a href="#2">wafer_map</a> </li>
-                <li> <span class="item-icon"> <i class="fa fa-line-chart" style="color: black"></i></span><a href="#2">lot_line</a> </li>
-                <li> <span class="item-icon"> <i class="fa fa-area-chart" style="color: black"></i></span><a href="#2">others </a> </li>
+                <li><a href="#2">Wafer_map</a> </li>
+                <li><a href="#2">Lot_line</a> </li>
+                <li><a href="#2">Tester_status </a> </li>
+                <li><a href="#2">Data_summary</a> </li>
+                <li><a href="#2">Superposition</a> </li>
             </ul>
         </li>
         <li class="has-sub"> <span class="item-icon"> <i class="zmdi zmdi-devices"></i> </span>
-            <span class="dropdown-heading">
-	 Item four with dropdown </span>
+            <span class="dropdown-heading">tools</span>
             <ul>
-                <li> <a href="#2">sub item 1 </a> </li>
+               <li><a href="<c:url value="/tools/DegreeTrans"/>">Degree Transform</a> </li>
             </ul>
         </li>
         <li> <span class="item-icon"> <i class="zmdi zmdi-keyboard"></i> </span> <a href="#1">
@@ -294,14 +303,8 @@
     </ul>
 </nav>
 <div class="dim-overlay"></div>
-
-<!--End jSide Menu-->
-<!--Introduction and Demo Only -->
 <header class="intro">
     <h1>DATA ANALYSIS SYSTEM(Inner Version V1.0)</h1>
-    <%--<div class="htmleaf-links">--%>
-        <%--<h3></h3>--%>
-    <%--</div>--%>
 </header>
 <div id="content">
     <main>

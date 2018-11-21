@@ -1,6 +1,8 @@
 package com.vtest.it.pojo.propertiescheckItemBean;
 
-public class CheckItemBean {
+import java.io.Serializable;
+
+public class CheckItemBean implements Serializable {
     private String property;
     private boolean checkIsNa;
     private String equalsItem;

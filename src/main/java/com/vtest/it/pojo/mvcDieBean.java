@@ -1,6 +1,8 @@
 package com.vtest.it.pojo;
 
-public class mvcDieBean {
+import java.io.Serializable;
+
+public class mvcDieBean implements Serializable {
     private Integer x;
     private Integer y;
     private Integer z;
