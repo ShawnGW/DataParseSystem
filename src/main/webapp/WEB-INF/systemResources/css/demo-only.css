@@ -21,18 +21,18 @@ body{
 }
 .intro{
    background: #ddd;
-   padding: 60px 30px;
+   padding: 10px 15px;
    color: #333;
    margin-bottom: 15px;
    line-height: 1.5;
    text-align: center;
 }
 .intro h1 {
-   font-size: 18pt;
+   font-size: 9pt;
 
 }
 .intro p{
-   font-size: 14px;
+   font-size: 7px;
 }
 
 .action{
@@ -57,7 +57,8 @@ a.btn:hover{
 }
 .github:before,
 .down:before{
-  font-family: 'Material-Design-Iconic-Font';
+  font-family: 'Material-Design-Iconic-Font';
+
   font-weight: normal;
   margin-right: 10px;
 }

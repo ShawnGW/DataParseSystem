@@ -1,0 +1,22 @@
+/*select {
+
+}*/
+#customer_code,
+#device,
+#lot_id,
+#cp_step,
+#wafer_no{
+	outline: none;
+	appearance: none;
+	border: 1px solid #e5e5e5;
+	text-align: center;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	padding-left: 20px;
+	width:15%;
+	border-color: #0d6aad;
+	background-color: #0d6aad;
+	color: #FFFFFF;
+	border-radius:5px ;
+	height: 45px;
+}

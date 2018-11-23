@@ -64,6 +64,7 @@ public class GenerateWaferInforBean {
         othersparams.put("Wip Stage",properties.get("Wip Stage"));
         othersparams.put("Wip Step",properties.get("Wip Step"));
         othersparams.put("PO Number",properties.get("PO Number"));
+        othersparams.put("CTC PO Number",properties.get("CTC PO Number"));
         othersparams.put("Part DESC",properties.get("Part DESC"));
         othersparams.put("Map Or Ink ",properties.get("Map Or Ink "));
         othersparams.put("Is OTP",properties.get("Is OTP"));

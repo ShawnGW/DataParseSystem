@@ -2,25 +2,101 @@ package com.vtest.it.web;
 
 import com.alibaba.fastjson.JSON;
 import com.vtest.it.dao.probermapperdao.ProberDataDAO;
+import com.vtest.it.pojo.binwaferinfors.GetWaferInforBean;
+import com.vtest.it.pojo.binwaferinfors.WaferIdBean;
 import com.vtest.it.pojo.binwaferinfors.waferIdInforBean;
 import com.vtest.it.pojo.binwaferinfors.waferYieldBean;
+import com.vtest.it.pojo.mvcDieBean;
 import com.vtest.it.pojo.vtdbInfors.CustomerAndDevicesBean;
 import com.vtest.it.pojo.vtdbInfors.LotAndCpsBean;
+import com.vtest.it.rawdataParse.ParseRawdataNew;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Controller
 @RequestMapping("/getWaferInfor")
 public class GetWaferInfor {
+    private ParseRawdataNew parseRawdataNew;
     private ProberDataDAO proberDataDAO;
+    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM--dd hh:mm:ss");
+
+    @Autowired
+    public void setParseRawdataNew(ParseRawdataNew parseRawdataNew) {
+        this.parseRawdataNew = parseRawdataNew;
+    }
     @Autowired
     public void setProberDataDAO(ProberDataDAO proberDataDAO) {
         this.proberDataDAO = proberDataDAO;
+    }
+    @RequestMapping("/getSuperPosition")
+    @ResponseBody
+    public String getSuperPosition(@RequestParam("customer")String customer,@RequestParam("device")String device,@RequestParam("lot")String lot,@RequestParam("cp")String cp)
+    {
+        ArrayList<superPostionBean> result=new ArrayList<>();
+        ArrayList<Integer> passBins=new ArrayList<>();
+        File[] rawdatas=new File("/server212/RawData/ProberRawdata/"+customer+"/"+device+"/"+lot+"/"+cp).listFiles();
+        String passInfor="1";
+        try {
+            BufferedReader reader=new BufferedReader(new FileReader(rawdatas[0]));
+            String content;
+            while((content=reader.readLine())!=null)
+            {
+                    if (content.contains("Pass Bins"))
+                    {
+                        passInfor=content.split(":")[1];
+                        break;
+                    }
+            }
+            reader.close();
+        } catch (IOException e) {
+            passBins.add(1);
+        }
+
+        String[] passBinStr=(passInfor).split(",");
+        for (int i = 0; i < passBinStr.length; i++) {
+            passBins.add(Integer.valueOf(passBinStr[i]));
+        }
+        HashMap<String,Integer> resultMap=new HashMap<>();
+        for (File rawdata : rawdatas) {
+            ArrayList<mvcDieBean> binInfors= parseRawdataNew.getMap(rawdata);
+            for (mvcDieBean bean : binInfors) {
+                if (!passBins.contains(bean.getS()))
+                {
+                    if (resultMap.containsKey(bean.getX()+":"+bean.getY()))
+                    {
+                        resultMap.put(bean.getX()+":"+bean.getY(),resultMap.get(bean.getX()+":"+bean.getY())+1);
+                    }else
+                    {
+                        resultMap.put(bean.getX()+":"+bean.getY(),1);
+                    }
+                }else if (!resultMap.containsKey(bean.getX()+":"+bean.getY()))
+                {
+                    resultMap.put(bean.getX()+":"+bean.getY(),0);
+                }
+            }
+        }
+        Set<String> coordinateSet=resultMap.keySet();
+        for (String coodinate : coordinateSet) {
+            superPostionBean bean=new superPostionBean();
+            bean.setX(Integer.valueOf(coodinate.substring(0,coodinate.indexOf(":"))));
+            bean.setY(Integer.valueOf(coodinate.substring(coodinate.indexOf(":")+1)));
+            bean.setV(resultMap.get(coodinate));
+            result.add(bean);
+        }
+        return  JSON.toJSONString(result);
     }
     @RequestMapping("/getCustomerAndDevices")
     @ResponseBody
@@ -41,7 +117,15 @@ public class GetWaferInfor {
                 result.put(bean.getCustomerCode(),devices);
             }
         }
-        return JSON.toJSONString(result);
+        ArrayList<customerAndDevice> customerAndDevicesArray=new ArrayList<>();
+        Set<String> customerSet=result.keySet();
+        for (String customer : customerSet) {
+            customerAndDevice customerAndDevice=new customerAndDevice();
+            customerAndDevice.setCustomer(customer);
+            customerAndDevice.setDevice(result.get(customer));
+            customerAndDevicesArray.add(customerAndDevice);
+        }
+        return JSON.toJSONString(customerAndDevicesArray);
     }
     @RequestMapping("/getLotAndCps")
     @ResponseBody
@@ -62,15 +146,40 @@ public class GetWaferInfor {
                 result.put(bean.getLot(),cps);
             }
         }
+        ArrayList<lotAndCp> lotAndCpssArray=new ArrayList<>();
+        Set<String> lotSet=result.keySet();
+        for (String lot : lotSet) {
+            lotAndCp lotAndCp=new lotAndCp();
+            lotAndCp.setLot(lot);
+            lotAndCp.setCp(result.get(lot));
+            lotAndCpssArray.add(lotAndCp);
+        }
+        return JSON.toJSONString(lotAndCpssArray);
+    }
+    @RequestMapping("/getWaferIds")
+    @ResponseBody
+    public String getWaferIDs(@RequestParam("customer")String customer,@RequestParam("device")String device,@RequestParam("lot")String lot,@RequestParam("cp")String cp)
+    {
+        ArrayList<WaferIdBean> waferIds=proberDataDAO.getWaferIds(customer,device,lot,cp);
+        ArrayList<String> result=new ArrayList<>();
+        for (WaferIdBean bean : waferIds) {
+            result.add(bean.getWaferNo());
+        }
         return JSON.toJSONString(result);
     }
-
+    @RequestMapping("/getQureyInfors")
+    @ResponseBody
+    public String getqureyWaferInfors(@RequestParam("customer")String customer,@RequestParam(value = "device",required = false)String device,@RequestParam(value = "lot",required = false)String lot,@RequestParam(value = "cp",required = false)String cp,@RequestParam(value = "wafer",required = false) String waferId)
+    {
+        ArrayList<GetWaferInforBean> result=proberDataDAO.getQureyInfors(customer,device,lot,cp,waferId);
+        return JSON.toJSONString(result);
+    }
     @RequestMapping("/getYields")
     @ResponseBody
     public String getYields(@RequestParam("customer")String customer,@RequestParam("device")String device,@RequestParam("lot")String lot,@RequestParam("cp")String cp,@RequestParam(value = "wafer",required = false)String wafer)
     {
         ArrayList<waferYieldBean> summary=proberDataDAO.getWaferBinSummary(customer,device,lot,cp,wafer);
-        ArrayList<waferIdInforBean> paramBeanSummary=proberDataDAO.getOthersParam(customer,device,lot,cp,null);
+        ArrayList<waferIdInforBean> paramBeanSummary=proberDataDAO.getOthersParam(customer,device,lot,cp,wafer);
         HashMap<Integer,String> lotMap=new HashMap<>();
         HashMap<String,String> waferLimitYieldMap=new HashMap<>();
         HashMap<String,String> lotLimitYieldMap=new HashMap<>();
@@ -163,7 +272,6 @@ public class GetWaferInfor {
                     infor.getValues().add(String.format("%.6f", 0.00 ));
                 }
             }
-
             waferIdPassYieldArray.add(String.format("%.6f",(((double)passDieMap.get(waferId))*100/waferIdGrossDieMap.get(waferId))));
         }
         waferLimit.setValues(waferLimitYieldArray);
@@ -195,6 +303,76 @@ public class GetWaferInfor {
 
         public void setValues(ArrayList<Object> values) {
             this.values = values;
+        }
+    }
+    class customerAndDevice{
+        private String customer;
+        private ArrayList<String> device;
+
+        public String getCustomer() {
+            return customer;
+        }
+
+        public void setCustomer(String customer) {
+            this.customer = customer;
+        }
+
+        public ArrayList<String> getDevice() {
+            return device;
+        }
+
+        public void setDevice(ArrayList<String> device) {
+            this.device = device;
+        }
+    }
+    class lotAndCp{
+        private String lot;
+        private ArrayList<String> cp;
+
+        public String getLot() {
+            return lot;
+        }
+
+        public void setLot(String lot) {
+            this.lot = lot;
+        }
+
+        public ArrayList<String> getCp() {
+            return cp;
+        }
+
+        public void setCp(ArrayList<String> cp) {
+            this.cp = cp;
+        }
+    }
+    class superPostionBean
+    {
+        private Integer x;
+        private Integer y;
+        private Integer v;
+
+        public Integer getX() {
+            return x;
+        }
+
+        public void setX(Integer x) {
+            this.x = x;
+        }
+
+        public Integer getY() {
+            return y;
+        }
+
+        public void setY(Integer y) {
+            this.y = y;
+        }
+
+        public Integer getV() {
+            return v;
+        }
+
+        public void setV(Integer v) {
+            this.v = v;
         }
     }
 }

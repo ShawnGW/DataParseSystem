@@ -1,9 +1,24 @@
+$(document).ready(function () {
+	var url =window.location.search;
+	if(url.indexOf("?")!=-1){
+		var str=url.substr(1);
+		var urlArray=str.split("&");
+		for(var i=0;i<urlArray.length;i++){
+			var index=urlArray[i].indexOf("=");
+			var lastUrl=urlArray[i].substring(index+1,urlArray[i].length);
+			var firtUrl=urlArray[i].substring(0,index);
+            $("#MappingTable").append("<tr><td>"+firtUrl+"</td><td>"+lastUrl+"</td></tr>");
+		}
+	}
+
+})
+var url=window.location.search;
 $("#primaryChange").click(function(){
 	var binSummary = new Array();
 			var binSet = new Set();
 	$.ajax({
 		type:"get",
-		url:"./js/data.json",
+		url:"/DataParseSystem/GetWaferMap/Mapping"+url,
 		async:false,
 		success:function(data){
 			$.each(data, function(i,item) {
