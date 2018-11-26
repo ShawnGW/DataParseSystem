@@ -24,14 +24,14 @@ public class GetWaferMap {
 
     @RequestMapping("/Mapping")
     @ResponseBody
-    public String getMap(@RequestParam("code")String code,@RequestParam("device") String device,@RequestParam("lot") String lot,@RequestParam("cp") String cp,@RequestParam("waferId") String waferId)
+    public String getMap(@RequestParam("customer")String code,@RequestParam("device") String device,@RequestParam("lot") String lot,@RequestParam("cp") String cp,@RequestParam("wafer") String waferId)
     {
         ArrayList<mvcDieBean> result=parseRawdataNew.getMap(new File("/server212/RawData/ProberRawdata/"+code+"/"+device+"/"+lot+"/"+cp+"/"+waferId+".raw"));
         return JSON.toJSONString(result);
     }
     @RequestMapping("/PrimaryOrRetestMap")
     @ResponseBody
-    public String getPrimaryOrRetestMap(@RequestParam("code")String code,@RequestParam("device") String device,@RequestParam("lot") String lot,@RequestParam("cp") String cp,@RequestParam("waferId") String waferId,@RequestParam("type")String type)
+    public String getPrimaryOrRetestMap(@RequestParam("customer")String code,@RequestParam("device") String device,@RequestParam("lot") String lot,@RequestParam("cp") String cp,@RequestParam("wafer") String waferId,@RequestParam("type")String type)
     {
         if (type.equals("P"))
         {

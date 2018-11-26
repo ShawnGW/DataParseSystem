@@ -160,9 +160,10 @@ $(document).ready(function() {
             "orderable": false,
             "data": null,
             "defaultContent": '<i id="details-button" class="fa fa-chevron-circle-down fa-2x center-block" style="margin-left:5px"></i>'
-        }, {
-            "data": "customCode"
         },
+            // {
+            // "data": "customCode"
+            // },
             {
                 "data": "device"
             },
@@ -174,6 +175,18 @@ $(document).ready(function() {
             },
             {
                 "data": "waferNo"
+            },
+            {
+                "data": "grossDie"
+            },
+            {
+                "data": "passDie"
+            },
+            {
+                "data": "failDie"
+            },
+            {
+                "data": "yield"
             },
             {
                 "data": "testerId"
@@ -287,10 +300,6 @@ function format(d) {
         '<tr>' +
         '<th>Operator:</th>' +
         '<th>Program:</th>' +
-        '<th>GrossDie:</th>' +
-        '<th>PassDie:</th>' +
-        '<th>FailDie:</th>' +
-        '<th>Yield:</th>' +
         '<th>MapCols:</th>' +
         '<th>MapRows:</th>' +
         '<th>MinX:</th>' +
@@ -302,10 +311,6 @@ function format(d) {
         '<tr>'+
         '<th>' + d.oprator + '</th>'+
         '<th>' + d.testerProgram + '</th>' +
-        '<th>' + d.grossDie + '</th>' +
-        '<th>' + d.passDie + '</th>' +
-        '<th>' + d.failDie + '</th>' +
-        '<th>' + d.yield + '</th>' +
         '<th>' + d.mapCols + '</th>' +
         '<th>' + d.mapRows + '</th>' +
         '<th>' + d.minX + '</th>' +
@@ -313,7 +318,7 @@ function format(d) {
         '<th>' + d.pidName + '</th>' +
         '<th>' + d.pidVersion + '</th>' +
         '<th>' +
-        '<a target="_blank" href="Mapping.html?customer='+d.customCode+'&device='+d.device+'&lot='+d.lotId+'&cp='+d.cpStep+'&wafer='+d.waferNo+'"><i class="fa fa-hand-o-right"></i>查看</a>'+ '</th>' +'</tr>'+
+        '<a target="_blank" href="/DataParseSystem/Navigation/waferMap?customer='+d.customCode+'&device='+d.device+'&lot='+d.lotId+'&cp='+d.cpStep+'&wafer='+d.waferNo+'"><i class="fa fa-hand-o-right"></i>查看</a>'+ '</th>' +'</tr>'+
         "</table>";
 }
 $('#example tbody').on('click', 'td.details-control', function() {

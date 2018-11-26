@@ -14,34 +14,27 @@
 		<script src="<c:url value="/resources/system/js/boost-canvas.js"/>" type="text/javascript" charset="utf-8"></script>
 		<script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/>" type="text/javascript"></script>
 		<link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/>">
-		<link rel="stylesheet" href="<c:url value="/resources/system/css/status-select.css"/>" />
 		<link rel="stylesheet" href="<c:url value="/resources/system/css/button.css"/>" />
 	</head>
 	<body>
-	<div class="panel panel-default">
-
-		<div class="panel-body">
-			<div  id="SelectMapping" class="col-lg-9">
-				<select class="customer_code button-3d"id="customer_code">
-				</select>
-				<select class="device button-3d" id="device">
-				</select>
-				<select class="lot_id button-3d" id="lot_id">
-				</select>
-				<select class="cp_step button-3d" id="cp_step">
-				</select>
+	<div id="ChartsPage">
+		<div class="panel panel-default" style="width: 100%;height: 100%">
+			<div class="panel-heading">
+				Mapping Chart
+				<div style="float: right; display: none" id="prfButtons">
+					<button class="button button-action button-primary button-pill button-tiny" id="primaryChange">初测</button>
+					<button class="button button-action button-primary button-pill button-tiny" id="retestChange">复测</button>
+					<button class="button button-action button-primary button-pill button-tiny" id="finalChange">终测</button>
+				</div>
 			</div>
-			<div class="col-lg-3">
-				<button class="button  button-primary button-pill  button-3d" id="drawMap" type="button">画图</button>
-				<button class="button button-primary button-primary button-pill button-3d" id="refresh" type="button">刷新</button>
+			<div class="panel-body">
+				<div id="primaryTest">
+					<div id="container" style="width:100%;height:750px"></div>
+				</div>
+
 			</div>
-
 		</div>
-		<div class="panel-body">
-			<div id="container" style="width:100%;height:800px"></div>
-		</div>
-
 	</div>
-	<script src="<c:url value="/resources/system/js/superposition.js"/>" type="text/javascript" charset="utf-8"></script>
+	<script src="<c:url value="/resources/system/js/waferMap.js"/>" type="text/javascript" charset="utf-8"></script>
 	</body>
 </html>

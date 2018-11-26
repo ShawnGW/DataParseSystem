@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="panel-body">
-        <div id="container" style="width:100%;height:450px"></div>
+        <div id="container" style="width:100%;height:560px"></div>
     </div>
 </div>
 <script src="<c:url value="/resources/system/js/lotLineChart.js"/>" type="text/javascript"></script>

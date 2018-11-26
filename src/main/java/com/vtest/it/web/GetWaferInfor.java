@@ -9,7 +9,9 @@ import com.vtest.it.pojo.binwaferinfors.waferYieldBean;
 import com.vtest.it.pojo.mvcDieBean;
 import com.vtest.it.pojo.vtdbInfors.CustomerAndDevicesBean;
 import com.vtest.it.pojo.vtdbInfors.LotAndCpsBean;
+import com.vtest.it.pojo.vtdbInfors.LotSummaryWaferBean;
 import com.vtest.it.rawdataParse.ParseRawdataNew;
+import com.vtest.it.rawdatacheck.CheckIfInforToMes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,17 +23,20 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 @Controller
 @RequestMapping("/getWaferInfor")
 public class GetWaferInfor {
+    private CheckIfInforToMes checkIfInforToMes;
     private ParseRawdataNew parseRawdataNew;
     private ProberDataDAO proberDataDAO;
     SimpleDateFormat format=new SimpleDateFormat("yyyy-MM--dd hh:mm:ss");
+
+    @Autowired
+    public void setCheckIfInforToMes(CheckIfInforToMes checkIfInforToMes) {
+        this.checkIfInforToMes = checkIfInforToMes;
+    }
 
     @Autowired
     public void setParseRawdataNew(ParseRawdataNew parseRawdataNew) {
@@ -40,6 +45,62 @@ public class GetWaferInfor {
     @Autowired
     public void setProberDataDAO(ProberDataDAO proberDataDAO) {
         this.proberDataDAO = proberDataDAO;
+    }
+
+    @ResponseBody
+    @RequestMapping("/getBinSummary")
+    public String getBinSummary(@RequestParam("customer")String customer,@RequestParam("device")String device,@RequestParam("lot")String lot,@RequestParam("cp")String cp)
+    {
+        ArrayList<waferYieldBean> summary=proberDataDAO.getWaferBinSummary(customer,device,lot,cp,null);
+        ArrayList<LotSummaryWaferBean> lotSummary=proberDataDAO.getwaferInfor(customer,device,lot,cp);
+        TreeSet<Integer> binSet=new TreeSet<>();
+        HashMap<String,TreeMap<Integer,Integer>> lotBinMap=new HashMap<>();
+        for (waferYieldBean bean :summary) {
+            binSet.add(bean.getSoftBinNo());
+            if (lotBinMap.containsKey(bean.getWaferNo()))
+            {
+                TreeMap<Integer,Integer> binMap=lotBinMap.get(bean.getWaferNo());
+                if (binMap.containsKey(bean.getSoftBinNo()))
+                {
+                    binMap.put(bean.getSoftBinNo(),binMap.get(bean.getSoftBinNo())+bean.getBinCount());
+                }else
+                {
+                    binMap.put(bean.getSoftBinNo(),bean.getBinCount());
+                }
+            }else {
+                TreeMap<Integer,Integer> binMap=new TreeMap<>();
+                binMap.put(bean.getSoftBinNo(),bean.getBinCount());
+                lotBinMap.put(bean.getWaferNo(),binMap);
+            }
+        }
+        TreeSet<String> waferIdSet=new TreeSet<>(lotBinMap.keySet());
+        for (String waferId : waferIdSet) {
+            TreeMap<Integer,Integer> binSummary=lotBinMap.get(waferId);
+            for (Integer bin : binSet) {
+                if (!binSummary.containsKey(bin))
+                {
+                    binSummary.put(bin,0);
+                }
+            }
+            for (LotSummaryWaferBean bean : lotSummary) {
+                if (bean.getWaferNo().equals(waferId))
+                {
+                    ArrayList<Integer> yyy=new ArrayList<Integer>(binSummary.values());
+                    bean.setBinSummary(yyy);
+                }
+            }
+        }
+        LotSummaryWaferBean binDefine=new LotSummaryWaferBean();
+        binDefine.setWaferNo("bin_define");
+        binDefine.setBinSummary(new ArrayList<Integer>(binSet));
+        lotSummary.add(0,binDefine);
+        return  JSON.toJSONString(lotSummary);
+    }
+    @ResponseBody
+    @RequestMapping("/checkDataSourceType")
+    public String checkDataTypeSource(@RequestParam("customer")String customer,@RequestParam("device")String device)
+    {
+        return  JSON.toJSONString(checkIfInforToMes.check(customer,device));
     }
     @RequestMapping("/getSuperPosition")
     @ResponseBody
@@ -64,7 +125,6 @@ public class GetWaferInfor {
         } catch (IOException e) {
             passBins.add(1);
         }
-
         String[] passBinStr=(passInfor).split(",");
         for (int i = 0; i < passBinStr.length; i++) {
             passBins.add(Integer.valueOf(passBinStr[i]));

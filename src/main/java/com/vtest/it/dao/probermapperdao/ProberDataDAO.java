@@ -4,6 +4,7 @@ import com.vtest.it.pojo.binwaferinfors.*;
 import com.vtest.it.pojo.equipment.EquipmentBean;
 import com.vtest.it.pojo.vtdbInfors.CustomerAndDevicesBean;
 import com.vtest.it.pojo.vtdbInfors.LotAndCpsBean;
+import com.vtest.it.pojo.vtdbInfors.LotSummaryWaferBean;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -23,4 +24,5 @@ public interface ProberDataDAO {
     public ArrayList<LotAndCpsBean> getLotAndCp(@Param("custom")String custom, @Param("device")String device);
     public ArrayList<WaferIdBean> getWaferIds(@Param("custom")String custom, @Param("device")String device, @Param("lot")String lot, @Param("cp")String cp);
     public ArrayList<GetWaferInforBean> getQureyInfors(@Param("custom")String custom, @Param("device")String device, @Param("lot")String lot, @Param("cp")String cp,@Param("waferId")String waferId);
+    public ArrayList<LotSummaryWaferBean> getwaferInfor(@Param("custom")String custom, @Param("device")String device, @Param("lot")String lot, @Param("cp")String cp);
 }

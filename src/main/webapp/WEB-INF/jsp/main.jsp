@@ -219,11 +219,15 @@
                     <thead>
                     <tr>
                         <th>Details</th>
-                        <th>Customer</th>
+                        <%--<th>Code</th>--%>
                         <th>Device</th>
                         <th>Lot</th>
                         <th>CP</th>
                         <th>Wafer</th>
+                        <th>Gross</th>
+                        <th>Pass</th>
+                        <th>Fail</th>
+                        <th>Yield</th>
                         <th>Tester</th>
                         <th>Prober</th>
                         <th>ProberCard</th>

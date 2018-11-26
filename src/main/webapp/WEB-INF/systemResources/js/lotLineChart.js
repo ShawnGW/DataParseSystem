@@ -156,7 +156,6 @@ $("#drawMap").click(function() {
                 }
                 if (item.name == "wafer") {
                     categories = item.values;
-
                 }
             });
         }
@@ -169,7 +168,7 @@ $("#drawMap").click(function() {
             text: 'PassBinPercentAndFailBinPercent'
         },
         subtitle: {
-            text: '数据来源: 192.168.10.212/RawData'
+            text: 'v-test lot line map'
         },
         xAxis: [{
             categories: categories,
@@ -206,7 +205,7 @@ $("#drawMap").click(function() {
             opposite: true
         }],
         tooltip: {
-            shared: true
+            shared: true,
         },
         series:series
     });

@@ -116,4 +116,8 @@
         </if>
         ;
     </select>
+    <select id="getwaferInfor" resultType="com.vtest.it.pojo.vtdbInfors.LotSummaryWaferBean">
+      SELECT wafer_no,gross_die,pass_die,fail_die,yield FROM vtdaprober.bin_wafer_summary WHERE custom_code=#{custom}
+       AND device =#{device} AND lot_id=#{lot} AND cp_step=#{cp};
+    </select>
 </mapper>

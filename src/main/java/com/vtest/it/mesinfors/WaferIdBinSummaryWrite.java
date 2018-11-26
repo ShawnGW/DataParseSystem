@@ -46,6 +46,10 @@ public class WaferIdBinSummaryWrite {
 		for (Integer bin : set) {
 			SB.append("|Bin"+bin+":"+binSummary.get(bin));
 		}
+		String startTime=rawdataInitBean.getProperties().get("Test Start Time");
+		String endTime=rawdataInitBean.getProperties().get("Test End Time");
+		SB.append("|TestStart:"+startTime.substring(0,startTime.length()-2));
+		SB.append("|TestEnd:"+endTime.substring(0,endTime.length()-2));
 		String summary=SB.toString();
 		waferidInforIntoMes.write(lotNum, waferId, cp, summary);	
 	}
