@@ -40,7 +40,7 @@ public class TskProberMappingParse {
 			// TODO: handle exception
 		}
 		FileInputStream fileInputStream=new FileInputStream(file);
-		byte[] bs=new byte[2000000];
+		byte[] bs=new byte[10000000];
 		fileInputStream.read(bs);
 		fileInputStream.close();
 		String OP=null;

@@ -120,12 +120,23 @@ $("#drawMap").click(function() {
                     $.each(item.values, function (index, value) {
                         values.y = parseFloat(value);
                         values.color = '#A2CD5A';
-                        if (waferLimitValues[index]>0&&values.y < waferLimitValues[index]) {
-                            values.color = '#CD4F39';
-                        }
-                        else if (values.y < lotLimmitValus[index]) {
+                        if(values.y < waferLimitValues[index]||values.y < lotLimmitValus[index])
+                        {
                             values.color = '#EEAD0E';
+                            if(values.y < waferLimitValues[index])
+                            {
+                                values.color = '#CD4F39';
+                            }
                         }
+                        //
+                        // if (waferLimitValues[index]>0) {
+                        //     if(values.y < waferLimitValues[index])
+                        //     {
+                        //         values.color = '#CD4F39';
+                        //     }
+                        // }else if (values.y < lotLimmitValus[index]) {
+                        //     values.color = '#EEAD0E';
+                        // }
                         percentage.data.push(values);
                         values = new Object();
                     });
