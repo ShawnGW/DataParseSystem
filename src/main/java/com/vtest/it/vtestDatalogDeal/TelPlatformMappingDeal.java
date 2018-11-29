@@ -10,7 +10,6 @@ import com.vtest.it.mesinfors.WaferIdBinSummaryWrite;
 import com.vtest.it.pojo.DataSourceBean;
 import com.vtest.it.pojo.MesConfigBean;
 import com.vtest.it.pojo.binwaferinfors.BinWaferInforBean;
-import com.vtest.it.pojo.binwaferinfors.FailDieBean;
 import com.vtest.it.pojo.propertiescheckItemBean.DataParseIssueBean;
 import com.vtest.it.rawdatacheck.CheckIfInforToMes;
 import com.vtest.it.rawdatacheck.RawDataCheck;
@@ -27,7 +26,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.Set;
 
 @Service
 public class TelPlatformMappingDeal extends PlatformMappingDeal{
@@ -215,8 +213,12 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
                                                 if (issueBean.getIssuLevel()==99)
                                                 {
                                                     delFlag=false;
-                                                    continue;
+                                                    break;
                                                 }
+                                            }
+                                            if (!delFlag)
+                                            {
+                                                continue;
                                             }
                                             if (issueBeans.size()>0)
                                             {
@@ -234,6 +236,7 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
                                             try {
                                                 dataToVtDB(rawdataInitBean,resultMap);
                                             } catch (Exception e) {
+                                                e.printStackTrace();
                                                 delFlag=false;
                                                 continue;
                                             }
@@ -321,8 +324,12 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
                                                 if (issueBean.getIssuLevel()==99)
                                                 {
                                                     delFlag=false;
-                                                    continue;
+                                                    break;
                                                 }
+                                            }
+                                            if (!delFlag)
+                                            {
+                                                continue;
                                             }
                                             if (issueBeans.size()>0)
                                             {
@@ -340,6 +347,7 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
                                             try {
                                                 dataToVtDB(rawdataInitBean,resultMap);
                                             } catch (Exception e) {
+                                                e.printStackTrace();
                                                 delFlag=false;
                                                 continue;
                                             }
@@ -347,6 +355,7 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
                                                 datalogBackupAndRawDataDeal.datalogBackup(dataSourceConfigBean.getBackupSourcePathByCp(),waferIdDat,resultMap);
                                                 datalogBackupAndRawDataDeal.rawdataDeal(dataSourceConfigBean.getRawdataPath(),rawFile,resultMap);
                                             } catch (Exception e) {
+                                                e.printStackTrace();
                                                 delFlag=false;
                                                 continue;
                                             }
@@ -582,27 +591,30 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
             passBinsArray.add(Integer.valueOf(passBins[i]));
         }
         proberDataDAO.deleteSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId);
-        proberDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"P",passBinsArray);
-        proberDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"F",passBinsArray);
-
-        ArrayList<FailDieBean> failDies=new ArrayList<>();
-        HashMap<String,String> testDieMap=rawdataInitBean.getTestDieMap();
-        Set<String> coordinateSet=testDieMap.keySet();
-        for (String coordinate : coordinateSet) {
-            Integer softbin=Integer.valueOf(testDieMap.get(coordinate).substring(0,4).trim());
-            if (!passBinsArray.contains(softbin))
-            {
-                Integer coordianteX=Integer.valueOf(coordinate.substring(0,4).trim());
-                Integer coordianteY=Integer.valueOf(coordinate.substring(4).trim());
-                FailDieBean failDieBean=new FailDieBean();
-                failDieBean.setxCoordinate(coordianteX);
-                failDieBean.setyCoordinate(coordianteY);
-                failDieBean.setSiteId(0);
-                failDieBean.setBinNumber(softbin);
-                failDies.add(failDieBean);
-            }
+        if (!rawdataInitBean.getSiteBinSum().keySet().isEmpty())
+        {
+            proberDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"P",passBinsArray);
+            proberDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"F",passBinsArray);
         }
-        proberDataDAO.insertFailDieToBinInfo(customerCode,device,lotNum,cpProcess,waferId,failDies);
+
+//        ArrayList<FailDieBean> failDies=new ArrayList<>();
+//        HashMap<String,String> testDieMap=rawdataInitBean.getTestDieMap();
+//        Set<String> coordinateSet=testDieMap.keySet();
+//        for (String coordinate : coordinateSet) {
+//            Integer softbin=Integer.valueOf(testDieMap.get(coordinate).substring(0,4).trim());
+//            if (!passBinsArray.contains(softbin))
+//            {
+//                Integer coordianteX=Integer.valueOf(coordinate.substring(0,4).trim());
+//                Integer coordianteY=Integer.valueOf(coordinate.substring(4).trim());
+//                FailDieBean failDieBean=new FailDieBean();
+//                failDieBean.setxCoordinate(coordianteX);
+//                failDieBean.setyCoordinate(coordianteY);
+//                failDieBean.setSiteId(0);
+//                failDieBean.setBinNumber(softbin);
+//                failDies.add(failDieBean);
+//            }
+//        }
+//        proberDataDAO.insertFailDieToBinInfo(customerCode,device,lotNum,cpProcess,waferId,failDies);
         BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
         generateWaferInforBean.generate(rawdataInitBean,binWaferInforBean);
         proberDataDAO.insertWaferInforToBinWaferSummary(binWaferInforBean);

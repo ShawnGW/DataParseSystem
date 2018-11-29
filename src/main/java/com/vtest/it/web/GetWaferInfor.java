@@ -332,7 +332,8 @@ public class GetWaferInfor {
                     infor.getValues().add(String.format("%.6f", 0.00 ));
                 }
             }
-            waferIdPassYieldArray.add(String.format("%.6f",(((double)passDieMap.get(waferId))*100/waferIdGrossDieMap.get(waferId))));
+
+            waferIdPassYieldArray.add(String.format("%.6f",(((double)(null!=passDieMap.get(waferId)?passDieMap.get(waferId):0))*100/waferIdGrossDieMap.get(waferId))));
         }
         waferLimit.setValues(waferLimitYieldArray);
         lotLimit.setValues(lotLimitYieldArray);

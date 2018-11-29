@@ -49,7 +49,7 @@ public abstract class AbstractRawDataAfterDeal implements RawDataAfterDeal{
         properties.put("Gross Die",String.valueOf(totalDieSum));
         properties.put("Pass Die",String.valueOf(passDieSum));
         properties.put("Fail Die",String.valueOf(failDieSum));
-        properties.put("Wafer Yield",String.format("%4.2f", (double)passDieSum*100/totalDieSum)+"%");
+        properties.put("Wafer Yield",(totalDieSum==0?0:String.format("%4.2f", (double)passDieSum*100/totalDieSum))+"%");
 
         bean.setProperties(properties);
         bean.setSiteBinSum(siteBinSum);

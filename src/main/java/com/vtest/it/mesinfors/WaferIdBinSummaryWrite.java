@@ -48,8 +48,10 @@ public class WaferIdBinSummaryWrite {
 		}
 		String startTime=rawdataInitBean.getProperties().get("Test Start Time");
 		String endTime=rawdataInitBean.getProperties().get("Test End Time");
-		SB.append("|TestStart:"+startTime.substring(0,startTime.length()-2));
-		SB.append("|TestEnd:"+endTime.substring(0,endTime.length()-2));
+		startTime=startTime.length()>14?startTime.substring(0,14):startTime;
+		endTime=endTime.length()>14?endTime.substring(0,14):endTime;
+		SB.append("|TestStart:"+startTime);
+		SB.append("|TestEnd:"+endTime);
 		String summary=SB.toString();
 		waferidInforIntoMes.write(lotNum, waferId, cp, summary);	
 	}

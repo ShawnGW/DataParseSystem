@@ -118,15 +118,16 @@
             <span class="dropdown-heading">Data Analysis</span>
             <ul>
                 <li><a target="_blank" href="<c:url value="/Navigation/LotLineChart"/>">Lot_line</a> </li>
-                <li><a href="javascripts:void(0)" onclick="testerChange()">Tester_status </a> </li>
-                <li><a href="javascripts:void(0)" onclick="databaseChange()">Data_summary</a> </li>
+                <li><a  onclick="testerChange()">Tester_status </a> </li>
+                <li><a  onclick="databaseChange()">Data_summary</a> </li>
                 <li><a target="_blank" href="<c:url value="/Navigation/superposition"/>">Superposition</a> </li>
             </ul>
         </li>
         <li class="has-sub"> <span class="item-icon"> <i class="zmdi zmdi-devices"></i> </span>
             <span class="dropdown-heading">tools</span>
             <ul>
-               <li><a href="<c:url value="/tools/DegreeTrans"/>">Degree Transform</a> </li>
+               <li><a href="<c:url value="/tools/DegreeTrans"/>" target="_blank">Degree Transform</a> </li>
+                <li><a href="<c:url value="/RawdataModify/upload"/>" target="_blank">Modify RawData</a> </li>
             </ul>
         </li>
         <li> <span class="item-icon"> <i class="zmdi zmdi-keyboard"></i> </span> <a href="#1">

@@ -137,7 +137,7 @@ $(document).ready(function () {
         $("#prfButtons").css("display","block");
         $.ajax({
             type:"get",
-            url:"/DataParseSystem/GetWaferMap/Mapping"+url,
+            url:"/DataParseSystem/GetWaferMap/PrimaryOrRetestMap?type=P"+url,
             async:false,
             dataType: 'json',
             success:function(data){
@@ -176,7 +176,7 @@ $(document).ready(function () {
         });
         $.ajax({
             type:"get",
-            url:"/DataParseSystem/GetWaferMap/Mapping"+url,
+            url:"/DataParseSystem/GetWaferMap/PrimaryOrRetestMap?type=R"+url,
             async:false,
             dataType: 'json',
             success:function(data){

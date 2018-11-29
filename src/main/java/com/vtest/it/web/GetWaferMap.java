@@ -3,6 +3,7 @@ package com.vtest.it.web;
 import com.alibaba.fastjson.JSON;
 import com.vtest.it.pojo.mvcDieBean;
 import com.vtest.it.rawdataParse.ParseRawdataNew;
+import com.vtest.it.rawdatacheck.CheckIfInforToMes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,12 @@ import java.util.ArrayList;
 @RequestMapping("/GetWaferMap")
 public class GetWaferMap {
     private ParseRawdataNew parseRawdataNew;
+    private CheckIfInforToMes checkIfInforToMes;
+
+    @Autowired
+    public void setCheckIfInforToMes(CheckIfInforToMes checkIfInforToMes) {
+        this.checkIfInforToMes = checkIfInforToMes;
+    }
 
     @Autowired
     public void setParseRawdataNew(ParseRawdataNew parseRawdataNew) {
@@ -26,8 +33,15 @@ public class GetWaferMap {
     @ResponseBody
     public String getMap(@RequestParam("customer")String code,@RequestParam("device") String device,@RequestParam("lot") String lot,@RequestParam("cp") String cp,@RequestParam("wafer") String waferId)
     {
-        ArrayList<mvcDieBean> result=parseRawdataNew.getMap(new File("/server212/RawData/ProberRawdata/"+code+"/"+device+"/"+lot+"/"+cp+"/"+waferId+".raw"));
-        return JSON.toJSONString(result);
+        if (checkIfInforToMes.check(code,device))
+        {
+            ArrayList<mvcDieBean> result=parseRawdataNew.getMap(new File("/server212/RawData/TesterRawdatabackup/"+code+"/"+device+"/"+lot+"/"+cp+"/"+waferId+".raw"));
+            return JSON.toJSONString(result);
+        }else
+        {
+            ArrayList<mvcDieBean> result=parseRawdataNew.getMap(new File("/server212/RawData/ProberRawdatabackup/"+code+"/"+device+"/"+lot+"/"+cp+"/"+waferId+".raw"));
+            return JSON.toJSONString(result);
+        }
     }
     @RequestMapping("/PrimaryOrRetestMap")
     @ResponseBody

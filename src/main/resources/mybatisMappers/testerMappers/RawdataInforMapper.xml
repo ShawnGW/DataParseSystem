@@ -44,4 +44,57 @@
        </trim>
        ;
    </insert>
+    <select id="getWaferBinSummary" resultMap="waferYieldMap">
+        SELECT custom_code,device,lot_id,cp_step,wafer_no,site_id,soft_bin_no,bin_count,pass_fail FROM vtdatester.bin_info_summary
+        WHERE custom_code=#{customerCode} AND device=#{device} AND lot_id=#{lot} AND cp_step=#{cp} AND test_type='F'
+        <if test="waferId!=null">
+            AND wafer_no=#{waferId}
+        </if>
+        ;
+    </select>
+    <select id="getOthersParam" resultMap="idMap">
+        SELECT wafer_no,others_params FROM vtdatester.bin_wafer_summary WHERE custom_code=#{customerCode}
+        <if test="device!=null">
+            AND device=#{device}
+        </if>
+        <if test="lot!=null">
+            AND lot_id=#{lot}
+        </if>
+        <if test="cp!=null">
+            AND cp_step=#{cp}
+        </if>
+        <if test="waferId!=null">
+            AND wafer_no=#{waferId}
+        </if>
+        ;
+    </select>
+    <select id="getCustomerAndDevices" resultMap="deviceAndCustomer">
+        select distinct device ,custom_code from  vtdatester.bin_wafer_summary where custom_code in (SELECT distinct custom_code FROM vtdaprober.bin_wafer_summary);
+    </select>
+    <select id="getLotAndCp"  resultMap="lotAndCp">
+        select distinct lot_id,cp_step from vtdatester.bin_wafer_summary where  device=#{device} and custom_code=#{custom};
+    </select>
+    <select id="getWaferIds" resultType="com.vtest.it.pojo.binwaferinfors.WaferIdBean">
+        SELECT wafer_no FROM vtdatester.bin_wafer_summary where custom_code=#{custom} and device=#{device} and lot_id=#{lot} and cp_step=#{cp};
+    </select>
+    <select id="getQureyInfors" resultType="com.vtest.it.pojo.binwaferinfors.GetWaferInforBean">
+        SELECT custom_code,device,lot_id,cp_step,wafer_no,oprator,tester_program,tester_id,prober_id,Prober_card_id,pid_name,pid_version,start_time,gross_die,pass_die,fail_die,yield,end_time,map_cols,map_rows,min_x,min_y FROM vtdatester.bin_wafer_summary WHERE custom_code=#{custom}
+        <if test="device!=null">
+            AND device=#{device}
+        </if>
+        <if test="lot!=null">
+            AND lot_id=#{lot}
+        </if>
+        <if test="cp!=null">
+            AND cp_step=#{cp}
+        </if>
+        <if test="waferId!=null">
+            AND wafer_no=#{waferId}
+        </if>
+        ;
+    </select>
+    <select id="getwaferInfor" resultType="com.vtest.it.pojo.vtdbInfors.LotSummaryWaferBean">
+        SELECT wafer_no,gross_die,pass_die,fail_die,yield FROM vtdatester.bin_wafer_summary WHERE custom_code=#{custom}
+        AND device =#{device} AND lot_id=#{lot} AND cp_step=#{cp};
+    </select>
 </mapper>

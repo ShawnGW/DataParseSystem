@@ -14,7 +14,6 @@ import com.vtest.it.mesinfors.WaferIdBinSummaryWrite;
 import com.vtest.it.pojo.DataSourceBean;
 import com.vtest.it.pojo.MesConfigBean;
 import com.vtest.it.pojo.binwaferinfors.BinWaferInforBean;
-import com.vtest.it.pojo.binwaferinfors.FailDieBean;
 import com.vtest.it.pojo.datainfortomes.SiteYieldToMes;
 import com.vtest.it.pojo.equipment.EquipmentBean;
 import com.vtest.it.pojo.propertiescheckItemBean.DataParseIssueBean;
@@ -320,24 +319,24 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
         }
         testerDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"F",passBinsArray);
 
-        ArrayList<FailDieBean> failDies=new ArrayList<>();
-        HashMap<String,String> testDieMap=rawdataInitBean.getTestDieMap();
-        Set<String> coordinateSet=testDieMap.keySet();
-        for (String coordinate : coordinateSet) {
-            Integer softbin=Integer.valueOf(testDieMap.get(coordinate).substring(0,4).trim());
-            if (!passBinsArray.contains(softbin))
-            {
-                Integer coordianteX=Integer.valueOf(coordinate.substring(0,4).trim());
-                Integer coordianteY=Integer.valueOf(coordinate.substring(4).trim());
-                FailDieBean failDieBean=new FailDieBean();
-                failDieBean.setxCoordinate(coordianteX);
-                failDieBean.setyCoordinate(coordianteY);
-                failDieBean.setSiteId(0);
-                failDieBean.setBinNumber(softbin);
-                failDies.add(failDieBean);
-            }
-        }
-        testerDataDAO.insertFailDieToBinInfo(customerCode,device,lotNum,cpProcess,waferId,failDies);
+//        ArrayList<FailDieBean> failDies=new ArrayList<>();
+//        HashMap<String,String> testDieMap=rawdataInitBean.getTestDieMap();
+//        Set<String> coordinateSet=testDieMap.keySet();
+//        for (String coordinate : coordinateSet) {
+//            Integer softbin=Integer.valueOf(testDieMap.get(coordinate).substring(0,4).trim());
+//            if (!passBinsArray.contains(softbin))
+//            {
+//                Integer coordianteX=Integer.valueOf(coordinate.substring(0,4).trim());
+//                Integer coordianteY=Integer.valueOf(coordinate.substring(4).trim());
+//                FailDieBean failDieBean=new FailDieBean();
+//                failDieBean.setxCoordinate(coordianteX);
+//                failDieBean.setyCoordinate(coordianteY);
+//                failDieBean.setSiteId(0);
+//                failDieBean.setBinNumber(softbin);
+//                failDies.add(failDieBean);
+//            }
+//        }
+//        testerDataDAO.insertFailDieToBinInfo(customerCode,device,lotNum,cpProcess,waferId,failDies);
 
         BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
         generateWaferInforBean.generate(rawdataInitBean,binWaferInforBean);
