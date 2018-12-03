@@ -31,29 +31,24 @@ public class GetWaferMap {
 
     @RequestMapping("/Mapping")
     @ResponseBody
-    public String getMap(@RequestParam("customer")String code,@RequestParam("device") String device,@RequestParam("lot") String lot,@RequestParam("cp") String cp,@RequestParam("wafer") String waferId)
-    {
-        if (checkIfInforToMes.check(code,device))
-        {
-            ArrayList<mvcDieBean> result=parseRawdataNew.getMap(new File("/server212/RawData/TesterRawdatabackup/"+code+"/"+device+"/"+lot+"/"+cp+"/"+waferId+".raw"));
+    public String getMap(@RequestParam("customer") String code, @RequestParam("device") String device, @RequestParam("lot") String lot, @RequestParam("cp") String cp, @RequestParam("wafer") String waferId) {
+        if (checkIfInforToMes.check(code, device)) {
+            ArrayList<mvcDieBean> result = parseRawdataNew.getMap(new File("/server212/RawData/TesterRawdatabackup/" + code + "/" + device + "/" + lot + "/" + cp + "/" + waferId + ".raw"));
             return JSON.toJSONString(result);
-        }else
-        {
-            ArrayList<mvcDieBean> result=parseRawdataNew.getMap(new File("/server212/RawData/ProberRawdatabackup/"+code+"/"+device+"/"+lot+"/"+cp+"/"+waferId+".raw"));
+        } else {
+            ArrayList<mvcDieBean> result = parseRawdataNew.getMap(new File("/server212/RawData/ProberRawdatabackup/" + code + "/" + device + "/" + lot + "/" + cp + "/" + waferId + ".raw"));
             return JSON.toJSONString(result);
         }
     }
+
     @RequestMapping("/PrimaryOrRetestMap")
     @ResponseBody
-    public String getPrimaryOrRetestMap(@RequestParam("customer")String code,@RequestParam("device") String device,@RequestParam("lot") String lot,@RequestParam("cp") String cp,@RequestParam("wafer") String waferId,@RequestParam("type")String type)
-    {
-        if (type.equals("P"))
-        {
-            ArrayList<mvcDieBean> result=parseRawdataNew.getPrimaryMap(new File("/server212/RawData/RawdataDetails/"+code+"/"+device+"/"+lot+"/"+cp+"/"+waferId+".dtl"));
+    public String getPrimaryOrRetestMap(@RequestParam("customer") String code, @RequestParam("device") String device, @RequestParam("lot") String lot, @RequestParam("cp") String cp, @RequestParam("wafer") String waferId, @RequestParam("type") String type) {
+        if (type.equals("P")) {
+            ArrayList<mvcDieBean> result = parseRawdataNew.getPrimaryMap(new File("/server212/RawData/RawdataDetails/" + code + "/" + device + "/" + lot + "/" + cp + "/" + waferId + ".dtl"));
             return JSON.toJSONString(result);
-        }else
-        {
-            ArrayList<mvcDieBean> result=parseRawdataNew.getRetestMap(new File("/server212/RawData/RawdataDetails/"+code+"/"+device+"/"+lot+"/"+cp+"/"+waferId+".dtl"));
+        } else {
+            ArrayList<mvcDieBean> result = parseRawdataNew.getRetestMap(new File("/server212/RawData/RawdataDetails/" + code + "/" + device + "/" + lot + "/" + cp + "/" + waferId + ".dtl"));
             return JSON.toJSONString(result);
         }
     }

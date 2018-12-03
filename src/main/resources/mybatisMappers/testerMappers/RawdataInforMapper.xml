@@ -2,6 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtest.it.dao.testermapperdao.TesterDataDAO">
+    <resultMap id="waferYieldMap" type="com.vtest.it.pojo.binwaferinfors.waferYieldBean">
+        <result property="customCode" column="custom_code"/>
+        <result property="device" column="device"/>
+        <result property="lotId" column="lot_id"/>
+        <result property="cpStep" column="cp_step"/>
+        <result property="waferNo" column="wafer_no"/>
+        <result property="siteId" column="site_id"/>
+        <result property="softBinNo" column="soft_bin_no"/>
+        <result property="binCount" column="bin_count"/>
+        <result property="passFail" column="pass_fail"/>
+    </resultMap>
+    <resultMap id="idMap" type="com.vtest.it.pojo.binwaferinfors.waferIdInforBean">
+        <result column="wafer_no" property="waferId"/>
+        <result column="others_params" property="params"/>
+    </resultMap>
+    <resultMap id="deviceAndCustomer" type="com.vtest.it.pojo.vtdbInfors.CustomerAndDevicesBean">
+        <result column="device" property="device"/>
+        <result column="custom_code" property="customerCode"/>
+    </resultMap>
+    <resultMap id="lotAndCp" type="com.vtest.it.pojo.vtdbInfors.LotAndCpsBean">
+        <result column="lot_id" property="lot"/>
+        <result column="cp_step" property="cp"/>
+    </resultMap>
     <insert id="insertEquipmentInforToeqCardSummary" parameterType="com.vtest.it.pojo.equipment.EquipmentBean">
         INSERT INTO vtdatester.eq_card_summary(custom_code, device, lot_id, cp_step, wafer_no, tester_id, prober_id, card_id, first_touchDown, first_time_range, first_test_rate, retest_touchDown, retest_time_range, retest_rate, single_test_time, test_time) VALUES (
         #{customerCode},#{device},#{lotId},#{cpStep},#{waferNo},#{testerId},#{proberId},#{cardId},#{firstTouchDown},#{firstTimeRange},#{firstTestRate},#{retestTouchDown},#{retestTimeRange},#{retestRate},#{singleTestTime},#{testTime}
@@ -16,36 +39,39 @@
           DELETE FROM vtdatester.bin_info_summary WHERE custom_code=#{customerCode} AND device=#{device} AND lot_id=#{lot} AND cp_step=#{cp} AND wafer_no =#{waferId};
     </delete>
     <insert id="insertSiteInforToBinInfoSummary">
-      INSERT INTO vtdatester.bin_info_summary(custom_code, device, lot_id, cp_step, wafer_no, site_id, soft_bin_no, bin_count, pass_fail, test_type)
-      VALUES
-      <trim suffix="" suffixOverrides=",">
-          <foreach collection="siteMap" index="site" item="binItem">
-              <foreach collection="binItem" index="binNo" item="binValue">
-                 <choose>
-                     <when test="passBins.contains(binNo)">
-                         (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{site},#{binNo},#{binValue},TRUE,#{testType}),
-                     </when>
-                     <otherwise>
-                         (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{site},#{binNo},#{binValue},FALSE,#{testType}),
-                     </otherwise>
-                 </choose>
-              </foreach>
-          </foreach>
-      </trim>
+        INSERT INTO vtdatester.bin_info_summary(custom_code, device, lot_id, cp_step, wafer_no, site_id, soft_bin_no,
+        bin_count, pass_fail, test_type)
+        VALUES
+        <trim suffix="" suffixOverrides=",">
+            <foreach collection="siteMap" index="site" item="binItem">
+                <foreach collection="binItem" index="binNo" item="binValue">
+                    <choose>
+                        <when test="passBins.contains(binNo)">
+                            (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{site},#{binNo},#{binValue},TRUE,#{testType}),
+                        </when>
+                        <otherwise>
+                            (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{site},#{binNo},#{binValue},FALSE,#{testType}),
+                        </otherwise>
+                    </choose>
+                </foreach>
+            </foreach>
+        </trim>
         ;
-</insert>
-   <insert id="insertFailDieToBinInfo">
-       INSERT INTO vtdatester.bin_info(custom_code, device, lot_id, cp_step, wafer_no, site_id, bin_no, x_coordinate, y_coordinate)
-       VALUES
-       <trim suffix="" suffixOverrides=",">
-           <foreach collection="failDieList" item="failDie">
-               (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{failDie.siteId},#{failDie.binNumber},#{failDie.xCoordinate},#{failDie.yCoordinate}),
-           </foreach>
-       </trim>
-       ;
-   </insert>
+    </insert>
+    <insert id="insertFailDieToBinInfo">
+        INSERT INTO vtdatester.bin_info(custom_code, device, lot_id, cp_step, wafer_no, site_id, bin_no, x_coordinate,
+        y_coordinate)
+        VALUES
+        <trim suffix="" suffixOverrides=",">
+            <foreach collection="failDieList" item="failDie">
+                (#{customerCode},#{device},#{lot},#{cp},#{waferId},#{failDie.siteId},#{failDie.binNumber},#{failDie.xCoordinate},#{failDie.yCoordinate}),
+            </foreach>
+        </trim>
+        ;
+    </insert>
     <select id="getWaferBinSummary" resultMap="waferYieldMap">
-        SELECT custom_code,device,lot_id,cp_step,wafer_no,site_id,soft_bin_no,bin_count,pass_fail FROM vtdatester.bin_info_summary
+        SELECT custom_code,device,lot_id,cp_step,wafer_no,site_id,soft_bin_no,bin_count,pass_fail FROM
+        vtdatester.bin_info_summary
         WHERE custom_code=#{customerCode} AND device=#{device} AND lot_id=#{lot} AND cp_step=#{cp} AND test_type='F'
         <if test="waferId!=null">
             AND wafer_no=#{waferId}
@@ -71,14 +97,16 @@
     <select id="getCustomerAndDevices" resultMap="deviceAndCustomer">
         select distinct device ,custom_code from  vtdatester.bin_wafer_summary where custom_code in (SELECT distinct custom_code FROM vtdaprober.bin_wafer_summary);
     </select>
-    <select id="getLotAndCp"  resultMap="lotAndCp">
+    <select id="getLotAndCp" resultMap="lotAndCp">
         select distinct lot_id,cp_step from vtdatester.bin_wafer_summary where  device=#{device} and custom_code=#{custom};
     </select>
     <select id="getWaferIds" resultType="com.vtest.it.pojo.binwaferinfors.WaferIdBean">
         SELECT wafer_no FROM vtdatester.bin_wafer_summary where custom_code=#{custom} and device=#{device} and lot_id=#{lot} and cp_step=#{cp};
     </select>
     <select id="getQureyInfors" resultType="com.vtest.it.pojo.binwaferinfors.GetWaferInforBean">
-        SELECT custom_code,device,lot_id,cp_step,wafer_no,oprator,tester_program,tester_id,prober_id,Prober_card_id,pid_name,pid_version,start_time,gross_die,pass_die,fail_die,yield,end_time,map_cols,map_rows,min_x,min_y FROM vtdatester.bin_wafer_summary WHERE custom_code=#{custom}
+        SELECT
+        custom_code,device,lot_id,cp_step,wafer_no,oprator,tester_program,tester_id,prober_id,Prober_card_id,pid_name,pid_version,start_time,gross_die,pass_die,fail_die,yield,end_time,map_cols,map_rows,min_x,min_y
+        FROM vtdatester.bin_wafer_summary WHERE custom_code=#{custom}
         <if test="device!=null">
             AND device=#{device}
         </if>

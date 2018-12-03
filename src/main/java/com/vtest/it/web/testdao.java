@@ -44,6 +44,7 @@ public class testdao {
     public void setVtMesSlotAndSequenceDAO(VtMesSlotAndSequenceDAO vtMesSlotAndSequenceDAO) {
         this.vtMesSlotAndSequenceDAO = vtMesSlotAndSequenceDAO;
     }
+
     @Autowired
     public void setVtMesConfigDAO(VtMesConfigDAO vtMesConfigDAO) {
         this.vtMesConfigDAO = vtMesConfigDAO;
@@ -62,8 +63,7 @@ public class testdao {
 
     @RequestMapping("/test")
     @ResponseBody
-    public String test(@RequestParam("x")Integer x,@RequestParam("y") Integer y)
-    {
+    public String test(@RequestParam("x") Integer x, @RequestParam("y") Integer y) {
 //
 //        LinkedHashMap<String,String> properties=new LinkedHashMap<>();
 //        LinkedList<PropertiesOrderBean> propertiesOrderBeans=propertiesDAO.getOrder();
@@ -153,27 +153,27 @@ public class testdao {
 //        arrayList1.add(failDieBean2);
 //
 //        proberDataDAO.insertFailDieToBinInfo("AMC","GXLX_2","FA89-9932","CP1","FA899932-01",arrayList1);
-        ArrayList<mvcDieBean> items=new ArrayList<>();
+        ArrayList<mvcDieBean> items = new ArrayList<>();
         for (int i = 0; i < x; i++) {
             for (int j = 0; j < y; j++) {
-                mvcDieBean die=new mvcDieBean();
+                mvcDieBean die = new mvcDieBean();
                 die.setX(i);
                 die.setY(j);
                 die.setZ(0);
-                die.setH(i/10);
-                die.setS(i/10);
-                die.setT(i/8);
-                die.setN("Bin"+i/10);
+                die.setH(i / 10);
+                die.setS(i / 10);
+                die.setT(i / 8);
+                die.setN("Bin" + i / 10);
                 items.add(die);
             }
         }
-     return  JSON.toJSONString(items);
+        return JSON.toJSONString(items);
     }
+
     @RequestMapping("/test2")
     @ResponseBody
-    public String test2()
-    {
-        DataParseIssueBean systemIssueBean=new DataParseIssueBean();
+    public String test2() {
+        DataParseIssueBean systemIssueBean = new DataParseIssueBean();
         systemIssueBean.setCustomCode("AMC");
         systemIssueBean.setDevice("GXLX2");
         systemIssueBean.setLotId("FA78-9876");
@@ -185,7 +185,7 @@ public class testdao {
         systemIssueBean.setIssueDescription("test");
         systemIssueBean.setDealFlag(0);
 
-        DataParseIssueBean systemIssueBean2=new DataParseIssueBean();
+        DataParseIssueBean systemIssueBean2 = new DataParseIssueBean();
         systemIssueBean2.setCustomCode("AMC");
         systemIssueBean2.setDevice("GXLX2");
         systemIssueBean2.setLotId("FA78-9876");
@@ -197,44 +197,44 @@ public class testdao {
         systemIssueBean2.setIssueDescription("test");
         systemIssueBean2.setDealFlag(0);
 
-        ArrayList<DataParseIssueBean> arrayList=new ArrayList<>();
+        ArrayList<DataParseIssueBean> arrayList = new ArrayList<>();
         arrayList.add(systemIssueBean);
         arrayList.add(systemIssueBean2);
         getDataSourceConfigDao.dataErrorsRecord(arrayList);
         return JSON.toJSONString(getDataSourceConfigDao.getCheckItemList());
     }
+
     @RequestMapping("/getYield")
     @ResponseBody
-    public String getMapInfor(@RequestParam("customer")String customer,@RequestParam("device")String device,@RequestParam("lot")String lot,@RequestParam("cp")String cp,@RequestParam(value = "wafer",required = false)String wafer)
-    {
-        ArrayList<waferIdInforBean> summary=proberDataDAO.getOthersParam(customer,device,lot,cp,wafer);
-        return  JSON.toJSONString(summary);
+    public String getMapInfor(@RequestParam("customer") String customer, @RequestParam("device") String device, @RequestParam("lot") String lot, @RequestParam("cp") String cp, @RequestParam(value = "wafer", required = false) String wafer) {
+        ArrayList<waferIdInforBean> summary = proberDataDAO.getOthersParam(customer, device, lot, cp, wafer);
+        return JSON.toJSONString(summary);
     }
+
     @RequestMapping("/mapping")
-    public String getmapping()
-    {
-       return  "mapping";
+    public String getmapping() {
+        return "mapping";
     }
+
     @RequestMapping("/testDao")
     @ResponseBody
-    public String testdao()
-    {
-        SiteYieldToMes siteYieldToMes=new SiteYieldToMes();
+    public String testdao() {
+        SiteYieldToMes siteYieldToMes = new SiteYieldToMes();
         siteYieldToMes.setLot("1QUHB00000");
         siteYieldToMes.setCpStep("CP1");
         siteYieldToMes.setWaferId("W3DAMGG");
-        HashMap<String,String> hashMap=new HashMap<>();
-        hashMap.put("Site0","99.99,0.00");
-        hashMap.put("Site1","99.72,0.11");
-        hashMap.put("Site2","99.67,0.06");
-        hashMap.put("Site3","99.89,0.00");
-        hashMap.put("Site4","99.66,0.06");
-        hashMap.put("Site5","99.66,0.11");
-        hashMap.put("Site6","99.83,0.11");
-        hashMap.put("Site7","100.00,0.00");
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("Site0", "99.99,0.00");
+        hashMap.put("Site1", "99.72,0.11");
+        hashMap.put("Site2", "99.67,0.06");
+        hashMap.put("Site3", "99.89,0.00");
+        hashMap.put("Site4", "99.66,0.06");
+        hashMap.put("Site5", "99.66,0.11");
+        hashMap.put("Site6", "99.83,0.11");
+        hashMap.put("Site7", "100.00,0.00");
         siteYieldToMes.setSiteYieldSummary(hashMap);
-        HashMap<String,String> siteInfor=new HashMap<>();
-        siteInfor.put("infor",JSON.toJSONString(siteYieldToMes));
+        HashMap<String, String> siteInfor = new HashMap<>();
+        siteInfor.put("infor", JSON.toJSONString(siteYieldToMes));
         vtSiteYieldToMes.siteYieldToMes(siteInfor);
         System.err.println(JSON.toJSONString(siteYieldToMes));
         System.err.println(siteInfor.get("flag"));
