@@ -139,6 +139,12 @@ $(document).ready(function () {
             async: false,
             dataType: 'json',
             success: function (data) {
+                var totalPass = 0;
+                var totalFail = 0;
+                var totalYield = 0;
+                var wellColumns = [];
+                var totals = 0;
+                var key = 0;
                 $.each(data, function (i, item) {
                     waferIdNumbers++;
                     var column = new Object();
@@ -147,9 +153,15 @@ $(document).ready(function () {
                             column.field = "" + k + "";
                             column.title = "Bin" + item.binSummary[k];
                             tableColumns.push(column);
+                            wellColumns.push(column);
                             column = new Object();
                         }
                     } else {
+                        key++;
+                        totalPass = totalPass + item.passDie;
+                        totalFail = totalFail + item.failDie;
+                        totalYield = totalYield + item.yield;
+                        totals = totals + item.grossDie;
                         waferData.push(item);
                         for (var k = 0; k < item.binSummary.length; k++) {
                             item[k] = item.binSummary[k];
@@ -158,41 +170,42 @@ $(document).ready(function () {
                     }
 
                 })
+                var newColumn = new Object();
+                var newColumnAvg = new Object();
+                $.each(wellColumns, function (i, item) {
+                    var total = 0;
+                    var m = 0;
+                    $.each(waferData, function (k, issue) {
+                        m++;
+                        total = total + issue[i];
+                    })
+                    newColumn.waferNo = "Total( " + m + " pcs)";
+                    newColumnAvg.waferNo = "Average";
+                    newColumn.passDie = totalPass;
+                    var passAvg = totalPass / m;
+                    newColumnAvg.passDie = passAvg.toFixed(2);
+                    newColumn.failDie = totalFail;
+                    var failAvg = totalFail / m;
+                    newColumnAvg.failDie = failAvg.toFixed(2);
+                    newColumn.yield = '<i class="fa fa-smile-o"></i>';
+                    var totalYieldAvg = totalYield / m;
+                    newColumnAvg.yield = totalYieldAvg.toFixed(2) + "%";
+                    newColumn.grossDie = totals;
+                    var avgs = totals / m;
+                    newColumnAvg.grossDie = avgs.toFixed(2);
+                    newColumn[i] = total;
+                    var avg = total / m;
+                    newColumnAvg[i] = avg.toFixed(2);
+
+                })
+                waferData.push(newColumn);
+                waferData.push(newColumnAvg);
             }
         });
         $("#wTable").css("height", waferIdNumbers * 38 + "px");
-        $('#waferTable').bootstrapTable({
-            data: waferData,
-            toolbar: '.scroll',                //工具按钮用哪个容器
-            striped: true,                      //是否显示行间隔色
-            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
-            pagination: true,                   //是否显示分页（*）
-            sortable: false,                     //是否启用排序
-            sortOrder: "asc",                   //排序方式
-            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
-            pageNumber: 1,                       //初始化加载第一页，默认第一页
-            pageSize: 25,                       //每页的记录行数（*）
-            pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
-            search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
-            strictSearch: true,
-            minimumCountColumns: 2,             //最少允许的列数
-            clickToSelect: true,                //是否启用点击选中行
-            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
-            // fixedColumns: true,
-            // fixedNumber:1,
-            columns: tableColumns,
-            rowStyle: function (row, index) {
-                var style = "";
-                if (index == 0 || index % 2 == 0) {
-                    style = "info";
-                }
-                if (index == 1 || index % 2 != 0) {
-                    style = "success";
-                }
-                return {classes: style}
-            }
-        });
         $("#waferTable").css("font-size", "1px");
+        var waferLimit = [];
+        var lotLimit = [];
         $.ajax({
             type: "get",
             url: "/DataParseSystem/getWaferInfor/getYields?customer=" + customer + "&device=" + device + "&lot=" + lot + "&cp=" + cp,
@@ -205,11 +218,13 @@ $(document).ready(function () {
                     if (item.name == "wafer yield limit") {
                         $.each(item.values, function (index, value) {
                             waferLimitValues.push(parseFloat(value));
+                            waferLimit.push(parseFloat(value));
                         });
                     }
                     if (item.name == "lot yield limit") {
                         $.each(item.values, function (index, value) {
                             lotLimmitValus.push(parseFloat(value));
+                            lotLimit.push(parseFloat(value));
                         });
                     }
                 })
@@ -263,6 +278,55 @@ $(document).ready(function () {
                 });
             }
         });
+        var Toggle=new Object();
+        Toggle.name="Toggle";
+        Toggle.visible=true;
+        series.push(Toggle);
+        $('#waferTable').bootstrapTable({
+            data: waferData,
+            toolbar: '.scroll',                //工具按钮用哪个容器
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 27,                       //每页的记录行数（*）
+            pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+            search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            // fixedColumns: true,
+            // fixedNumber:1,
+            columns: tableColumns,
+
+            rowStyle: function (row, index) {
+                var style = "info";
+                var color = "";
+                var backgroundColor = "";
+                var rows = row.yield;
+                var fontWeight = "";
+                if (rows.substring(0, rows.length - 1) < waferLimit[index]) {
+                    color = "#EEAD0E";
+                    style="warning";
+                }
+                if (rows.substring(0, rows.length - 1) < lotLimit[index]) {
+                    color = "#CD4F39";
+                    style="danger";
+                }
+                if (row.waferNo == "Average" || row.yield == '<i class="fa fa-smile-o"></i>') {
+                    backgroundColor = "#A2CD5A";
+                    fontWeight = "bold";
+                }
+                return {
+                    classes: style,
+                    css: {"color": color, "background-color": backgroundColor, "font-weight": fontWeight}
+                }
+            },
+        });
         var chart = new Highcharts.chart('container', {
             chart: {
                 zoomType: 'xy'
@@ -272,6 +336,66 @@ $(document).ready(function () {
             },
             subtitle: {
                 text: 'v-test lot line'
+            }, plotOptions: {
+                series: {
+                    events: {
+                        legendItemClick: function (e) {
+                            var index = this.index;
+                            var series = this.chart.series;
+                            if (series[index].name == "Toggle") {
+                                series[index].name = "ShowAll";
+                                for (var i = 0; i < series.length; i++) {
+                                    var s = series[i];
+                                    s.hide();
+                                }
+                            }
+                            else if (series[index].name == "ShowAll") {
+                                series[index].name = "Toggle";
+                                for (var i = 0; i < series.length; i++) {
+                                    var s = series[i];
+                                    s.show();
+                                }
+                            } else {
+                                if (series[index].visible) {
+                                    series[index].hide();
+                                } else {
+                                    series[index].show();
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                }
+            }, plotOptions: {
+                series: {
+                    events: {
+                        legendItemClick: function (e) {
+                            var index = this.index;
+                            var series = this.chart.series;
+                            if (series[index].name == "Toggle") {
+                                series[index].name = "ShowAll";
+                                for (var i = 0; i < series.length; i++) {
+                                    var s = series[i];
+                                    s.hide();
+                                }
+                            }
+                            else if (series[index].name == "ShowAll") {
+                                series[index].name = "Toggle";
+                                for (var i = 0; i < series.length; i++) {
+                                    var s = series[i];
+                                    s.show();
+                                }
+                            } else {
+                                if (series[index].visible) {
+                                    series[index].hide();
+                                } else {
+                                    series[index].show();
+                                }
+                            }
+                            return false;
+                        }
+                    }
+                }
             },
             xAxis: [{
                 categories: categories,
