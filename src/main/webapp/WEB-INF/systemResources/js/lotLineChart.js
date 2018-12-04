@@ -302,7 +302,18 @@ $(document).ready(function () {
             // fixedColumns: true,
             // fixedNumber:1,
             columns: tableColumns,
-
+            showExport: true,  //是否显示导出按钮
+            buttonsAlign:"right",  //按钮位置
+            exportDataType: 'all',   //导出的方式 all全部 selected已选择的  basic', 'all', 'selected'.
+            Icons:'glyphicon glyphicon-export', //导出图标
+            exportTypes:[ 'excel','doc','xlsx','csv', 'txt', 'sql' ],  //导出文件类型 'csv', 'txt', 'sql', 'doc', 'excel', 'xlsx', 'pdf'
+            exportOptions:{
+                // ignoreColumn: [0,1],  //忽略某一列的索引
+                fileName: 'LotSummary',  //文件名称设置
+                worksheetName: 'summary',  //表格工作区名称
+                tableName: 'LotSummary',
+                // excelstyles: ['background-color', 'color', 'font-size', 'font-weight'], 设置格式
+            },
             rowStyle: function (row, index) {
                 var style = "info";
                 var color = "";

@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="<c:url value="/resources/system/css/objects.css"/>" />
     <link rel="stylesheet" href="<c:url value="/resources/system/css/status-select.css"/>" />
     <link rel="stylesheet" href="<c:url value="/resources/system/css/tester-select.css"/>" />
+    <link rel="stylesheet" href="<c:url value="/resources/system/css/softwaredownload.css"/>" />
 
     <script src="<c:url value="/resources/system/js/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/js/jquery.jside.menu.js"/>" type="text/javascript"></script>
@@ -136,7 +137,7 @@
             Main item five </a></li>
         <li>  <span class="item-icon"><i class="fa fa-envelope fa-fw" style="color: white"></i></span> <a href="#1">
             Main item five </a></li>
-        <li> <span class="item-icon"> <i class="fa fa-download" style="color: white"></i> </span> <a href="#1">
+        <li> <span class="item-icon"> <i class="fa fa-download" style="color: white"></i> </span> <a onclick="softWareDownloadChange()">
             Software Dowload </a></li>
     </ul>
 </nav>
@@ -145,6 +146,9 @@
     <h1>DATA ANALYSIS SYSTEM(Inner Version V1.0)</h1>
 </header>
 <section class="main-content">
+    <div id="softWareDownload" >
+
+    </div>
     <div id="statusPage" style="display: none;">
         <div class="panel-heading">
             <h1>测试机状态</h1>
@@ -330,5 +334,6 @@ $(".menu-container").jSideMenu({
     </div>
 </footer>
 <script src="<c:url value="/resources/system/js/selectToDatabase.js"/>" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value="/resources/system/js/softwaredownload.js"/>" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

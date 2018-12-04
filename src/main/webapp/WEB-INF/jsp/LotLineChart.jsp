@@ -23,8 +23,18 @@
             charset="utf-8"></script>
     <script src="<c:url value="/resources/system/js/highcharts-more.js"/>" type="text/javascript"
             charset="utf-8"></script>
-    <script src="<c:url value="/resources/system/js/bootstrap.min.js"/>" type="text/javascript"></script>
+    <script src="<c:url value="/resources/system/js/bootstrap.3.3.7.min.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/js/bootstrap-table.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/xlsx.core.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/xlsx.full.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/FileSaver.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/tableExport.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/bootstrap-table-export.min.js"/>" type="text/javascript"
             charset="utf-8"></script>
     <script src="<c:url value="/resources/system/js/bootstrap-table-fixed-columns.js"/>" type="text/javascript"
             charset="utf-8"></script>
@@ -33,7 +43,7 @@
 <div class="panel panel-default">
 
     <div class="panel-body">
-        <div id="SelectMapping" class="col-lg-9">
+        <div id="SelectMapping" class="col-lg-8">
             <select class="customer_code button-3d" id="customer_code">
             </select>
             <select class="device button-3d" id="device">
@@ -43,7 +53,7 @@
             <select class="cp_step button-3d" id="cp_step">
             </select>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-4">
             <button class="button  button-primary button-pill  button-3d" id="drawMap" type="button">画图</button>
             <button class="button  button-primary button-pill  button-3d" id="refresh" type="button">刷新</button>
         </div>

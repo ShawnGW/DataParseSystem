@@ -64,6 +64,7 @@ public class GetSoftWare {
             }
             source.setDescription(stringBuilder.toString());
             source.setUrl("/DataParseSystem/getSource/download/" + sourceName);
+            sources.add(source);
         }
         return JSON.toJSONString(sources);
     }
