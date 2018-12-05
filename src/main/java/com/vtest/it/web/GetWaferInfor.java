@@ -297,6 +297,100 @@ public class GetWaferInfor {
         return JSON.toJSONString(result);
     }
 
+    @RequestMapping("/getWaferIdSummary")
+    @ResponseBody
+    public String getWaferIdInforByType(@RequestParam("dataType") String dataType, @RequestParam("customer") String customer, @RequestParam("device") String device, @RequestParam("lot") String lot, @RequestParam("cp") String cp, @RequestParam(value = "wafer") String wafer, @RequestParam(value = "type", required = false) String type) {
+        TreeMap<String, Integer> totalSummary = new TreeMap<>();
+        ArrayList<waferYieldBean> summary = null;
+        if (checkIfInforToMes.check(customer, device)) {
+            summary = testerDataDAO.getWaferBinSummaryByType(customer, device, lot, cp, wafer, type);
+        } else {
+            summary = proberDataDAO.getWaferBinSummary(customer, device, lot, cp, wafer);
+        }
+        if (dataType.equals("total")) {
+            for (waferYieldBean bean : summary) {
+                if (totalSummary.containsKey(String.valueOf(bean.getSoftBinNo()))) {
+                    totalSummary.put(String.valueOf(bean.getSoftBinNo()), totalSummary.get(String.valueOf(bean.getSoftBinNo())) + bean.getBinCount());
+                } else {
+                    totalSummary.put(String.valueOf(bean.getSoftBinNo()), bean.getBinCount());
+                }
+            }
+            return JSON.toJSONString(totalSummary);
+        } else {
+            Set<Integer> siteSet = new HashSet<>();
+            Set<Integer> SoftBinSet = new HashSet<>();
+            ArrayList<waferSummary> allSiteInfors = new ArrayList<>();
+            waferSummary totalSummaryBean = new waferSummary();
+            int totalDie = 0;
+            int totalPass = 0;
+            int totalFail = 0;
+            TreeMap<Integer, Integer> totalSummaryMap = new TreeMap<>();
+            for (waferYieldBean bean : summary) {
+                int sum = bean.getBinCount();
+                boolean passFlag = bean.getPassFail();
+                int site = bean.getSiteId();
+                int softBin = bean.getSoftBinNo();
+                SoftBinSet.add(softBin);
+                totalDie += sum;
+                if (passFlag) {
+                    totalPass += sum;
+                } else {
+                    totalFail += sum;
+                }
+                if (totalSummaryMap.containsKey(softBin)) {
+                    totalSummaryMap.put(softBin, totalSummaryMap.get(softBin) + sum);
+                } else {
+                    totalSummaryMap.put(softBin, sum);
+                }
+                if (siteSet.contains(site)) {
+                    for (waferSummary infor : allSiteInfors) {
+                        if (infor.getName().equals("Site" + site)) {
+                            infor.setTotoal(infor.getTotoal() + sum);
+                            infor.setPass(passFlag ? infor.getPass() + sum : infor.getPass());
+                            infor.setFail(passFlag ? infor.getFail() : sum + infor.getFail());
+                            TreeMap<Integer, Integer> siteSummaryMap = infor.getBinMap();
+                            siteSummaryMap.put(softBin, sum);
+                            infor.setBinMap(siteSummaryMap);
+                        }
+                    }
+                } else {
+                    waferSummary siteWaferSummarybean = new waferSummary();
+                    siteWaferSummarybean.setName("Site" + site);
+                    siteWaferSummarybean.setTotoal(sum);
+                    siteWaferSummarybean.setPass(passFlag ? sum : 0);
+                    siteWaferSummarybean.setFail(passFlag ? 0 : sum);
+                    TreeMap<Integer, Integer> siteSummaryMap = new TreeMap<>();
+                    siteSummaryMap.put(softBin, sum);
+                    siteWaferSummarybean.setBinMap(siteSummaryMap);
+                    allSiteInfors.add(siteWaferSummarybean);
+                }
+                siteSet.add(site);
+            }
+            totalSummaryBean.setName("total");
+            totalSummaryBean.setTotoal(totalDie);
+            totalSummaryBean.setPass(totalPass);
+            totalSummaryBean.setFail(totalFail);
+            totalSummaryBean.setYield((double) totalPass / totalDie);
+            totalSummaryBean.setTotalYield((double) totalPass / totalDie);
+            totalSummaryBean.setBinMap(totalSummaryMap);
+
+            for (waferSummary infor : allSiteInfors) {
+                infor.setTotalYield((double)infor.getPass()/totalDie);
+                infor.setYield((double)infor.getPass()/infor.getTotoal());
+                TreeMap<Integer, Integer> siteSummaryMap = infor.getBinMap();
+                for (Integer softBin:SoftBinSet) {
+                    if (!siteSummaryMap.containsKey(softBin))
+                    {
+                        siteSummaryMap.put(softBin,0);
+                    }
+                }
+                infor.setBinMap(siteSummaryMap);
+            }
+            allSiteInfors.add(0, totalSummaryBean);
+            return JSON.toJSONString(allSiteInfors);
+        }
+    }
+
     @RequestMapping("/getYields")
     @ResponseBody
     public String getYields(@RequestParam("customer") String customer, @RequestParam("device") String device, @RequestParam("lot") String lot, @RequestParam("cp") String cp, @RequestParam(value = "wafer", required = false) String wafer) {
@@ -392,7 +486,6 @@ public class GetWaferInfor {
                     infor.getValues().add(String.format("%.6f", 0.00));
                 }
             }
-
             waferIdPassYieldArray.add(String.format("%.6f", (((double) (null != passDieMap.get(waferId) ? passDieMap.get(waferId) : 0)) * 100 / waferIdGrossDieMap.get(waferId))));
         }
         waferLimit.setValues(waferLimitYieldArray);
@@ -497,6 +590,72 @@ public class GetWaferInfor {
 
         public void setV(Integer v) {
             this.v = v;
+        }
+    }
+
+    class waferSummary {
+        private String name;
+        private int totoal;
+        private int pass;
+        private int fail;
+        private double totalYield;
+        private double yield;
+        TreeMap<Integer, Integer> binMap = new TreeMap<>();
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getTotoal() {
+            return totoal;
+        }
+
+        public void setTotoal(int totoal) {
+            this.totoal = totoal;
+        }
+
+        public int getPass() {
+            return pass;
+        }
+
+        public void setPass(int pass) {
+            this.pass = pass;
+        }
+
+        public int getFail() {
+            return fail;
+        }
+
+        public void setFail(int fail) {
+            this.fail = fail;
+        }
+
+        public double getTotalYield() {
+            return totalYield;
+        }
+
+        public void setTotalYield(double totalYield) {
+            this.totalYield = totalYield;
+        }
+
+        public double getYield() {
+            return yield;
+        }
+
+        public void setYield(double yield) {
+            this.yield = yield;
+        }
+
+        public TreeMap<Integer, Integer> getBinMap() {
+            return binMap;
+        }
+
+        public void setBinMap(TreeMap<Integer, Integer> binMap) {
+            this.binMap = binMap;
         }
     }
 }

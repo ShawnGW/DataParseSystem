@@ -5,8 +5,8 @@ function testerChange() {
     database.style.display="none";
     var content= document.getElementById("content");
     content.style.display="none";
-    var softWareDownload= document.getElementById("softWareDownload");
-    softWareDownload.style.display="none";
+    var navigator= document.getElementById("navigator");
+    navigator.style.display="none";
 }
 function databaseChange() {
     var testerStatus= document.getElementById("statusPage");
@@ -15,8 +15,8 @@ function databaseChange() {
     database.style.display="block";
     var content= document.getElementById("content");
     content.style.display="none";
-    var softWareDownload= document.getElementById("softWareDownload");
-    softWareDownload.style.display="none";
+    var navigator= document.getElementById("navigator");
+    navigator.style.display="none";
 }
 function contentChange() {
     var testerStatus= document.getElementById("statusPage");
@@ -25,8 +25,8 @@ function contentChange() {
     database.style.display="none";
     var content= document.getElementById("content");
     content.style.display="block";
-    var softWareDownload= document.getElementById("softWareDownload");
-    softWareDownload.style.display="none";
+    var navigator= document.getElementById("navigator");
+    navigator.style.display="none";
 }
 function softWareDownloadChange() {
     var testerStatus= document.getElementById("statusPage");
@@ -35,7 +35,7 @@ function softWareDownloadChange() {
     database.style.display="none";
     var content= document.getElementById("content");
     content.style.display="none";
-    var softWareDownload= document.getElementById("softWareDownload");
-    softWareDownload.style.display="block";
+    var navigator= document.getElementById("navigator");
+    navigator.style.display="block";
 }
 

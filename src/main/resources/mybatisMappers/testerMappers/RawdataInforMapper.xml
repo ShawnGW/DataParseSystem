@@ -78,6 +78,12 @@
         </if>
         ;
     </select>
+    <select id="getWaferBinSummaryByType" resultMap="waferYieldMap">
+        SELECT custom_code,device,lot_id,cp_step,wafer_no,site_id,soft_bin_no,bin_count,pass_fail FROM
+        vtdatester.bin_info_summary
+        WHERE custom_code=#{customerCode} AND device=#{device} AND lot_id=#{lot} AND cp_step=#{cp} AND test_type=#{type} AND wafer_no=#{waferId}
+        ;
+    </select>
     <select id="getOthersParam" resultMap="idMap">
         SELECT wafer_no,others_params FROM vtdatester.bin_wafer_summary WHERE custom_code=#{customerCode}
         <if test="device!=null">
