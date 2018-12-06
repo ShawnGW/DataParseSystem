@@ -203,7 +203,12 @@ $(document).ready(function () {
             }
         });
         $("#wTable").css("height", waferIdNumbers * 38 + "px");
-        $("#waferTable").css("font-size", "1px");
+        var userAgent=navigator.userAgent;
+        if(userAgent.indexOf("Firefox")>-1){
+            $('#waferTable').css("font-size","12px");
+        }else{
+            $("#waferTable").css("font-size", "1px");
+        }
         var waferLimit = [];
         var lotLimit = [];
         $.ajax({

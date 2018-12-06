@@ -108,10 +108,10 @@
 	   <div class="profile-pic">
 	   <img src="<c:url value="/resources/system/image/cat.gif"/>" alt=${SYSTEM_USER.userName}/>
 	         </div>
-	  </div>
-	         <div class="row for-name">
-	   <h3 title="User Name"> ${SYSTEM_USER.userName} </h3>
-	        <span class="tagline">welcome you!</span>
+	            </div>
+	            <div class="row for-name">
+                <h3 title="User Name"> ${SYSTEM_USER.userName} </h3>
+	            <span class="tagline">welcome you!</span>
 	          </div>
 	         </div> <!--//col-->
 	  </span>
@@ -120,8 +120,6 @@
     <ul class="menu-items">
         <li><span class="item-icon"><i class="fa fa-gears"></i></span> <a target="_blank" href="http://192.168.10.216/vt_mes/index.aspx">
             MES System</a></li>
-        <li><span class="item-icon"> <i class="zmdi zmdi-apple"></i> </span> <a href="#1">
-            Main item two </a></li>
         <li class="has-sub"><span class="item-icon"> <i class="fa fa-bar-chart" style="color: white"></i> </span>
             <span class="dropdown-heading">Data Analysis</span>
             <ul>
@@ -138,12 +136,6 @@
                 <li><a href="<c:url value="/RawdataModify/upload"/>" target="_blank">Modify RawData</a></li>
             </ul>
         </li>
-        <li><span class="item-icon"> <i class="zmdi zmdi-keyboard"></i> </span> <a href="#1">
-            Main item four </a></li>
-        <li><span class="item-icon"> <i class="fa fa-bar-chart" style="color: white"></i> </span> <a href="#1">
-            Main item five </a></li>
-        <li><span class="item-icon"><i class="fa fa-envelope fa-fw" style="color: white"></i></span> <a href="#1">
-            Main item five </a></li>
         <li><span class="item-icon"> <i class="fa fa-download" style="color: white"></i> </span> <a
                 onclick="softWareDownloadChange()">
             Software Dowload </a></li>

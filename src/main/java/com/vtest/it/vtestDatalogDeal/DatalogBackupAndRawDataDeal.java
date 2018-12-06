@@ -50,6 +50,7 @@ public class DatalogBackupAndRawDataDeal {
             }
             File destFile=new File(path+"/"+customCode+"/"+device+"/"+lot+"/"+cp+"/"+waferId+".raw");
             FileUtils.copyFile(rawdata,destFile);
+            FileUtils.forceDelete(rawdata);
         } catch (IOException e) {
             e.printStackTrace();
         }
