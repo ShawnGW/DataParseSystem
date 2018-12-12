@@ -42,7 +42,7 @@
     <script src="<c:url value="/resources/system/js/demo-only.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/>" type="text/javascript"></script>
 
-    <script src="<c:url value="/resources/system/js/mapping.js"/>" type="text/javascript"></script>
+    <%--<script src="<c:url value="/resources/system/js/mapping.js"/>" type="text/javascript"></script>--%>
     <script src="<c:url value="/resources/system/js/highcharts.js"/>" type="text/javascript" charset="utf-8"></script>
     <script src="<c:url value="/resources/system/js/exporting.js"/>" type="text/javascript" charset="utf-8"></script>
     <script src="<c:url value="/resources/system/js/highcharts-zh_CN.js"/>" type="text/javascript"
