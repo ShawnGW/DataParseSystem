@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VtMesConfigDAO {
     public MesConfigBean getBean(@Param("waferId") String waferId, @Param("cpProcess") String cpProcess);
+    public String getBinDescription(@Param("waferId") String waferId, @Param("cpProcess") String cpProcess);
 }

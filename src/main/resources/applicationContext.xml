@@ -28,7 +28,7 @@
     <context:component-scan base-package="com.vtest.it.rawdatacheck"/>
     <context:component-scan base-package="com.vtest.it.properties"/>
     <context:component-scan base-package="com.vtest.it.rawdataParse"/>
-
+    <context:component-scan base-package="com.vtest.it.excelModel"/>
     <cache:annotation-driven/>
     <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
         p:configLocation="classpath:ehcache.xml"

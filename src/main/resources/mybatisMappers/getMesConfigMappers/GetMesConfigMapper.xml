@@ -7,4 +7,9 @@
           #{waferId,mode=IN,jdbcType=VARCHAR},#{cpProcess,mode =IN,jdbcType=VARCHAR}
         )}
     </select>
+    <select id="getBinDescription" statementType="CALLABLE" resultType="String">
+         {call pro_GetBinDescInfo(
+          #{waferId,mode=IN,jdbcType=VARCHAR},#{cpProcess,mode =IN,jdbcType=VARCHAR}
+        )}
+    </select>
 </mapper>

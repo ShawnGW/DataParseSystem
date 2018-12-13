@@ -35,6 +35,5 @@ public class MarkDieToPassDeal extends AbstractRawDataAfterDeal{
                 hts8689MarkToPass.modifyMap(rawdataInitBean.getTestDieMap());
             }
         }
-        perfectDeal(rawdataInitBean);
     }
 }
