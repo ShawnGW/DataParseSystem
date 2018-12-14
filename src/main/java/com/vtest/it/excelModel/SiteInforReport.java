@@ -120,9 +120,21 @@ public class SiteInforReport {
                 }
             }
             if (binDescriptions.size() == 0) {
-                String[] descriptions = vtMesConfigDAO.getBinDescription(bean.waferId, information[3]).split(";");
-                for (int i = 0; i < descriptions.length; i++) {
-                    binDescriptions.put(Integer.valueOf(descriptions[i].split(":")[0]), descriptions[i].split(":")[1]);
+                try {
+                    String[] descriptions;
+                    String defines=vtMesConfigDAO.getBinDescription(bean.waferId, information[3]);
+                    if (null==defines)
+                    {
+                         descriptions = "0:NA".split(";");
+                    }else
+                    {
+                        descriptions = defines.split(";");
+                    }
+                    for (int i = 0; i < descriptions.length; i++) {
+                        binDescriptions.put(Integer.valueOf(descriptions[i].split(":")[0]), descriptions[i].split(":")[1]);
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
                 }
             }
             Integer osBinNumber = 0;
@@ -167,12 +179,6 @@ public class SiteInforReport {
         }
         Set<String> checkSetRetest = new HashSet<>();
         for (BysiteAndTestProcessInfors bean : TotalSummaryReTest) {
-            if (binDescriptions.size() == 0) {
-                String[] descriptions = vtMesConfigDAO.getBinDescription(bean.waferId, information[3]).split(";");
-                for (int i = 0; i < descriptions.length; i++) {
-                    binDescriptions.put(Integer.valueOf(descriptions[i].split(":")[0]), descriptions[i].split(":")[1]);
-                }
-            }
             Integer osBinNumber = 0;
             TreeMap<Integer, Integer> binSummary = bean.binSummary;
             for (Map.Entry<Integer, Integer> entry : binSummary.entrySet()) {
@@ -241,7 +247,7 @@ public class SiteInforReport {
             sheet.getRow(0).createCell(startIndex).setCellStyle(model.Center_Style);
             sheet.getRow(0).getCell(startIndex).setCellValue(bin);
             sheet.getRow(1).createCell(startIndex).setCellStyle(model.Center_Style);
-            sheet.getRow(1).getCell(startIndex).setCellValue(binDescriptions.get(bin));
+            sheet.getRow(1).getCell(startIndex).setCellValue(binDescriptions.containsKey(bin)?binDescriptions.get(bin):"NA");
             startIndex++;
         }
         int startRow = 2;

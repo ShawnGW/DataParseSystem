@@ -38,7 +38,7 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 @Service
-public class StdfPlatformMappingDeal extends PlatformMappingDeal{
+public class StdfPlatformMappingDeal extends PlatformMappingDeal {
     private GetDataSourceConfigDao dataSourceConfig;
     private TimeCheck timeCheck;
     private InitMesConfigToRawdataProperties initMesConfigToRawdataProperties;
@@ -63,146 +63,152 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
     public void setSiteInforReport(SiteInforReport siteInforReport) {
         this.siteInforReport = siteInforReport;
     }
+
     @Autowired
     public void setGeneratePrimaryAndReTestMap(GeneratePrimaryAndReTestMap generatePrimaryAndReTestMap) {
         this.generatePrimaryAndReTestMap = generatePrimaryAndReTestMap;
     }
+
     @Autowired
     public void setDatalogBackupAndRawDataDeal(DatalogBackupAndRawDataDeal datalogBackupAndRawDataDeal) {
         this.datalogBackupAndRawDataDeal = datalogBackupAndRawDataDeal;
     }
+
     @Autowired
     public void setStdfTesterMappingParse(StdfTesterMappingParse stdfTesterMappingParse) {
         this.stdfTesterMappingParse = stdfTesterMappingParse;
     }
+
     @Autowired
     public void setGetOrder(GetOrder getOrder) {
         this.getOrder = getOrder;
     }
+
     @Autowired
     public void setVtSiteYieldToMes(VtSiteYieldToMes vtSiteYieldToMes) {
         this.vtSiteYieldToMes = vtSiteYieldToMes;
     }
+
     @Autowired
     public void setStdfTouchDownWrite(StdfTouchDownWrite stdfTouchDownWrite) {
         this.stdfTouchDownWrite = stdfTouchDownWrite;
     }
+
     @Autowired
     public void setWaferIdBinSummaryWrite(WaferIdBinSummaryWrite waferIdBinSummaryWrite) {
         this.waferIdBinSummaryWrite = waferIdBinSummaryWrite;
     }
+
     @Autowired
     public void setRawDataCheck(RawDataCheck rawDataCheck) {
         this.rawDataCheck = rawDataCheck;
     }
+
     @Autowired
     public void setCheckIfInforToMes(CheckIfInforToMes checkIfInforToMes) {
         this.checkIfInforToMes = checkIfInforToMes;
     }
+
     @Autowired
     public void setGenerateRawdata(GenerateRawdata generateRawdata) {
         this.generateRawdata = generateRawdata;
     }
+
     @Autowired
     public void setGenerateWaferInforBean(GenerateWaferInforBean generateWaferInforBean) {
         this.generateWaferInforBean = generateWaferInforBean;
     }
+
     @Autowired
     public void setGenerateEquipmentInforBean(GenerateEquipmentInforBean generateEquipmentInforBean) {
         this.generateEquipmentInforBean = generateEquipmentInforBean;
     }
+
     @Autowired
     public void setTesterDataDAO(TesterDataDAO testerDataDAO) {
         this.testerDataDAO = testerDataDAO;
     }
+
     @Autowired
     public void setVtMesConfigDAO(VtMesConfigDAO vtMesConfigDAO) {
         this.vtMesConfigDAO = vtMesConfigDAO;
     }
+
     @Autowired
     public void setRawDataDeal(RawDataDeal rawDataDeal) {
         this.rawDataDeal = rawDataDeal;
     }
+
     @Autowired
     public void setTimeCheck(TimeCheck timeCheck) {
         this.timeCheck = timeCheck;
     }
+
     @Autowired
     public void setDataSourceConfig(GetDataSourceConfigDao dataSourceConfig) {
         this.dataSourceConfig = dataSourceConfig;
     }
+
     @Autowired
     public void setInitMesConfigToRawdataProperties(InitMesConfigToRawdataProperties initMesConfigToRawdataProperties) {
         this.initMesConfigToRawdataProperties = initMesConfigToRawdataProperties;
     }
-    public void  deal()
-    {
-        DataSourceBean dataSourceConfigBean=dataSourceConfig.getConfig("STDF");
-        File dataSource=new File(dataSourceConfigBean.getSourcePath());
-        File[] files=dataSource.listFiles();
-        if (files.length>0)
-        {
-            for (File customerCodeFile: files)
-            {
-                if (checkDirectory(customerCodeFile))
-                {
-                    File[] deviceFiles=customerCodeFile.listFiles();
-                    for (File deviceFile : deviceFiles)
-                    {
-                        if (checkDirectory(deviceFile))
-                        {
-                            File[] lotFiles=deviceFile.listFiles();
-                            for (File lotFile : lotFiles)
-                            {
-                                if (checkDirectory(lotFile))
-                                {
-                                    String lotNum=lotFile.getName();
-                                    File[] cpFiles=lotFile.listFiles();
-                                    for (File cpFile : cpFiles)
-                                    {
-                                        if (checkDirectory(cpFile))
-                                        {
-                                            String cpProcess=cpFile.getName();
 
-                                            File[] waferIdFiles=cpFile.listFiles();
-                                            for (File waferIdFile : waferIdFiles)
-                                            {
+    public void deal() {
+        DataSourceBean dataSourceConfigBean = dataSourceConfig.getConfig("STDF");
+        File dataSource = new File(dataSourceConfigBean.getSourcePath());
+        File[] files = dataSource.listFiles();
+        if (files.length > 0) {
+            for (File customerCodeFile : files) {
+                if (checkDirectory(customerCodeFile)) {
+                    File[] deviceFiles = customerCodeFile.listFiles();
+                    for (File deviceFile : deviceFiles) {
+                        if (checkDirectory(deviceFile)) {
+                            File[] lotFiles = deviceFile.listFiles();
+                            for (File lotFile : lotFiles) {
+                                if (checkDirectory(lotFile)) {
+                                    String lotNum = lotFile.getName();
+                                    File[] cpFiles = lotFile.listFiles();
+                                    for (File cpFile : cpFiles) {
+                                        if (checkDirectory(cpFile)) {
+                                            String cpProcess = cpFile.getName();
+
+                                            File[] waferIdFiles = cpFile.listFiles();
+                                            for (File waferIdFile : waferIdFiles) {
                                                 if (checkDirectory(waferIdFile)) {
                                                     try {
-                                                        String waferId=waferIdFile.getName();
-                                                        File[] waferIdTexts=waferIdFile.listFiles();
-                                                        if (!timeCheck.check(waferIdFile,60)) {
+                                                        String waferId = waferIdFile.getName();
+                                                        File[] waferIdTexts = waferIdFile.listFiles();
+                                                        if (!timeCheck.check(waferIdFile, 60)) {
                                                             continue;
                                                         }
-                                                        ArrayList<File> waferIdOrderList= getOrder.Order(waferIdTexts);
-                                                        HashMap<String,String> resultMap=getResultMap("STDF");
-                                                        ArrayList<DataParseIssueBean> issueBeans=new ArrayList<>();
+                                                        ArrayList<File> waferIdOrderList = getOrder.Order(waferIdTexts);
+                                                        HashMap<String, String> resultMap = getResultMap("STDF");
+                                                        ArrayList<DataParseIssueBean> issueBeans = new ArrayList<>();
                                                         resultMap.put("lot", lotNum);
                                                         resultMap.put("waferId", waferId);
                                                         resultMap.put("cpStep", cpProcess);
-                                                        if (!checkCpProcess(cpProcess))
-                                                        {
-                                                            dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,"there are error in cpProcess","cp_process",5);
+                                                        if (!checkCpProcess(cpProcess)) {
+                                                            dealException(dataSourceConfigBean, waferIdTexts, resultMap, issueBeans, "there are error in cpProcess", "cp_process", 5);
                                                             continue;
                                                         }
-                                                        RawdataInitBean rawdataInitBean=new RawdataInitBean();
+                                                        RawdataInitBean rawdataInitBean = new RawdataInitBean();
                                                         try {
-                                                            stdfTesterMappingParse.get(waferIdOrderList,rawdataInitBean);
+                                                            stdfTesterMappingParse.get(waferIdOrderList, rawdataInitBean);
                                                         } catch (Exception e) {
-                                                            dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,"there are error in file coding","code_error",5);
+                                                            dealException(dataSourceConfigBean, waferIdTexts, resultMap, issueBeans, "there are error in file coding", "code_error", 5);
                                                             continue;
                                                         }
-                                                        MesConfigBean mesConfigBean= vtMesConfigDAO.getBean(waferId,cpProcess);
-                                                        if (null==mesConfigBean)
-                                                        {
-                                                            dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,"can't find this wafer in mes system","call_proc",5);
+                                                        MesConfigBean mesConfigBean = vtMesConfigDAO.getBean(waferId, cpProcess);
+                                                        if (null == mesConfigBean) {
+                                                            dealException(dataSourceConfigBean, waferIdTexts, resultMap, issueBeans, "can't find this wafer in mes system", "call_proc", 5);
                                                             continue;
                                                         }
-                                                        initMesConfigToRawdataProperties.initMesConfig(rawdataInitBean,mesConfigBean);
+                                                        initMesConfigToRawdataProperties.initMesConfig(rawdataInitBean, mesConfigBean);
                                                         try {
                                                             rawDataDeal.Deal(rawdataInitBean);
                                                         } catch (Exception e) {
-                                                            dealException(dataSourceConfigBean,waferIdTexts,resultMap,issueBeans,e.getMessage(),"deal_bean",5);
+                                                            dealException(dataSourceConfigBean, waferIdTexts, resultMap, issueBeans, e.getMessage(), "deal_bean", 5);
                                                             continue;
                                                         }
                                                         try {
@@ -210,32 +216,30 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
                                                         } catch (IOException e) {
                                                             e.printStackTrace();
                                                         }
-                                                        File rawFile= generateRawdata.generate(rawdataInitBean);
-                                                        rawDataCheck.check(rawFile,issueBeans);
-                                                        for (DataParseIssueBean issueBean: issueBeans) {
-                                                            if (issueBean.getIssuLevel()==99)
-                                                            {
+                                                        File rawFile = generateRawdata.generate(rawdataInitBean);
+                                                        rawDataCheck.check(rawFile, issueBeans);
+                                                        for (DataParseIssueBean issueBean : issueBeans) {
+                                                            if (issueBean.getIssuLevel() == 99) {
                                                                 continue;
                                                             }
                                                         }
-                                                        if (issueBeans.size()>0)
-                                                        {
+                                                        if (issueBeans.size() > 0) {
                                                             dataSourceConfig.dataErrorsRecord(issueBeans);
                                                         }
 
-                                                        LinkedHashMap<String,String> properties=rawdataInitBean.getProperties();
-                                                        resultMap.put("customCode",properties.get("Customer Code"));
-                                                        resultMap.put("device",properties.get("Device Name"));
-                                                        resultMap.put("passBins",properties.get("Pass Bins"));
-                                                        resultMap.put("osBins",properties.get("OS Bins"));
+                                                        LinkedHashMap<String, String> properties = rawdataInitBean.getProperties();
+                                                        resultMap.put("customCode", properties.get("Customer Code"));
+                                                        resultMap.put("device", properties.get("Device Name"));
+                                                        resultMap.put("passBins", properties.get("Pass Bins"));
+                                                        resultMap.put("osBins", properties.get("OS Bins"));
                                                         try {
-                                                            dataToVtDB(rawdataInitBean,resultMap);
+                                                            dataToVtDB(rawdataInitBean, resultMap);
                                                         } catch (Exception e) {
                                                             e.printStackTrace();
                                                             continue;
                                                         }
                                                         try {
-                                                            datalogBackupAndRawDataDeal.rawdataDeal(dataSourceConfigBean.getRawdataPath(),rawFile,resultMap);
+                                                            datalogBackupAndRawDataDeal.rawdataDeal(dataSourceConfigBean.getRawdataPath(), rawFile, resultMap);
                                                         } catch (Exception e) {
                                                             continue;
                                                         }
@@ -267,24 +271,22 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
             }
         }
     }
-    private boolean checkDirectory(File file)
-    {
-        if (file.isDirectory()&&file.listFiles().length>0)
-        {
-            return  true;
-        }else
-        {
+
+    private boolean checkDirectory(File file) {
+        if (file.isDirectory() && file.listFiles().length > 0) {
+            return true;
+        } else {
             try {
                 FileUtils.deleteDirectory(file);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return  false;
+        return false;
     }
-    private void dealException(DataSourceBean dataSourceConfigBean,File[] waferIdTexts,HashMap<String,String> resultMap,ArrayList<DataParseIssueBean> issueBeans,String exceptionMessage,String issueType,int level)
-    {
-        DataParseIssueBean dataParseIssueBean=getDatabean(resultMap,issueType,level,"NA",exceptionMessage);
+
+    private void dealException(DataSourceBean dataSourceConfigBean, File[] waferIdTexts, HashMap<String, String> resultMap, ArrayList<DataParseIssueBean> issueBeans, String exceptionMessage, String issueType, int level) {
+        DataParseIssueBean dataParseIssueBean = getDatabean(resultMap, issueType, level, "NA", exceptionMessage);
         issueBeans.add(dataParseIssueBean);
         dataSourceConfig.dataErrorsRecord(issueBeans);
         try {
@@ -295,35 +297,34 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
             e.printStackTrace();
         }
     }
-    private void dataToVtDB(RawdataInitBean rawdataInitBean,HashMap<String,String> resultMap)
-    {
-        ArrayList<Integer> passBinArray=new ArrayList<>();
-        ArrayList<Integer> osBinArray=new ArrayList<>();
-        String[] passBins=resultMap.get("passBins").split(",");
+
+    private void dataToVtDB(RawdataInitBean rawdataInitBean, HashMap<String, String> resultMap) {
+        ArrayList<Integer> passBinArray = new ArrayList<>();
+        ArrayList<Integer> osBinArray = new ArrayList<>();
+        String[] passBins = resultMap.get("passBins").split(",");
         for (int i = 0; i < passBins.length; i++) {
             passBinArray.add(Integer.valueOf(passBins[i]));
         }
-        String[] osBins=resultMap.get("osBins").split(",");
-        for (int i = 0; i <osBins.length ; i++) {
+        String[] osBins = resultMap.get("osBins").split(",");
+        for (int i = 0; i < osBins.length; i++) {
             osBinArray.add(Integer.valueOf(osBins[i]));
         }
-        String customerCode=resultMap.get("customCode");
-        String device=resultMap.get("device");
-        String lotNum=resultMap.get("lot");
-        String cpProcess=resultMap.get("cpStep");
-        String waferId=resultMap.get("waferId");
+        String customerCode = resultMap.get("customCode");
+        String device = resultMap.get("device");
+        String lotNum = resultMap.get("lot");
+        String cpProcess = resultMap.get("cpStep");
+        String waferId = resultMap.get("waferId");
 
-        ArrayList<Integer> passBinsArray=new ArrayList<>();
+        ArrayList<Integer> passBinsArray = new ArrayList<>();
         for (int i = 0; i < passBins.length; i++) {
             passBinsArray.add(Integer.valueOf(passBins[i]));
         }
-        testerDataDAO.deleteSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId);
-        testerDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getPrimarySiteBinSum(),"P",passBinsArray);
-        if(rawdataInitBean.getRetestSiteBinSum().size()>0)
-        {
-            testerDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getRetestSiteBinSum(),"R",passBinsArray);
+        testerDataDAO.deleteSiteInforToBinInfoSummary(customerCode, device, lotNum, cpProcess, waferId);
+        testerDataDAO.insertSiteInforToBinInfoSummary(customerCode, device, lotNum, cpProcess, waferId, rawdataInitBean.getPrimarySiteBinSum(), "P", passBinsArray);
+        if (rawdataInitBean.getRetestSiteBinSum().size() > 0) {
+            testerDataDAO.insertSiteInforToBinInfoSummary(customerCode, device, lotNum, cpProcess, waferId, rawdataInitBean.getRetestSiteBinSum(), "R", passBinsArray);
         }
-        testerDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"F",passBinsArray);
+        testerDataDAO.insertSiteInforToBinInfoSummary(customerCode, device, lotNum, cpProcess, waferId, rawdataInitBean.getSiteBinSum(), "F", passBinsArray);
 
 //        ArrayList<FailDieBean> failDies=new ArrayList<>();
 //        HashMap<String,String> testDieMap=rawdataInitBean.getTestDieMap();
@@ -344,54 +345,54 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
 //        }
 //        testerDataDAO.insertFailDieToBinInfo(customerCode,device,lotNum,cpProcess,waferId,failDies);
 
-        BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
-        generateWaferInforBean.generate(rawdataInitBean,binWaferInforBean);
+        BinWaferInforBean binWaferInforBean = new BinWaferInforBean();
+        generateWaferInforBean.generate(rawdataInitBean, binWaferInforBean);
 
         testerDataDAO.insertWaferInforToBinWaferSummary(binWaferInforBean);
 
-        EquipmentBean equipmentBean=new EquipmentBean();
-        generateEquipmentInforBean.generate(rawdataInitBean,equipmentBean);
+        EquipmentBean equipmentBean = new EquipmentBean();
+        generateEquipmentInforBean.generate(rawdataInitBean, equipmentBean);
         testerDataDAO.insertEquipmentInforToeqCardSummary(equipmentBean);
 
-        try {
-            siteInforReport.write(customerCode,device,lotNum,cpProcess,null,null);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (customerCode.equals("AMC") || customerCode.equals("ASH") || customerCode.equals("YFN") || customerCode.equals("FJT") || customerCode.equals("HUT")) {
+            try {
+                siteInforReport.write(customerCode, device, lotNum, cpProcess, null, null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
-        if (checkIfInforToMes.check(customerCode,device))
-        {
-            SiteYieldToMes siteYieldToMes=new SiteYieldToMes();
+        if (checkIfInforToMes.check(customerCode, device)) {
+            SiteYieldToMes siteYieldToMes = new SiteYieldToMes();
             siteYieldToMes.setLot(lotNum);
             siteYieldToMes.setCpStep(cpProcess);
             siteYieldToMes.setWaferId(waferId);
-            HashMap<String,String> siteOsAndPassMap=new HashMap<>();
-            HashMap<Integer,HashMap<Integer,Integer>> siteBinMap=rawdataInitBean.getSiteBinSum();
-            Set<Integer> sites=siteBinMap.keySet();
+            HashMap<String, String> siteOsAndPassMap = new HashMap<>();
+            HashMap<Integer, HashMap<Integer, Integer>> siteBinMap = rawdataInitBean.getSiteBinSum();
+            Set<Integer> sites = siteBinMap.keySet();
             for (Integer site : sites) {
-                HashMap<Integer, Integer> binMap=siteBinMap.get(site);
-                Set<Integer> binSet=binMap.keySet();
-                Integer totalBin=0;
-                Integer totalPassBin=0;
-                Integer totalOSBin=0;
+                HashMap<Integer, Integer> binMap = siteBinMap.get(site);
+                Set<Integer> binSet = binMap.keySet();
+                Integer totalBin = 0;
+                Integer totalPassBin = 0;
+                Integer totalOSBin = 0;
                 for (Integer bin : binSet) {
-                    Integer binValue=binMap.get(bin);
-                    totalBin+=binValue;
+                    Integer binValue = binMap.get(bin);
+                    totalBin += binValue;
                     if (passBinArray.contains(bin)) {
-                        totalPassBin+=binValue;
+                        totalPassBin += binValue;
                     }
-                    if(osBinArray.contains(bin))
-                    {
-                        totalOSBin+=binValue;
+                    if (osBinArray.contains(bin)) {
+                        totalOSBin += binValue;
                     }
                 }
-                siteOsAndPassMap.put("Site"+site,String.format("%.2f", (double)(totalPassBin*100)/totalBin)+","+String.format("%.2f", (double)(totalOSBin*100)/totalBin));
+                siteOsAndPassMap.put("Site" + site, String.format("%.2f", (double) (totalPassBin * 100) / totalBin) + "," + String.format("%.2f", (double) (totalOSBin * 100) / totalBin));
             }
             siteYieldToMes.setSiteYieldSummary(siteOsAndPassMap);
-            HashMap<String,String> siteInfor=new HashMap<>();
+            HashMap<String, String> siteInfor = new HashMap<>();
             siteInfor.put("infor", JSON.toJSONString(siteYieldToMes));
-            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
-            stdfTouchDownWrite.write(resultMap,rawdataInitBean);
+            waferIdBinSummaryWrite.write(resultMap, rawdataInitBean);
+            stdfTouchDownWrite.write(resultMap, rawdataInitBean);
             vtSiteYieldToMes.siteYieldToMes(siteInfor);
         }
     }
