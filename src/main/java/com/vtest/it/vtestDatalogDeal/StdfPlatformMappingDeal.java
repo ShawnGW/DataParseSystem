@@ -9,6 +9,7 @@ import com.vtest.it.dao.testermapperdao.TesterDataDAO;
 import com.vtest.it.dao.vtmesdao.VtMesConfigDAO;
 import com.vtest.it.dao.vtmesdao.VtSiteYieldToMes;
 import com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao;
+import com.vtest.it.excelModel.SiteInforReport;
 import com.vtest.it.mesinfors.StdfTouchDownWrite;
 import com.vtest.it.mesinfors.WaferIdBinSummaryWrite;
 import com.vtest.it.pojo.DataSourceBean;
@@ -56,7 +57,12 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
     private StdfTesterMappingParse stdfTesterMappingParse;
     private DatalogBackupAndRawDataDeal datalogBackupAndRawDataDeal;
     private GeneratePrimaryAndReTestMap generatePrimaryAndReTestMap;
+    private SiteInforReport siteInforReport;
 
+    @Autowired
+    public void setSiteInforReport(SiteInforReport siteInforReport) {
+        this.siteInforReport = siteInforReport;
+    }
     @Autowired
     public void setGeneratePrimaryAndReTestMap(GeneratePrimaryAndReTestMap generatePrimaryAndReTestMap) {
         this.generatePrimaryAndReTestMap = generatePrimaryAndReTestMap;
@@ -346,6 +352,12 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal{
         EquipmentBean equipmentBean=new EquipmentBean();
         generateEquipmentInforBean.generate(rawdataInitBean,equipmentBean);
         testerDataDAO.insertEquipmentInforToeqCardSummary(equipmentBean);
+
+        try {
+            siteInforReport.write(customerCode,device,lotNum,cpProcess,null,null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         if (checkIfInforToMes.check(customerCode,device))
         {

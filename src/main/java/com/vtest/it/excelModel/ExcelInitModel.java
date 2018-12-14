@@ -1,9 +1,6 @@
 package com.vtest.it.excelModel;
 
-import org.apache.poi.ss.usermodel.FillPatternType;
-import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFDataFormat;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -315,6 +312,10 @@ public class ExcelInitModel {
         Center_Style = workbook.createCellStyle();
         Center_Style.setAlignment(HorizontalAlignment.CENTER);
         Center_Style.setVerticalAlignment(VerticalAlignment.CENTER);
+        XSSFFont centerFont=workbook.createFont();
+        centerFont.setFontName("Times New Roman");
+        centerFont.setFontHeightInPoints((short)9);
+        Center_Style.setFont(centerFont);
 
         Left_Style = workbook.createCellStyle();
         Left_Style.setAlignment(HorizontalAlignment.LEFT);
@@ -329,7 +330,7 @@ public class ExcelInitModel {
         Data_Style.setDataFormat(dataFormat.getFormat("0.00%"));
         Data_Style.setAlignment(HorizontalAlignment.CENTER);
         Data_Style.setVerticalAlignment(VerticalAlignment.CENTER);
-
+        Data_Style.setFont(centerFont);
         Bin_1 = workbook.createCellStyle();
         Bin_1.setAlignment(HorizontalAlignment.CENTER);
         Bin_1.setVerticalAlignment(VerticalAlignment.CENTER);
