@@ -2,6 +2,7 @@ package com.vtest.it.dao.vtptmtmapperdao;
 
 import com.vtest.it.pojo.DataSourceBean;
 import com.vtest.it.pojo.MarkAndSkipToPassBean;
+import com.vtest.it.pojo.binwaferinfors.BinWaferInforBean;
 import com.vtest.it.pojo.datainfortomes.DataInforToMesBean;
 import com.vtest.it.pojo.marktopassmodel.MarkToPassConfigBean;
 import com.vtest.it.pojo.marktopassmodel.MarkToPassModelBean;
@@ -22,4 +23,5 @@ public interface GetDataSourceConfigDao {
     public void addNewModel(MarkToPassModelBean bean);
     public MarkToPassModelBean getModel(@Param("modelId")String modelId);
     public ArrayList<MarkToPassConfigBean> getMarkToPassConfigs();
+    public int insertWaferInforToBinWaferSummary(BinWaferInforBean binWaferInforBean);
 }

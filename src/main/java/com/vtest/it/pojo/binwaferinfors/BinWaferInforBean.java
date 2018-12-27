@@ -23,6 +23,7 @@ public class BinWaferInforBean implements Serializable {
     private double yield;
     private Date endTime;
     private int checkStatus;
+    private String checkResult;
     private int mapCols;
     private int mapRows;
     private int minX;
@@ -179,6 +180,14 @@ public class BinWaferInforBean implements Serializable {
 
     public void setCheckStatus(int checkStatus) {
         this.checkStatus = checkStatus;
+    }
+
+    public String getCheckResult() {
+        return checkResult;
+    }
+
+    public void setCheckResult(String checkResult) {
+        this.checkResult = checkResult;
     }
 
     public int getMapCols() {

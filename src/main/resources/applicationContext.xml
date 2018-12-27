@@ -29,6 +29,7 @@
     <context:component-scan base-package="com.vtest.it.properties"/>
     <context:component-scan base-package="com.vtest.it.rawdataParse"/>
     <context:component-scan base-package="com.vtest.it.excelModel"/>
+    <context:component-scan base-package="com.vtest.it.adjacentFailDieCheck"/>
     <cache:annotation-driven/>
     <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
         p:configLocation="classpath:ehcache.xml"
@@ -39,6 +40,7 @@
     <util:list id="rawdataAfterDeal" value-type="com.vtest.it.rawdatafterdeal.AbstractRawDataAfterDeal">
         <bean class="com.vtest.it.rawdatafterdeal.MarkDieToPassDeal"/>
         <bean class="com.vtest.it.rawdatafterdeal.MarkToPassBySpecialModel"/>
+        <bean class="com.vtest.it.rawdatafterdeal.AdjacentFailDieCheck"/>
         <bean class="com.vtest.it.rawdatafterdeal.FinRawDataDeal"/>
     </util:list>
     <bean id="rawDataDealBean" class="com.vtest.it.pojo.rawdataafterdeal.RawDataDealBean"

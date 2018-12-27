@@ -1,18 +1,27 @@
 package com.vtest.it.adjacentFailDieCheck;
 
+import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
-
-public class AdjacentFailDieCheck {
-    public  ArrayList<Set<String>> check(String[][] dieMap,int row,int col,ArrayList<String> passBins,int checkNum,int cycleNumber) {
+@Service
+public class AdjacentFailDieCheckTool {
+    public  ArrayList<Set<String>> check(String[][] dieMap,int row,int col,ArrayList<String> passBins) {
+        String[][] finDieMap=new String[row-6][col-6];
+        for (int i = 3; i < row-3; i++) {
+            for (int j = 3; j < col-3; j++) {
+                finDieMap[i-3][j-3]=dieMap[i][j];
+            }
+        }
+        dieMap=finDieMap;
         Set<String> singleDieSet=new HashSet<>();
         ArrayList<Set<String>> failDieChains=new ArrayList<>();
         HashSet<String> failDieSet=new HashSet<>();
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < col; j++) {
+        for (int i = 0; i < row-6; i++) {
+            for (int j = 0; j < col-6; j++) {
                 if (null!=dieMap[i][j]&&!passBins.contains(dieMap[i][j])) {
                     failDieSet.add(i+":"+j);
                 }
