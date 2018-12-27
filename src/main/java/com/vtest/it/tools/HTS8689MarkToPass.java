@@ -10,10 +10,10 @@ public class HTS8689MarkToPass {
 	public  void modifyMap(HashMap<String, String> Final_Bin_Map)
 	{
 		String[][] Map=new String[800][800];
-		Set<String> keyset=Final_Bin_Map.keySet();
+		Set<String> keySet=Final_Bin_Map.keySet();
 		Integer MaxX=0;
 		Integer MaxY=0;
-		for (String key : keyset) {
+		for (String key : keySet) {
 			Integer coordinateY=Integer.valueOf(key.substring(0,4).trim());
 			Integer coordinateX=Integer.valueOf(key.substring(4,8).trim());
 			if(coordinateY>MaxY)

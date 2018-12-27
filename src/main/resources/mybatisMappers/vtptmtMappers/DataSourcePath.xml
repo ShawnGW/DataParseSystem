@@ -13,6 +13,15 @@
         <result property="customCode" column="custom_code"/>
         <result property="level" column="issue_level"/>
     </resultMap>
+    <resultMap id="markToPassConfigMap" type="com.vtest.it.pojo.marktopassmodel.MarkToPassConfigBean">
+        <result property="customerCode" column="customer_code"/>
+        <result property="device" column="device"/>
+        <result property="lot" column="lot"/>
+        <result property="cp" column="cp"/>
+        <result property="waferId" column="wafer_id"/>
+        <result property="platform" column="platform"/>
+        <result property="modelId" column="model_id"/>
+    </resultMap>
     <select id="getConfig" resultType="com.vtest.it.pojo.DataSourceBean">
       SELECT source_path ,backup_source_path,backup_source_path_by_cp,rawdata_path FROM VTPTMT.data_source WHERE  platform=#{platform};
     </select>
@@ -33,5 +42,14 @@
     </insert>
     <select id="getMarkAndSkipToPassConfig" resultType="com.vtest.it.pojo.MarkAndSkipToPassBean">
         SELECT custom_code,device FROM VTPTMT.mark_and_skip_to_pass;
+    </select>
+    <insert id="addNewModel" parameterType="com.vtest.it.pojo.marktopassmodel.MarkToPassModelBean">
+        INSERT INTO VTPTMT.mark_to_pass_model_source(model_id, description, source_file, model_path) VALUE (#{modelId},#{description},#{sourceFile},#{modelPath}) ON DUPLICATE KEY UPDATE description=#{description},source_file=#{sourceFile},model_path=#{modelPath};
+    </insert>
+    <select id="getModel" resultType="com.vtest.it.pojo.marktopassmodel.MarkToPassModelBean">
+        SELECT * FROM  VTPTMT.mark_to_pass_model_source WHERE model_id=#{modelId}
+    </select>
+    <select id="getMarkToPassConfigs" resultMap="markToPassConfigMap">
+        SELECT customer_code,device,lot,cp,wafer_id,platform,model_id FROM VTPTMT.mark_to_ink_by_Special_model;
     </select>
 </mapper>
