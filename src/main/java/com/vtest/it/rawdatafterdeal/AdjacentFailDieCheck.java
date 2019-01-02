@@ -44,23 +44,24 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
             for (String bin : properties.get("Pass Bins").split(",")) {
                 passBins.add(bin);
             }
-            Integer TestDieRow = Integer.valueOf(properties.get("TestDiedown")) - Integer.valueOf(properties.get("TestDieup")) + 1;
-            Integer TestDieCol = Integer.valueOf(properties.get("TestDieright")) - Integer.valueOf(properties.get("TestDieleft")) + 1;
+            Integer TestDieRow = Integer.valueOf(properties.get("TestDieMaxY")) - Integer.valueOf(properties.get("TestDieMinY")) + 1;
+            Integer TestDieCol = Integer.valueOf(properties.get("TestDieMaxX")) - Integer.valueOf(properties.get("TestDieMinX")) + 1;
             String[][] testDie = new String[TestDieRow][TestDieCol];
-            Integer up = Integer.valueOf(properties.get("TestDieup"));
-            Integer left = Integer.valueOf(properties.get("TestDieleft"));
+            Integer up = Integer.valueOf(properties.get("TestDieMinY"));
+            Integer left = Integer.valueOf(properties.get("TestDieMinX"));
             HashMap<String, String> testDieMap = rawdataInitBean.getTestDieMap();
             Set<String> coordinateSet = testDieMap.keySet();
             for (String coordinate : coordinateSet) {
-                Integer x = Integer.valueOf(coordinate.substring(0, 4).trim()) - up;
-                Integer y = Integer.valueOf(coordinate.substring(4, 8).trim()) - left;
+                Integer x = Integer.valueOf(coordinate.substring(0, 4).trim()) - left;
+                Integer y = Integer.valueOf(coordinate.substring(4, 8).trim()) - up;
                 String value = testDieMap.get(coordinate).substring(4, 8).trim();
-                testDie[x][y] = value;
+                testDie[y][x] = value;
             }
             ArrayList<Set<String>> failDieChains = adjacentFailDieCheckTool.check(testDie, TestDieRow, TestDieCol, passBins);
             HashMap<String, Boolean> checkResult = new HashMap<>();
             for (Set<String> node : failDieChains) {
-                if (!checkResult.values().contains(false)) {
+                if(checkResult.values().size()>0&&!checkResult.values().contains(false))
+                {
                     break;
                 }
                 if (node.size() >= 5) {
@@ -68,10 +69,20 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
                     boolean fourAdjacentFailDieCheckFlag = failTypeCheck.fourAdjacentFailDieCheck(node);
                     boolean xDirectionAdjacentFailDieCheckFlag = failTypeCheck.xDirectionAdjacentFailDieCheck(node);
                     boolean yDirectionAdjacentFailDieCheckFlag = failTypeCheck.yDirectionAdjacentFailDieCheck(node);
-                    checkResult.put("8 Neighborhood Fail", eightAdjacentFailDieCheckFlag);
-                    checkResult.put("4 Neighborhood Fail", fourAdjacentFailDieCheckFlag);
-                    checkResult.put("Y_Stretch Fail", xDirectionAdjacentFailDieCheckFlag);
-                    checkResult.put("X_Stretch Fail", yDirectionAdjacentFailDieCheckFlag);
+
+                    if ((checkResult.containsKey("8 Neighborhood Fail")&&!checkResult.get("8 Neighborhood Fail"))||!checkResult.containsKey("8 Neighborhood Fail"))
+                    {
+                        checkResult.put("8 Neighborhood Fail", eightAdjacentFailDieCheckFlag);
+                    }
+                    if ((checkResult.containsKey("4 Neighborhood Fail")&&!checkResult.get("4 Neighborhood Fail"))||!checkResult.containsKey("4 Neighborhood Fail")) {
+                        checkResult.put("4 Neighborhood Fail", fourAdjacentFailDieCheckFlag);
+                    }
+                    if ((checkResult.containsKey("Y_Stretch Fail")&&!checkResult.get("Y_Stretch Fail"))||!checkResult.containsKey("Y_Stretch Fail")) {
+                        checkResult.put("Y_Stretch Fail", xDirectionAdjacentFailDieCheckFlag);
+                    }
+                    if ((checkResult.containsKey("X_Stretch Fail")&&!checkResult.get("X_Stretch Fail"))||!checkResult.containsKey("X_Stretch Fail")) {
+                        checkResult.put("X_Stretch Fail", yDirectionAdjacentFailDieCheckFlag);
+                    }
                 }
             }
             BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
@@ -82,6 +93,10 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
                 {
                     stringBuilder.append(description+";");
                 }
+            }
+            if (stringBuilder.toString().length()==0)
+            {
+                stringBuilder.append("normal");
             }
             binWaferInforBean.setCheckResult(stringBuilder.toString());
             getDataSourceConfigDao.insertWaferInforToBinWaferSummary(binWaferInforBean);

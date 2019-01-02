@@ -36,20 +36,23 @@ public class MarkToPassBySpecialModel extends AbstractRawDataAfterDeal {
         String cpStep = properties.get("CP Process");
         String platform = properties.get("DataBase");
         String modelId = getPath(customCode, device, lot, cpStep, waferId, platform, config, 0);
-        String path = getDataSourceConfigDao.getModel(modelId).getModelPath();
-        if (null!=path)
-        {
-            Set<String> model = getModelFromConfig.getTestDieModel(new File(path));
-            HashMap<String, String> testDieMap = rawdataInitBean.getTestDieMap();
-            HashMap<String, String> skipAndMarkDieMap = rawdataInitBean.getSkipAndMarkDieMap();
-            for (String coordinate : model) {
-                if (!testDieMap.containsKey(coordinate)) {
-                    testDieMap.put(coordinate, String.format("%4s", "1") + String.format("%4s", "1") + String.format("%4s", "0"));
-                }
-                if (skipAndMarkDieMap.containsKey(coordinate)) {
-                    skipAndMarkDieMap.remove(coordinate);
+        try {
+            String path = getDataSourceConfigDao.getModel(modelId).getModelPath();
+            if (null!=path)
+            {
+                Set<String> model = getModelFromConfig.getTestDieModel(new File(path));
+                HashMap<String, String> testDieMap = rawdataInitBean.getTestDieMap();
+                HashMap<String, String> skipAndMarkDieMap = rawdataInitBean.getSkipAndMarkDieMap();
+                for (String coordinate : model) {
+                    if (!testDieMap.containsKey(coordinate)) {
+                        testDieMap.put(coordinate, String.format("%4s", "1") + String.format("%4s", "1") + String.format("%4s", "0"));
+                    }
+                    if (skipAndMarkDieMap.containsKey(coordinate)) {
+                        skipAndMarkDieMap.remove(coordinate);
+                    }
                 }
             }
+        } catch (Exception e) {
         }
     }
 

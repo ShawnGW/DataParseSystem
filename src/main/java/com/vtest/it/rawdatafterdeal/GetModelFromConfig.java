@@ -19,6 +19,7 @@ public class GetModelFromConfig {
             {
                 testDies.add(content);
             }
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
