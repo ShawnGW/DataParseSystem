@@ -164,7 +164,7 @@ public class TskPlatformMappingDeal extends PlatformMappingDeal{
                                     try {
                                         rawDataDeal.Deal(rawdataInitBean);
                                     } catch (Exception e) {
-                                        dealException(dataSourceConfigBean,wafer,resultMap,issueBeans,e.getMessage(),"deal_bean",5);
+                                        dealException(dataSourceConfigBean,wafer,resultMap,issueBeans,"Rawdata deal Chains Fail","deal_bean",5);
                                         continue;
                                     }
                                     File rawFile= generateRawdata.generate(rawdataInitBean);
