@@ -38,6 +38,7 @@
           p:cacheManager-ref="ehcache"
     />
     <util:list id="rawdataAfterDeal" value-type="com.vtest.it.rawdatafterdeal.AbstractRawDataAfterDeal">
+        <bean class="com.vtest.it.rawdatafterdeal.DealWithBin0"/>
         <bean class="com.vtest.it.rawdatafterdeal.MarkDieToPassDeal"/>
         <!--<bean class="com.vtest.it.rawdatafterdeal.MarkToPassBySpecialModel"/>-->
         <bean class="com.vtest.it.rawdatafterdeal.AdjacentFailDieCheck"/>
