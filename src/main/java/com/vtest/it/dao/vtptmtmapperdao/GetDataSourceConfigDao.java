@@ -24,4 +24,6 @@ public interface GetDataSourceConfigDao {
     public MarkToPassModelBean getModel(@Param("modelId")String modelId);
     public ArrayList<MarkToPassConfigBean> getMarkToPassConfigs();
     public int insertWaferInforToBinWaferSummary(BinWaferInforBean binWaferInforBean);
+    public ArrayList<BinWaferInforBean> getTesterStatus();
+    public BinWaferInforBean getTesterStatusSingle(@Param("tester")String tester);
 }

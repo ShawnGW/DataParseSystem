@@ -315,7 +315,7 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
                                             try {
                                                 rawDataDeal.Deal(rawdataInitBean);
                                             } catch (Exception e) {
-                                                dealException(dataSourceConfigBean,waferIdDat,resultMap,issueBeans,e.getMessage(),"deal_bean",5);
+                                                dealException(dataSourceConfigBean,waferIdDat,resultMap,issueBeans,"Rawdata deal Chains Fail","deal_bean",5);
                                                 continue;
                                             }
                                             File rawFile= generateRawdata.generate(rawdataInitBean);

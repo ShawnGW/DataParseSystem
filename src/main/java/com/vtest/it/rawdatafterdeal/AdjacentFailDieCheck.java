@@ -7,10 +7,8 @@ import com.vtest.it.pojo.binwaferinfors.BinWaferInforBean;
 import com.vtest.it.rawdatainformationBean.RawdataInitBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
     private AdjacentFailDieCheckTool adjacentFailDieCheckTool;
@@ -40,6 +38,15 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
     public void deal(RawdataInitBean rawdataInitBean) {
         try {
             LinkedHashMap<String, String> properties = rawdataInitBean.getProperties();
+            String tester=properties.get("Tester ID");
+            String endTime=properties.get("Test End Time").substring(0,14);
+            Date testEndTime=new SimpleDateFormat("yyyyMMddHHmmss").parse(endTime);
+            BinWaferInforBean dbOldTesterStatus=getDataSourceConfigDao.getTesterStatusSingle(tester);
+            Date dbEendTime=dbOldTesterStatus.getEndTime();
+            if (dbEendTime.getTime()>testEndTime.getTime())
+            {
+                return;
+            }
             ArrayList<String> passBins = new ArrayList<>();
             for (String bin : properties.get("Pass Bins").split(",")) {
                 passBins.add(bin);

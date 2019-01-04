@@ -208,7 +208,7 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal {
                                                         try {
                                                             rawDataDeal.Deal(rawdataInitBean);
                                                         } catch (Exception e) {
-                                                            dealException(dataSourceConfigBean, waferIdTexts, resultMap, issueBeans, e.getMessage(), "deal_bean", 5);
+                                                            dealException(dataSourceConfigBean, waferIdTexts, resultMap, issueBeans, "Rawdata deal Chains Fail", "deal_bean", 5);
                                                             continue;
                                                         }
                                                         try {

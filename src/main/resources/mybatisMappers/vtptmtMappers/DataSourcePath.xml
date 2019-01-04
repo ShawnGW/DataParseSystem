@@ -57,4 +57,10 @@
     <select id="getMarkToPassConfigs" resultMap="markToPassConfigMap">
         SELECT customer_code,device,lot,cp,wafer_id,platform,model_id FROM VTPTMT.mark_to_ink_by_Special_model;
     </select>
+    <select id="getTesterStatus" resultType="com.vtest.it.pojo.binwaferinfors.BinWaferInforBean">
+        SELECT * FROM VTPTMT.bin_wafer_summary;
+    </select>
+    <select id="getTesterStatusSingle" resultType="com.vtest.it.pojo.binwaferinfors.BinWaferInforBean">
+        SELECT * FROM VTPTMT.bin_wafer_summary WHERE tester_id=#{tester};
+    </select>
 </mapper>
