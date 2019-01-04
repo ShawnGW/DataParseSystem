@@ -58,9 +58,9 @@
         SELECT customer_code,device,lot,cp,wafer_id,platform,model_id FROM VTPTMT.mark_to_ink_by_Special_model;
     </select>
     <select id="getTesterStatus" resultType="com.vtest.it.pojo.binwaferinfors.BinWaferInforBean">
-        SELECT * FROM VTPTMT.bin_wafer_summary;
+       SELECT custom_code as customer_code,device, lot_id, cp_step, wafer_no, oprator, tester_program, tester_id, prober_id, Prober_card_id, pid_name, pid_version, start_time, gross_die, pass_die, fail_die, yield, end_time, check_status, check_result,map_cols, map_rows, min_x, min_y, others_params FROM VTPTMT.bin_wafer_summary;
     </select>
     <select id="getTesterStatusSingle" resultType="com.vtest.it.pojo.binwaferinfors.BinWaferInforBean">
-        SELECT * FROM VTPTMT.bin_wafer_summary WHERE tester_id=#{tester};
+        SELECT custom_code as customer_code,device, lot_id, cp_step, wafer_no, oprator, tester_program, tester_id, prober_id, Prober_card_id, pid_name, pid_version, start_time, gross_die, pass_die, fail_die, yield, end_time, check_status, check_result,map_cols, map_rows, min_x, min_y, others_params FROM VTPTMT.bin_wafer_summary WHERE tester_id=#{tester};
     </select>
 </mapper>
