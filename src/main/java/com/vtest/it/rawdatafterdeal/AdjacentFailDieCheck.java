@@ -38,14 +38,18 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
     public void deal(RawdataInitBean rawdataInitBean) {
         try {
             LinkedHashMap<String, String> properties = rawdataInitBean.getProperties();
-            String tester=properties.get("Tester ID");
-            String endTime=properties.get("Test End Time").substring(0,14);
-            Date testEndTime=new SimpleDateFormat("yyyyMMddHHmmss").parse(endTime);
-            BinWaferInforBean dbOldTesterStatus=getDataSourceConfigDao.getTesterStatusSingle(tester);
-            Date dbEendTime=dbOldTesterStatus.getEndTime();
-            if (dbEendTime.getTime()>testEndTime.getTime())
-            {
-                return;
+            try {
+                String tester=properties.get("Tester ID");
+                String endTime=properties.get("Test End Time").substring(0,14);
+                Date testEndTime=new SimpleDateFormat("yyyyMMddHHmmss").parse(endTime);
+                BinWaferInforBean dbOldTesterStatus=getDataSourceConfigDao.getTesterStatusSingle(tester);
+                Date dbEendTime=dbOldTesterStatus.getEndTime();
+                if (dbEendTime.getTime()>testEndTime.getTime())
+                {
+                    return;
+                }
+            } catch (Exception e) {
+
             }
             ArrayList<String> passBins = new ArrayList<>();
             for (String bin : properties.get("Pass Bins").split(",")) {

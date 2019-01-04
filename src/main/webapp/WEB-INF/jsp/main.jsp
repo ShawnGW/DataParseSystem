@@ -36,12 +36,16 @@
     <link rel="stylesheet" href="<c:url value="/resources/system/css/status-select.css"/>"/>
     <link rel="stylesheet" href="<c:url value="/resources/system/css/tester-select.css"/>"/>
     <link rel="stylesheet" href="<c:url value="/resources/system/css/softwaredownload.css"/>"/>
+    <link rel="stylesheet" href="<c:url value="/resources/system/layui/css/layui.css"/>"/>
+
 
     <script src="<c:url value="/resources/system/js/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/js/jquery.jside.menu.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/js/demo-only.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/>" type="text/javascript"></script>
 
+    <script src="<c:url value="/resources/system/layui/layui.js"/>" type="text/javascript"></script>
+    <script src="<c:url value="/resources/system/layui/lay/modules/laypage.js"/>" type="text/javascript"></script>
     <%--<script src="<c:url value="/resources/system/js/mapping.js"/>" type="text/javascript"></script>--%>
     <script src="<c:url value="/resources/system/js/highcharts.js"/>" type="text/javascript" charset="utf-8"></script>
     <script src="<c:url value="/resources/system/js/exporting.js"/>" type="text/javascript" charset="utf-8"></script>
@@ -178,53 +182,63 @@
         </div>
     </div>
     <div id="statusPage" style="display: none;">
-        <div class="panel-heading">
-            <h1>测试机状态</h1>
-        </div>
-        <div class="panel-body">
-            <div style="width: 70%;float: left;">
-                <div class="panel panel-default">
-                    <div class="panel-heading class1">
-                        报错的测试机
-                        <button class="button button-circle button-tiny " style="float: right;" data-toggle="collapse"
-                                data-target="#demo"><i class="fa fa-minus-circle"></i></button>
-                    </div>
-                    <div class="panel-body" id="badTester">
-                    </div>
-                    <div class="panel-body collapse in" id="demo">
-                        <button class="button button-caution button-primary button-pill button-small ">TTM-01</button>
-                        <button class="button button-caution button-primary button-pill button-small ">TTM-02</button>
-                        <button class="button button-caution button-primary button-pill button-small ">TTM-03</button>
-                        <button class="button button-caution button-primary button-pill button-small ">TTM-04</button>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa"></i>正常的测试机
-                        <button class="button button-circle button-tiny " style="float: right;" data-toggle="collapse"
-                                data-target="#demo2"><i class="fa fa-minus-circle"></i></button>
-                    </div>
-                    <div class="panel-body collapse in" id="demo2">
-                    </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div>
+                    <h1>测试机监控</h1>
+
                 </div>
             </div>
-            <div style="width: 30%;float: right;">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <i class="fa fa-file-text"></i> RawData详细信息
-                    </div>
-                    <div class="panel-body">
-                        <table class="table table-striped table-bordered table-hover display" style="width: 100%"
-                               id="example3">
-
-                        </table>
-                    </div>
-                    <div class="panel-footer">
-                        <div id="container1" style="width:100px;height:100px"></div>
+            <div class="panel-body">
+                <div style="width: 60%;float: left">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="background-color: #1B9AF7">
+                            <div class="button-group ">
+                                <button type="button" class="button button-primary" id="failButton">Fail Tester</button>
+                                <button type="button" class="button button-primary" id ="passButton">Pass Tester</button>
+                                <button type="button" class="button button-primary" id="idleButton">Idle Tester</button>
+                                <button type="button" class="button button-primary" id="unusedButton">Unused Tester</button>
+                                <button type="button" class="button button-primary " id="badButton"  data-toggle="collapse" data-target="#badDemo"><i class="fa fa-minus-circle"></i></button>
+                            </div>
+                        </div>
+                        <div class="panel-body" id="badTester">
+                        </div>
+                        <div class="panel-body collapse in" id="badDemo">
+                        </div>
+                        <div id="badPaging" style="text-align: center"></div>
+                        <div class="panel-body" id="goodTester">
+                        </div>
+                        <div class="panel-body collapse in" id="goodDemo">
+                        </div>
+                        <div id="goodPaging" style="text-align: center"></div>
+                        <div class="panel-body" id="idleTester">
+                        </div>
+                        <div class="panel-body collapse in" id="idleDemo">
+                        </div>
+                        <div id="idlePaging" style="text-align: center"></div>
+                        <div class="panel-body" id="unusedTester">
+                        </div>
+                        <div class="panel-body collapse in" id="unusedDemo">
+                        </div>
+                        <div id="unusedPaging" style="text-align: center"></div>
                     </div>
                 </div>
-            </div>
+                <div  style="width: 40%;float: left">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-file-text"></i>Tester详细信息
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-striped table-bordered table-hover display" border="2" style="width: 100%;font-family: 'Verdana';font-size: 15px"  id="example3">
+                            </table>
+                        </div>
+                        <div class="panel-footer">
+                            <div id="container1" style="width:100px;height:100px"></div>
+                        </div>
+                    </div>
+                </div>
 
+            </div>
         </div>
     </div>
     <div id="dataBasePage" style="display: none;">
@@ -369,5 +383,6 @@ $(".menu-container").jSideMenu({
 </footer>
 <script src="<c:url value="/resources/system/js/selectToDatabase.js"/>" type="text/javascript" charset="utf-8"></script>
 <script src="<c:url value="/resources/system/js/softwaredownload.js"/>" type="text/javascript" charset="utf-8"></script>
+<script src="<c:url value="/resources/system/js/TesterStatus.js"/>" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>
