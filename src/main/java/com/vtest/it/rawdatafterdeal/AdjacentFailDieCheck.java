@@ -15,6 +15,7 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
     private GenerateWaferInforBean generateWaferInforBean;
     private FailTypeCheck failTypeCheck;
     private GetDataSourceConfigDao getDataSourceConfigDao;
+
     @Autowired
     public void setAdjacentFailDieCheckTool(AdjacentFailDieCheckTool adjacentFailDieCheckTool) {
         this.adjacentFailDieCheckTool = adjacentFailDieCheckTool;
@@ -29,6 +30,7 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
     public void setFailTypeCheck(FailTypeCheck failTypeCheck) {
         this.failTypeCheck = failTypeCheck;
     }
+
     @Autowired
     public void setGetDataSourceConfigDao(GetDataSourceConfigDao getDataSourceConfigDao) {
         this.getDataSourceConfigDao = getDataSourceConfigDao;
@@ -38,14 +40,16 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
     public void deal(RawdataInitBean rawdataInitBean) {
         try {
             LinkedHashMap<String, String> properties = rawdataInitBean.getProperties();
+            String tester = properties.get("Tester ID");
+            if (tester.equals("NA")) {
+                return;
+            }
             try {
-                String tester=properties.get("Tester ID");
-                String endTime=properties.get("Test End Time").substring(0,14);
-                Date testEndTime=new SimpleDateFormat("yyyyMMddHHmmss").parse(endTime);
-                BinWaferInforBean dbOldTesterStatus=getDataSourceConfigDao.getTesterStatusSingle(tester);
-                Date dbEendTime=dbOldTesterStatus.getEndTime();
-                if (dbEendTime.getTime()>testEndTime.getTime())
-                {
+                String endTime = properties.get("Test End Time").substring(0, 14);
+                Date testEndTime = new SimpleDateFormat("yyyyMMddHHmmss").parse(endTime);
+                BinWaferInforBean dbOldTesterStatus = getDataSourceConfigDao.getTesterStatusSingle(tester);
+                Date dbEendTime = dbOldTesterStatus.getEndTime();
+                if (dbEendTime.getTime() > testEndTime.getTime()) {
                     return;
                 }
             } catch (Exception e) {
@@ -71,8 +75,7 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
             ArrayList<Set<String>> failDieChains = adjacentFailDieCheckTool.check(testDie, TestDieRow, TestDieCol, passBins);
             HashMap<String, Boolean> checkResult = new HashMap<>();
             for (Set<String> node : failDieChains) {
-                if(checkResult.values().size()>0&&!checkResult.values().contains(false))
-                {
+                if (checkResult.values().size() > 0 && !checkResult.values().contains(false)) {
                     break;
                 }
                 if (node.size() >= 5) {
@@ -81,32 +84,29 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
                     boolean xDirectionAdjacentFailDieCheckFlag = failTypeCheck.xDirectionAdjacentFailDieCheck(node);
                     boolean yDirectionAdjacentFailDieCheckFlag = failTypeCheck.yDirectionAdjacentFailDieCheck(node);
 
-                    if ((checkResult.containsKey("8 Neighborhood Fail")&&!checkResult.get("8 Neighborhood Fail"))||!checkResult.containsKey("8 Neighborhood Fail"))
-                    {
+                    if ((checkResult.containsKey("8 Neighborhood Fail") && !checkResult.get("8 Neighborhood Fail")) || !checkResult.containsKey("8 Neighborhood Fail")) {
                         checkResult.put("8 Neighborhood Fail", eightAdjacentFailDieCheckFlag);
                     }
-                    if ((checkResult.containsKey("4 Neighborhood Fail")&&!checkResult.get("4 Neighborhood Fail"))||!checkResult.containsKey("4 Neighborhood Fail")) {
+                    if ((checkResult.containsKey("4 Neighborhood Fail") && !checkResult.get("4 Neighborhood Fail")) || !checkResult.containsKey("4 Neighborhood Fail")) {
                         checkResult.put("4 Neighborhood Fail", fourAdjacentFailDieCheckFlag);
                     }
-                    if ((checkResult.containsKey("Y_Stretch Fail")&&!checkResult.get("Y_Stretch Fail"))||!checkResult.containsKey("Y_Stretch Fail")) {
+                    if ((checkResult.containsKey("Y_Stretch Fail") && !checkResult.get("Y_Stretch Fail")) || !checkResult.containsKey("Y_Stretch Fail")) {
                         checkResult.put("Y_Stretch Fail", xDirectionAdjacentFailDieCheckFlag);
                     }
-                    if ((checkResult.containsKey("X_Stretch Fail")&&!checkResult.get("X_Stretch Fail"))||!checkResult.containsKey("X_Stretch Fail")) {
+                    if ((checkResult.containsKey("X_Stretch Fail") && !checkResult.get("X_Stretch Fail")) || !checkResult.containsKey("X_Stretch Fail")) {
                         checkResult.put("X_Stretch Fail", yDirectionAdjacentFailDieCheckFlag);
                     }
                 }
             }
-            BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
-            generateWaferInforBean.generate(rawdataInitBean,binWaferInforBean);
-            StringBuilder stringBuilder=new StringBuilder();
-            for (String description:checkResult.keySet()) {
-                if (checkResult.get(description))
-                {
-                    stringBuilder.append(description+";");
+            BinWaferInforBean binWaferInforBean = new BinWaferInforBean();
+            generateWaferInforBean.generate(rawdataInitBean, binWaferInforBean);
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String description : checkResult.keySet()) {
+                if (checkResult.get(description)) {
+                    stringBuilder.append(description + ";");
                 }
             }
-            if (stringBuilder.toString().length()==0)
-            {
+            if (stringBuilder.toString().length() == 0) {
                 stringBuilder.append("normal");
             }
             binWaferInforBean.setCheckResult(stringBuilder.toString());

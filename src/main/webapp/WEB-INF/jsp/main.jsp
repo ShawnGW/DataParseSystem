@@ -62,7 +62,6 @@
     <script src="<c:url value="/resources/system/js/pageChange.js"/>" type="text/javascript" charset="utf-8"></script>
     <script src="<c:url value="/resources/system/js/jquery-dataTables-min.js"/>" type="text/javascript"
             charset="utf-8"></script>
-    <script src="<c:url value="/resources/system/js/toStatus.js"/>" type="text/javascript" charset="utf-8"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -181,16 +180,36 @@
 
         </div>
     </div>
-    <div id="statusPage" style="display: none;">
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 100%;">
+        <div class="modal-dialog" style="width: 1300px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        其余详情
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table id="remainingTable" border="2" style="font-family: 'Verdana';font-size: 15px"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="statusPage" style="display:none">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div>
                     <h1>测试机监控</h1>
-
                 </div>
             </div>
             <div class="panel-body">
-                <div style="width: 60%;float: left">
+                <div style="width: 65%;float: left">
                     <div class="panel panel-default">
                         <div class="panel-heading" style="background-color: #1B9AF7">
                             <div class="button-group ">
@@ -198,35 +217,34 @@
                                 <button type="button" class="button button-primary" id ="passButton">Pass Tester</button>
                                 <button type="button" class="button button-primary" id="idleButton">Idle Tester</button>
                                 <button type="button" class="button button-primary" id="unusedButton">Unused Tester</button>
-                                <button type="button" class="button button-primary " id="badButton"  data-toggle="collapse" data-target="#badDemo"><i class="fa fa-minus-circle"></i></button>
                             </div>
                         </div>
-                        <div class="panel-body" id="badTester">
+                        <div class="panel-body" id="badDemo">
+                            <div class="panel-body" id="badTester">
+                            </div>
+                            <div id="badPaging" style="text-align: center"></div>
                         </div>
-                        <div class="panel-body collapse in" id="badDemo">
+                        <div class="panel-body" id="goodDemo">
+                            <div class="panel-body" id="goodTester">
+                            </div>
+                            <div id="goodPaging" style="text-align: center"></div>
                         </div>
-                        <div id="badPaging" style="text-align: center"></div>
-                        <div class="panel-body" id="goodTester">
+                        <div class="panel-body" id="idleDemo">
+                            <div class="panel-body"  id="idleTester">
+                            </div>
+                            <div id="idlePaging" style="text-align: center"></div>
                         </div>
-                        <div class="panel-body collapse in" id="goodDemo">
+                        <div class="panel-body" id="unusedDemo" >
+                            <div class="panel-body" id="unusedTester">
+                            </div>
+                            <div id="unusedPaging" style="text-align: center"></div>
                         </div>
-                        <div id="goodPaging" style="text-align: center"></div>
-                        <div class="panel-body" id="idleTester">
-                        </div>
-                        <div class="panel-body collapse in" id="idleDemo">
-                        </div>
-                        <div id="idlePaging" style="text-align: center"></div>
-                        <div class="panel-body" id="unusedTester">
-                        </div>
-                        <div class="panel-body collapse in" id="unusedDemo">
-                        </div>
-                        <div id="unusedPaging" style="text-align: center"></div>
                     </div>
                 </div>
-                <div  style="width: 40%;float: left">
+                <div  style="width: 35%;float: left">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <i class="fa fa-file-text"></i>Tester详细信息
+                            <i class="fa fa-file-text"></i> Tester详细信息
                         </div>
                         <div class="panel-body">
                             <table class="table table-striped table-bordered table-hover display" border="2" style="width: 100%;font-family: 'Verdana';font-size: 15px"  id="example3">
