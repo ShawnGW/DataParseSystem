@@ -3,6 +3,7 @@ package com.vtest.it.dao.vtptmtmapperdao;
 import com.vtest.it.pojo.DataSourceBean;
 import com.vtest.it.pojo.MarkAndSkipToPassBean;
 import com.vtest.it.pojo.binwaferinfors.BinWaferInforBean;
+import com.vtest.it.pojo.binwaferinfors.WaferInforTesterListBean;
 import com.vtest.it.pojo.datainfortomes.DataInforToMesBean;
 import com.vtest.it.pojo.marktopassmodel.MarkToPassConfigBean;
 import com.vtest.it.pojo.marktopassmodel.MarkToPassModelBean;
@@ -12,6 +13,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public interface GetDataSourceConfigDao {
@@ -26,4 +28,8 @@ public interface GetDataSourceConfigDao {
     public int insertWaferInforToBinWaferSummary(BinWaferInforBean binWaferInforBean);
     public ArrayList<BinWaferInforBean> getTesterStatus();
     public BinWaferInforBean getTesterStatusSingle(@Param("tester")String tester);
+
+    public List<WaferInforTesterListBean> getTesterStatusList(@Param("tester") String tester);
+
+    public void waferFailTypeCheckOthers(@Param("waferId") String waferId, @Param("cp") String cpProcess, @Param("tester") String tester);
 }

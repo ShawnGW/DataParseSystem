@@ -203,7 +203,24 @@ $(document).ready(function() {
             {
                 "data": "endTime"
             }
-        ]
+        ],
+        'createdRow': function (row, data, index) {
+            for (var key in data) {
+                if (data[key] == "NA") {
+                    $(row).attr("id", "NARow")
+                }
+            }
+        },
+        dom: 'Bfrtip',
+        "buttons": [{
+            "extend": "excel",
+            "text": '导出本页',
+            "exportOptions": {
+                'modifier': {
+                    'page': 'all'
+                }
+            }
+        }]
     });
 function getUrl(customer,device,lot,wafer,cp){
     var url="?customer";

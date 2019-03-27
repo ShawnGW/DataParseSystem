@@ -83,10 +83,11 @@ public class TelProberMappingSmallDieParse {
 			}
 			String Coordinate_Y_Str=Coordinate_Y_First+Coordinate_Y_Second;
 			Integer Coordinate_Y=Integer.parseInt(Coordinate_Y_Str, 16);
-			
-			String Coordinate_X_Str=Coordinate_X_First+Coordinate_X_Second;
+            Coordinate_Y = Coordinate_Y >= 65000 ? (Coordinate_Y - 65536) : Coordinate_Y;
+            String Coordinate_X_Str=Coordinate_X_First+Coordinate_X_Second;
 			Integer Coordinate_X=Integer.parseInt(Coordinate_X_Str, 16);
-			
+            Coordinate_X = Coordinate_X >= 65000 ? (Coordinate_X - 65536) : Coordinate_X;
+
 			if (MFlag) {
 				MinX=Coordinate_X;
 				MinY=Coordinate_Y;

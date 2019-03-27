@@ -5,4 +5,5 @@
     <select id="getConfig" resultType="com.vtest.it.pojo.SlotAndSequenceConfigBean" statementType="CALLABLE">
     {call pro_getSlotAndSequence(#{lot,mode=IN,jdbcType=VARCHAR})}
     </select>
+
 </mapper>

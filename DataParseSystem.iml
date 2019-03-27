@@ -103,5 +103,6 @@
     <orderEntry type="library" name="Maven: org.apache.poi:poi-scratchpad:3.17" level="project" />
     <orderEntry type="library" name="Maven: org.apache.poi:poi-ooxml:3.17" level="project" />
     <orderEntry type="library" name="Maven: com.github.virtuald:curvesapi:1.04" level="project" />
+    <orderEntry type="library" name="Maven: com.alibaba:druid:1.1.12" level="project" />
   </component>
 </module>

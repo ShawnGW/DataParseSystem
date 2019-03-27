@@ -74,6 +74,7 @@
           <element id="library" level="project" name="Maven: org.apache.poi:poi-scratchpad:3.17" />
           <element id="library" level="project" name="Maven: org.apache.poi:poi-ooxml:3.17" />
           <element id="library" level="project" name="Maven: com.github.virtuald:curvesapi:1.04" />
+          <element id="library" level="project" name="Maven: com.alibaba:druid:1.1.12" />
         </element>
       </element>
       <element id="directory" name="META-INF">

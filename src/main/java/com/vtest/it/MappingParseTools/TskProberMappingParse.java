@@ -151,8 +151,8 @@ public class TskProberMappingParse {
 		{
 			int dieTestResult=(Integer.parseInt(Integer.toHexString(bs[i+1]&0xFF),16)&192)/64;
 			int dieExcept=((Integer.parseInt(Integer.toHexString(bs[i+3]&0xFF),16))&2)/2;
-			int measureFlag=(Integer.parseInt(Integer.toHexString(bs[i+6]&0xFF),16))&63;
-			int CellY=Integer.parseInt(Integer.toHexString(bs[i+4]&0xFF),16)+(Integer.parseInt(Integer.toHexString(bs[i+3]&0xFF),16)&1)*256;
+            int measureFlag = (Integer.parseInt(Integer.toHexString(bs[i + 6] & 0xFF), 16)) & 127;
+            int CellY=Integer.parseInt(Integer.toHexString(bs[i+4]&0xFF),16)+(Integer.parseInt(Integer.toHexString(bs[i+3]&0xFF),16)&1)*256;
 			int CellX=Integer.parseInt(Integer.toHexString(bs[i+2]&0xFF),16)+(Integer.parseInt(Integer.toHexString(bs[i+1]&0xFF),16)&1)*256;
 			int CodeOfY=(Integer.parseInt(Integer.toHexString(bs[i+3]&0xFF),16)&4)/4;
 			int CodeOfX=(Integer.parseInt(Integer.toHexString(bs[i+3]&0xFF),16)&8)/8;

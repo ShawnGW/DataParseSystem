@@ -79,21 +79,23 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
                     break;
                 }
                 if (node.size() >= 5) {
-                    boolean eightAdjacentFailDieCheckFlag = failTypeCheck.eightAdjacentFailDieCheck(node);
-                    boolean fourAdjacentFailDieCheckFlag = failTypeCheck.fourAdjacentFailDieCheck(node);
-                    boolean xDirectionAdjacentFailDieCheckFlag = failTypeCheck.xDirectionAdjacentFailDieCheck(node);
-                    boolean yDirectionAdjacentFailDieCheckFlag = failTypeCheck.yDirectionAdjacentFailDieCheck(node);
-
+                    if (node.size() >= 10) {
+                        checkResult.put("10 interflow Fail", true);
+                    }
                     if ((checkResult.containsKey("8 Neighborhood Fail") && !checkResult.get("8 Neighborhood Fail")) || !checkResult.containsKey("8 Neighborhood Fail")) {
+                        boolean eightAdjacentFailDieCheckFlag = failTypeCheck.eightAdjacentFailDieCheck(node);
                         checkResult.put("8 Neighborhood Fail", eightAdjacentFailDieCheckFlag);
                     }
                     if ((checkResult.containsKey("4 Neighborhood Fail") && !checkResult.get("4 Neighborhood Fail")) || !checkResult.containsKey("4 Neighborhood Fail")) {
+                        boolean fourAdjacentFailDieCheckFlag = failTypeCheck.fourAdjacentFailDieCheck(node);
                         checkResult.put("4 Neighborhood Fail", fourAdjacentFailDieCheckFlag);
                     }
                     if ((checkResult.containsKey("Y_Stretch Fail") && !checkResult.get("Y_Stretch Fail")) || !checkResult.containsKey("Y_Stretch Fail")) {
+                        boolean xDirectionAdjacentFailDieCheckFlag = failTypeCheck.xDirectionAdjacentFailDieCheck(node);
                         checkResult.put("Y_Stretch Fail", xDirectionAdjacentFailDieCheckFlag);
                     }
                     if ((checkResult.containsKey("X_Stretch Fail") && !checkResult.get("X_Stretch Fail")) || !checkResult.containsKey("X_Stretch Fail")) {
+                        boolean yDirectionAdjacentFailDieCheckFlag = failTypeCheck.yDirectionAdjacentFailDieCheck(node);
                         checkResult.put("X_Stretch Fail", yDirectionAdjacentFailDieCheckFlag);
                     }
                 }
@@ -111,6 +113,7 @@ public class AdjacentFailDieCheck extends AbstractRawDataAfterDeal {
             }
             binWaferInforBean.setCheckResult(stringBuilder.toString());
             getDataSourceConfigDao.insertWaferInforToBinWaferSummary(binWaferInforBean);
+            getDataSourceConfigDao.waferFailTypeCheckOthers(properties.get("Wafer ID"), properties.get("CP Process"), tester);
         } catch (Exception e) {
             e.printStackTrace();
         }

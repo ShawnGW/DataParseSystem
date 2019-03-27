@@ -5,9 +5,11 @@ import com.vtest.it.RawdataGenerate.GenerateRawdata;
 import com.vtest.it.RawdataGenerate.InitMesConfigToRawdataProperties;
 import com.vtest.it.dao.probermapperdao.ProberDataDAO;
 import com.vtest.it.dao.vtmesdao.VtMesConfigDAO;
+import com.vtest.it.dao.vtmesdao.VtSiteYieldToMes;
 import com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao;
 import com.vtest.it.mesinfors.WaferIdBinSummaryWrite;
 import com.vtest.it.pojo.DataSourceBean;
+import com.vtest.it.pojo.LotInformationBean;
 import com.vtest.it.pojo.MesConfigBean;
 import com.vtest.it.pojo.binwaferinfors.BinWaferInforBean;
 import com.vtest.it.pojo.propertiescheckItemBean.DataParseIssueBean;
@@ -26,6 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class TelPlatformMappingDeal extends PlatformMappingDeal{
@@ -46,6 +50,12 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
     private TelOpusProberLotDaParse telOpusProberLotDaParse;
     private TelOpusProberMappingDaParse telOpusProberMappingDaParse;
     private TelProberMappingSmallDieParse telProberMappingSmallDieParse;
+    private VtSiteYieldToMes vtSiteYieldToMes;
+
+    @Autowired
+    public void setVtSiteYieldToMes(VtSiteYieldToMes vtSiteYieldToMes) {
+        this.vtSiteYieldToMes = vtSiteYieldToMes;
+    }
 
     @Autowired
     public void setTelProberMappingSmallDieParse(TelProberMappingSmallDieParse telProberMappingSmallDieParse) {
@@ -126,13 +136,35 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
                 {
                     if (timeCheck.check(lot,60))
                     {
+                        String lotNum = lot.getName();
+                        try {
+                            LotInformationBean lotInformationBean = vtSiteYieldToMes.getLotInfor(lotNum);
+                            if (lotInformationBean.getCustomerCode().equals("GCK")) {
+                                File destDirectory = new File("/server212/VTESTFTP/GCK/PROBER/TEL/LCDMAP/" + lotNum);
+                                if (!destDirectory.exists()) {
+                                    destDirectory.mkdirs();
+                                }
+                                File[] sourceFile = lot.listFiles();
+                                Pattern pattern = Pattern.compile("[0-9]{1}");
+                                for (File file : sourceFile) {
+                                    String sourceFileName = file.getName();
+                                    Matcher matcher = pattern.matcher(sourceFileName.substring(sourceFileName.lastIndexOf(".") - 1, sourceFileName.lastIndexOf(".")));
+                                    String destFileName = sourceFileName;
+                                    if (matcher.find()) {
+                                        destFileName = sourceFileName.substring(0, sourceFileName.lastIndexOf(".") - 1) + "1" + sourceFileName.substring(sourceFileName.lastIndexOf("."));
+                                    }
+                                    FileUtils.copyFile(file, new File("/server212/VTESTFTP/GCK/PROBER/TEL/LCDMAP/" + lotNum + "/" + destFileName));
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         File destDir=new File(dataSourceConfigBean.getBackupSourcePath());
                         if (!destDir.exists())
                         {
                             destDir.mkdirs();
                         }
                         File[] mappings=lot.listFiles();
-                        String lotNum=lot.getName();
                         boolean flag=telBackupFile(mappings,dataSourceConfigBean.getBackupSourcePath()+"/"+lotNum);
                         HashMap<String, File> formAndWafcont=new HashMap<>();
                         ArrayList<File> waferIdRmpArray=new ArrayList<>();
@@ -388,6 +420,14 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                if (timeCheck.check(lot, 7200)) {
+                    try {
+                        FileUtils.deleteDirectory(lot);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
     }
@@ -597,30 +637,12 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
             proberDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"F",passBinsArray);
         }
 
-//        ArrayList<FailDieBean> failDies=new ArrayList<>();
-//        HashMap<String,String> testDieMap=rawdataInitBean.getTestDieMap();
-//        Set<String> coordinateSet=testDieMap.keySet();
-//        for (String coordinate : coordinateSet) {
-//            Integer softbin=Integer.valueOf(testDieMap.get(coordinate).substring(0,4).trim());
-//            if (!passBinsArray.contains(softbin))
-//            {
-//                Integer coordianteX=Integer.valueOf(coordinate.substring(0,4).trim());
-//                Integer coordianteY=Integer.valueOf(coordinate.substring(4).trim());
-//                FailDieBean failDieBean=new FailDieBean();
-//                failDieBean.setxCoordinate(coordianteX);
-//                failDieBean.setyCoordinate(coordianteY);
-//                failDieBean.setSiteId(0);
-//                failDieBean.setBinNumber(softbin);
-//                failDies.add(failDieBean);
-//            }
-//        }
-//        proberDataDAO.insertFailDieToBinInfo(customerCode,device,lotNum,cpProcess,waferId,failDies);
         BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
         generateWaferInforBean.generate(rawdataInitBean,binWaferInforBean);
         proberDataDAO.insertWaferInforToBinWaferSummary(binWaferInforBean);
-        if (!checkIfInforToMes.check(customerCode,device))
-        {
-            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
-        }
+//        if (!checkIfInforToMes.check(customerCode,device))
+//        {
+//            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
+//        }
     }
 }

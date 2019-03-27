@@ -69,6 +69,67 @@ var testerData = [];
     }
 function getTable(obj) {
     $("#example3").html("");
+    var historyData = [];
+    var columns = [
+        {title: 'CustomerCode', field: 'customerCode'},
+        {title: 'Device', field: 'device'},
+        {title: 'LotID', field: 'lotId'},
+        {title: 'CPStep', field: 'cpStep'},
+        {title: 'WaferNo', field: 'waferNo'},
+        {title: 'TesterID', field: 'testerId'},
+        {title: 'ProberCardID', field: 'proberCardId'},
+        {title: 'PidName', field: 'pidName'},
+        {title: 'TesterProgram', field: 'testerProgram'},
+        {title: 'StartTime', field: 'startTime'},
+        {title: 'EndTime', field: 'endTime'},
+        {title: 'CheckResult', field: 'checkResult'}
+    ];
+    $('#historyTable').bootstrapTable('removeAll');
+    $.ajax({
+        type: "get",
+        url: "/DataParseSystem/GetTesterStatus/getTesterStatusList?tester=" + obj.id,
+        async: false,
+        dataType: 'json',
+        success: function (data) {
+            $.each(data, function (i, item) {
+                item.startTime = getSmpFormatDateByLong(item.startTime, true);
+                item.endTime = getSmpFormatDateByLong(item.endTime, true);
+                historyData.push(item);
+                //$('#historyTable').bootstrapTable('updateRow',{index:i,row:item});
+            })
+        }
+    });
+    $('#historyTable').bootstrapTable('append', historyData);
+    $('#historyTable').bootstrapTable({
+        data: historyData,
+        toolbar: '.scroll',                //工具按钮用哪个容器
+        striped: true,                      //是否显示行间隔色
+        cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+        pagination: true,                   //是否显示分页（*）
+        sortable: false,                     //是否启用排序
+        sortOrder: "asc",                   //排序方式
+        sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+        pageNumber: 1,                       //初始化加载第一页，默认第一页
+        pageSize: 25,                       //每页的记录行数（*）
+        pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
+        search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+        strictSearch: true,
+        minimumCountColumns: 2,             //最少允许的列数
+        clickToSelect: true,                //是否启用点击选中行
+        uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+        columns: columns,
+        showExport: true,
+        buttonsAlign: "right",
+        exportDataType: "all",
+        exportTypes: ['excel', 'xlsx'],
+        Icons: 'glyphicon-export',
+        exportOptions: {
+            fileName: 'TesterStatusHistory',
+            worksheetName: 'Sheet1',
+            tableName: 'data',
+            excelstyles: ['background-color', 'color', 'font-size', 'font-weight'],
+        }
+    })
     $.each(testerData, function (i, item) {
         var endTime=getSmpFormatDateByLong(item.endTime,true);
         var startTime=getSmpFormatDateByLong(item.startTime,true);
@@ -117,10 +178,10 @@ function getTable(obj) {
                 "<tr><td>ProberCardId</td><td>" + item.proberCardId + "</td></tr>"+
                 "<tr><td>ProdID</td><td>" + item.proberId + "</td></tr>"+
                 "<tr><td>CustomerCode</td><td>" + item.customerCode + "</td></tr>"+
-                "<tr><td>Device</td><td>" + item.device + "</td></tr>"+
-                "<tr><td>LotID</td><td>" + item.lotId + "</td></tr>"+
-                "<tr><td>CpStep</td><td>" + item.cpStep + "</td></tr>"+
-                "<tr><td>WaferNO</td><td>" + item.waferNo + "</td></tr>"+
+                "<tr style='background-color: #0e84f8'><td>Device</td><td>" + item.device + "</td></tr>" +
+                "<tr style='background-color: #0e84f8'><td>LotID</td><td>" + item.lotId + "</td></tr>" +
+                "<tr style='background-color: #0e84f8'><td>CpStep</td><td>" + item.cpStep + "</td></tr>" +
+                "<tr style='background-color: #0e84f8'><td>WaferNO</td><td>" + item.waferNo + "</td></tr>" +
                 "<tr><td>Operator</td><td>" + item.oprator + "</td></tr>"+
                 "<tr><td>CPYield</td><td>" + item.yield + "%</td></tr>"+
                 "<tr><td>GrossDie</td><td>" + item.grossDie + "</td></tr>"+
@@ -134,6 +195,7 @@ function getTable(obj) {
                 "<tr><td>EndTestTime</td><td>" + endTime + "</td></tr>"+
                 "<tr><td>CheckStatus</td><td>" + item.checkStatus + "</td></tr>"+
                 '<tr><td>详情</td><td><button class="button button-primary button-tiny" data-toggle="modal" data-target="#myModal">请点击</button></td></tr>'+
+                '<tr><td>历史记录</td><td><button class="button button-primary button-tiny" data-toggle="modal" data-target="#history">请点击</button></td></tr>' +
                 '<tr><td>Map图</td><td><a target="_blank" href="/DataParseSystem/Navigation/waferMap?customer='+item.customerCode+'&device='+item.device+'&lot='+item.lotId+'&cp='+item.cpStep+'&wafer='+item.waferNo+'"><i class="fa fa-hand-o-right"></i>查看</a>'+ '</td></tr>')
         }
     })

@@ -37,13 +37,24 @@
     <link rel="stylesheet" href="<c:url value="/resources/system/css/tester-select.css"/>"/>
     <link rel="stylesheet" href="<c:url value="/resources/system/css/softwaredownload.css"/>"/>
     <link rel="stylesheet" href="<c:url value="/resources/system/layui/css/layui.css"/>"/>
-
+    <link rel="stylesheet" href="<c:url value="/resources/system/css/buttons.dataTables.min.css"/>"/>
 
     <script src="<c:url value="/resources/system/js/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/js/jquery.jside.menu.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/js/demo-only.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/>" type="text/javascript"></script>
-
+    <script src="<c:url value="/resources/system/js/bootstrap-table.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/xlsx.core.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/xlsx.full.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/FileSaver.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/tableExport.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/bootstrap-table-export.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
     <script src="<c:url value="/resources/system/layui/layui.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/layui/lay/modules/laypage.js"/>" type="text/javascript"></script>
     <%--<script src="<c:url value="/resources/system/js/mapping.js"/>" type="text/javascript"></script>--%>
@@ -62,7 +73,20 @@
     <script src="<c:url value="/resources/system/js/pageChange.js"/>" type="text/javascript" charset="utf-8"></script>
     <script src="<c:url value="/resources/system/js/jquery-dataTables-min.js"/>" type="text/javascript"
             charset="utf-8"></script>
-
+    <script src="<c:url value="/resources/system/js/dataTables.buttons.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/buttons.flash.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/buttons.html5.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/buttons.print.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/jszip.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/pdfmake.min.js"/>" type="text/javascript"
+            charset="utf-8"></script>
+    <script src="<c:url value="/resources/system/js/vfs_fonts.js"/>" type="text/javascript"
+            charset="utf-8"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $(".menu-container").jSideMenu({
@@ -193,6 +217,28 @@
                 </div>
                 <div class="modal-body">
                     <table id="remainingTable" border="2" style="font-family: 'Verdana';font-size: 15px"></table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+         style="width: 100%;">
+        <div class="modal-dialog" style="width: 1300px">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title">
+                        历史记录
+                    </h4>
+                </div>
+                <div class="modal-body" style="overflow: scroll">
+                    <table id="historyTable" border="2"></table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭

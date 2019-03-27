@@ -6,6 +6,7 @@ import com.vtest.it.pojo.binwaferinfors.BinWaferInforBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -26,5 +27,11 @@ public class GetTesterStatus {
     {
         ArrayList<BinWaferInforBean> status=getDataSourceConfigDao.getTesterStatus();
         return JSON.toJSONString(status);
+    }
+
+    @RequestMapping("/getTesterStatusList")
+    @ResponseBody
+    public String getTesterStatusList(@RequestParam("tester") String tester) {
+        return JSON.toJSONString(getDataSourceConfigDao.getTesterStatusList(tester));
     }
 }

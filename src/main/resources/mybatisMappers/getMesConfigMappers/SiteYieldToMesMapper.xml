@@ -2,7 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtest.it.dao.vtmesdao.VtSiteYieldToMes">
+    <resultMap id="lotInfor" type="com.vtest.it.pojo.LotInformationBean">
+        <result column="CustCode" property="customerCode"/>
+        <result column="CustPart" property="device"/>
+        <result column="Lot" property="lot"/>
+    </resultMap>
     <insert id="siteYieldToMes" statementType="CALLABLE">
         {call sp_Insert_SiteYield(#{infor, mode=IN,jdbcType=VARCHAR},#{flag,mode=OUT,jdbcType=VARCHAR})}
     </insert>
+    <select id="getLotInfor" statementType="CALLABLE" resultMap="lotInfor">
+        {call pro_GetLotDeviceInfo(#{lot,mode=IN,jdbcType=VARCHAR}) }
+    </select>
 </mapper>

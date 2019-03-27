@@ -238,31 +238,13 @@ public class TskPlatformMappingDeal extends PlatformMappingDeal{
         proberDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"P",passBinsArray);
         proberDataDAO.insertSiteInforToBinInfoSummary(customerCode,device,lotNum,cpProcess,waferId,rawdataInitBean.getSiteBinSum(),"F",passBinsArray);
 
-//        ArrayList<FailDieBean> failDies=new ArrayList<>();
-//        HashMap<String,String> testDieMap=rawdataInitBean.getTestDieMap();
-//        Set<String> coordinateSet=testDieMap.keySet();
-//        for (String coordinate : coordinateSet) {
-//            Integer softbin=Integer.valueOf(testDieMap.get(coordinate).substring(0,4).trim());
-//            if (!passBinsArray.contains(softbin))
-//            {
-//                Integer coordianteX=Integer.valueOf(coordinate.substring(0,4).trim());
-//                Integer coordianteY=Integer.valueOf(coordinate.substring(4).trim());
-//                FailDieBean failDieBean=new FailDieBean();
-//                failDieBean.setxCoordinate(coordianteX);
-//                failDieBean.setyCoordinate(coordianteY);
-//                failDieBean.setSiteId(0);
-//                failDieBean.setBinNumber(softbin);
-//                failDies.add(failDieBean);
-//            }
-//        }
-//        proberDataDAO.insertFailDieToBinInfo(customerCode,device,lotNum,cpProcess,waferId,failDies);
         BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
         generateWaferInforBean.generate(rawdataInitBean,binWaferInforBean);
         proberDataDAO.insertWaferInforToBinWaferSummary(binWaferInforBean);
-        if (!checkIfInforToMes.check(customerCode,device))
-        {
-            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
-        }
+//        if (!checkIfInforToMes.check(customerCode,device))
+//        {
+//            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
+//        }
     }
     private void issueToDataBase(ArrayList<DataParseIssueBean> issueBeans)
     {

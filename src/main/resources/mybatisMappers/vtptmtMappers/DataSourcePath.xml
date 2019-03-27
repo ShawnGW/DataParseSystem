@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao">
     <resultMap id="list" type="com.vtest.it.pojo.datainfortomes.DataInforToMesBean">
-        <result property="customCode" column="custom_code"/>
+    <result property="customCode" column="custom_code"/>
         <result property="device" column="device"/>
     </resultMap>
     <resultMap id="itemsCheck" type="com.vtest.it.pojo.propertiescheckItemBean.CheckItemBean">
@@ -32,13 +32,15 @@
         SELECT property,check_NA,check_equals,custom_code,issue_level FROM  VTPTMT.rawdata_properties_check_items;
     </select>
     <insert id="dataErrorsRecord">
-        INSERT INTO VTPTMT.data_issue_record(custom_code, device, lot_id, cp_step, wafer_no,resource,issue_type, issue_level, issue_path, issue_description, deal_flag)
-         VALUES
-         <trim suffix="" suffixOverrides=",">
-             <foreach collection="list" item="errorBean">
-                 (#{errorBean.customCode},#{errorBean.device},#{errorBean.lotId},#{errorBean.cpStep},#{errorBean.waferNo},#{errorBean.resource},#{errorBean.issueType},#{errorBean.issuLevel},#{errorBean.issuePath},#{errorBean.issueDescription},#{errorBean.dealFlag}),
-             </foreach>
-         </trim>;
+        INSERT INTO VTPTMT.data_issue_record(custom_code, device, lot_id, cp_step, wafer_no,resource,issue_type,
+        issue_level, issue_path, issue_description, deal_flag)
+        VALUES
+        <trim suffix="" suffixOverrides=",">
+            <foreach collection="list" item="errorBean">
+                (#{errorBean.customCode},#{errorBean.device},#{errorBean.lotId},#{errorBean.cpStep},#{errorBean.waferNo},#{errorBean.resource},#{errorBean.issueType},#{errorBean.issuLevel},#{errorBean.issuePath},#{errorBean.issueDescription},#{errorBean.dealFlag}),
+            </foreach>
+        </trim>
+        ;
     </insert>
     <select id="getMarkAndSkipToPassConfig" resultType="com.vtest.it.pojo.MarkAndSkipToPassBean">
         SELECT custom_code,device FROM VTPTMT.mark_and_skip_to_pass;
@@ -63,4 +65,17 @@
     <select id="getTesterStatusSingle" resultType="com.vtest.it.pojo.binwaferinfors.BinWaferInforBean">
         SELECT custom_code as customer_code,device, lot_id, cp_step, wafer_no, oprator, tester_program, tester_id, prober_id, Prober_card_id, pid_name, pid_version, start_time, gross_die, pass_die, fail_die, yield, end_time, check_status, check_result,map_cols, map_rows, min_x, min_y, others_params FROM VTPTMT.bin_wafer_summary WHERE tester_id=#{tester};
     </select>
+    <select id="getTesterStatusList" resultType="com.vtest.it.pojo.binwaferinfors.WaferInforTesterListBean">
+        SELECT his.custom_code as customer_code,his.device,his.lot_id,his.cp_step,his.wafer_no,
+his.oprator,his.tester_program,his.tester_id,his.prober_id,his.Prober_card_id,
+his.pid_name,his.pid_version,min(his.start_time) start_time,max(his.gross_die) gross_die,max(his.pass_die) pass_die ,max(his.fail_die)fail_die ,
+max(his.yield) yield,max(his.end_time) end_time,max(his.check_result) check_result,max(his.load_time) load_time FROM VTPTMT.bin_wafer_summary_hist his
+where load_time>CURDATE()-2 and his.tester_id=#{tester}
+group by his.custom_code,his.device,his.lot_id,his.cp_step,his.wafer_no,
+his.oprator,his.tester_program,his.tester_id,his.prober_id,his.Prober_card_id,
+his.pid_name,his.pid_version order by his.device,his.lot_id,his.cp_step,his.wafer_no ;
+    </select>
+    <update id="waferFailTypeCheckOthers" statementType="CALLABLE">
+        {call e_updatecheckwafinfo(#{waferId,mode=IN,jdbcType=VARCHAR},#{cp,mode=IN,jdbcType=VARCHAR},#{tester,mode=IN,jdbcType=VARCHAR})}
+    </update>
 </mapper>

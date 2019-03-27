@@ -1,4 +1,19 @@
 $(document).ready(function () {
+    var compare = function (prop) {
+        return function (obj1, obj2) {
+            var val1 = obj1[prop];
+            var val2 = obj2[prop];
+            var newVal1 = parseInt(val1.replace("Bin", ""));
+            var newVal2 = parseInt(val2.replace("Bin", ""));
+            if (newVal1 < newVal2) {
+                return -1;
+            } else if (newVal1 > newVal2) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+    }
 	var url =window.location.search;
     var primaryBinSummary= new Array();
     var retestBinSummary= new Array();
@@ -295,8 +310,9 @@ $(document).ready(function () {
         async:false,
         dataType: 'json',
         success:function(data){
+            var transformData = data.sort(compare("n"));
             var binSet = new Set();
-            $.each(data, function(i,item) {
+            $.each(transformData, function (i, item) {
                     var dieInforObj={
                         x:item.x,
                         y:item.y,
@@ -501,7 +517,8 @@ $(document).ready(function () {
         dataType: 'json',
         success:function(data){
             var binSet = new Set();
-            $.each(data, function(i,item) {
+            var transformData = data.sort(compare("n"));
+            $.each(transformData, function (i, item) {
                 var dieInforObj={
                     x:item.x,
                     y:item.y,
@@ -706,7 +723,8 @@ $(document).ready(function () {
         dataType: 'json',
         success:function(data){
             var binSet = new Set();
-            $.each(data, function(i,item) {
+            var transformData = data.sort(compare("n"));
+            $.each(transformData, function (i, item) {
                 var dieInforObj={
                     x:item.x,
                     y:item.y,

@@ -20,3 +20,13 @@
 	border-radius:5px ;
 	height: 45px;
 }
+
+td {
+	white-space: nowrap;
+}
+
+#NARow td:nth-child(10),
+#NARow td:nth-child(11),
+#NARow td:nth-child(12) {
+	background-color: #a94442;
+}
