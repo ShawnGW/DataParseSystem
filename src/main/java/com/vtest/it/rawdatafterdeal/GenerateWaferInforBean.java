@@ -15,7 +15,7 @@ import java.util.LinkedHashMap;
 public class GenerateWaferInforBean {
     public void generate(RawdataInitBean rawdataInitBean,BinWaferInforBean binWaferInforBean)
     {
-        SimpleDateFormat format=new SimpleDateFormat("yyyyMMddhhmmss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         LinkedHashMap<String,String> properties=rawdataInitBean.getProperties();
         binWaferInforBean.setCustomerCode(properties.get("Customer Code"));
         binWaferInforBean.setDevice(properties.get("Device Name"));
