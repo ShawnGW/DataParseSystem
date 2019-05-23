@@ -152,4 +152,9 @@
         SELECT wafer_no,gross_die,pass_die,fail_die,yield FROM vtdatester.bin_wafer_summary WHERE custom_code=#{custom}
         AND device =#{device} AND lot_id=#{lot} AND cp_step=#{cp};
     </select>
+    <select id="getPrimaryTestYield" resultType="com.vtest.it.pojo.excel.PrimaryTestYieldBean" statementType="CALLABLE">
+        {call primaryyiled_procedure(
+        #{lot,mode=IN,jdbcType=VARCHAR},#{cp,mode =IN,jdbcType=VARCHAR}
+        )}
+    </select>
 </mapper>

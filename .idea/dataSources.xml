@@ -19,7 +19,7 @@
       <driver-ref>sqlserver.ms</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</jdbc-driver>
-      <jdbc-url>jdbc:sqlserver://;database=WebMES;server=VTSQLDB01</jdbc-url>
+      <jdbc-url>jdbc:sqlserver://;database=WebMES;server=192.168.10.215</jdbc-url>
       <driver-properties>
         <property name="applicationName" value="DataGrip" />
       </driver-properties>

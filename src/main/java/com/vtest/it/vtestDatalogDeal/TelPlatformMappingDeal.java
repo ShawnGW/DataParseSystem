@@ -316,7 +316,7 @@ public class TelPlatformMappingDeal extends PlatformMappingDeal{
                                 for (File waferIdDat : waferIdDatArray)
                                 {
                                     String waferIdDatName=waferIdDat.getName();
-                                    String waferIdDatSuffix=waferIdDatName.substring(waferIdDatName.indexOf(".")-1, waferIdDatName.indexOf("."));
+                                    String waferIdDatSuffix = waferIdDatName.substring(waferIdDatName.lastIndexOf(".") - 1, waferIdDatName.lastIndexOf("."));
                                     if (waferIdDatSuffix.equals(lotDatSuffix)) {
                                         try {
                                             HashMap<String,String> resultMap=getResultMap("TEL");

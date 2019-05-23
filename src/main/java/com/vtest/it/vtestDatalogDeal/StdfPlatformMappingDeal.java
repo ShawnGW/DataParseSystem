@@ -9,6 +9,7 @@ import com.vtest.it.dao.testermapperdao.TesterDataDAO;
 import com.vtest.it.dao.vtmesdao.VtMesConfigDAO;
 import com.vtest.it.dao.vtmesdao.VtSiteYieldToMes;
 import com.vtest.it.dao.vtptmtmapperdao.GetDataSourceConfigDao;
+import com.vtest.it.excelModel.PrimaryTestYieldReport;
 import com.vtest.it.excelModel.SiteInforReport;
 import com.vtest.it.mesinfors.StdfTouchDownWrite;
 import com.vtest.it.mesinfors.WaferIdBinSummaryWrite;
@@ -58,6 +59,12 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal {
     private DatalogBackupAndRawDataDeal datalogBackupAndRawDataDeal;
     private GeneratePrimaryAndReTestMap generatePrimaryAndReTestMap;
     private SiteInforReport siteInforReport;
+    private PrimaryTestYieldReport primaryTestYieldReport;
+
+    @Autowired
+    public void setPrimaryTestYieldReport(PrimaryTestYieldReport primaryTestYieldReport) {
+        this.primaryTestYieldReport = primaryTestYieldReport;
+    }
 
     @Autowired
     public void setSiteInforReport(SiteInforReport siteInforReport) {
@@ -172,7 +179,6 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal {
                                     for (File cpFile : cpFiles) {
                                         if (checkDirectory(cpFile)) {
                                             String cpProcess = cpFile.getName();
-
                                             File[] waferIdFiles = cpFile.listFiles();
                                             for (File waferIdFile : waferIdFiles) {
                                                 if (checkDirectory(waferIdFile)) {
@@ -277,7 +283,7 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal {
             return true;
         } else {
             try {
-                FileUtils.deleteDirectory(file);
+                FileUtils.forceDelete(file);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -338,6 +344,13 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal {
         if (customerCode.equals("AMC") || customerCode.equals("ASH") || customerCode.equals("YFN") || customerCode.equals("FJT") || customerCode.equals("HUT")) {
             try {
                 siteInforReport.write(customerCode, device, lotNum, cpProcess, null, null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (customerCode.equals("FUA") && device.equals("BH")) {
+            try {
+                primaryTestYieldReport.write(customerCode, device, lotNum, cpProcess);
             } catch (Exception e) {
                 e.printStackTrace();
             }
