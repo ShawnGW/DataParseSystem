@@ -151,7 +151,8 @@
             <span class="dropdown-heading">Data Analysis</span>
             <ul>
                 <li><a target="_blank" href="<c:url value="/Navigation/LotLineChart"/>">Lot_line</a></li>
-                <li><a onclick="testerChange()">Tester_status </a></li>
+                <%--<li><a onclick="testerChange()">Tester_status </a></li>--%>
+                <li><a target="_blank" href="<c:url value="/Navigation/testerLocation"/>">Tester_status </a></li>
                 <li><a onclick="databaseChange()">Data_summary</a></li>
                 <li><a target="_blank" href="<c:url value="/Navigation/superposition"/>">Superposition</a></li>
             </ul>

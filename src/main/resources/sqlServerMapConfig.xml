@@ -12,5 +12,6 @@
         <mapper resource="mybatisMappers/getMesConfigMappers/GetMesConfigMapper.xml"/>
         <mapper resource="mybatisMappers/getMesConfigMappers/SlotAndSequenceMapper.xml"/>
         <mapper resource="mybatisMappers/getMesConfigMappers/SiteYieldToMesMapper.xml"/>
+        <mapper resource="mybatisMappers/getMesConfigMappers/GetMesTesterConfigMapper.xml"/>
     </mappers>
 </configuration>

@@ -78,4 +78,7 @@ his.pid_name,his.pid_version order by his.device,his.lot_id,his.cp_step,his.wafe
     <update id="waferFailTypeCheckOthers" statementType="CALLABLE">
         {call e_updatecheckwafinfo(#{waferId,mode=IN,jdbcType=VARCHAR},#{cp,mode=IN,jdbcType=VARCHAR},#{tester,mode=IN,jdbcType=VARCHAR})}
     </update>
+    <update id="updateTesterCheckResult"  statementType="CALLABLE">
+    update VTPTMT.bin_wafer_summary set check_result='normal' where tester_id=#{tester} and wafer_no=#{waferId};
+    </update>
 </mapper>

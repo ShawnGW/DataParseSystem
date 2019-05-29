@@ -34,4 +34,9 @@ public class GetTesterStatus {
     public String getTesterStatusList(@RequestParam("tester") String tester) {
         return JSON.toJSONString(getDataSourceConfigDao.getTesterStatusList(tester));
     }
+    @RequestMapping("/getTesterStatusSingle")
+    @ResponseBody
+    public String getTesterStatusSingle(@RequestParam("tester") String tester) {
+        return JSON.toJSONString(getDataSourceConfigDao.getTesterStatusSingle(tester));
+    }
 }

@@ -498,7 +498,11 @@ public class GetWaferInfor {
         //wafer  pass yield by id
         return JSON.toJSONString(binYieldInforArray);
     }
-
+    @RequestMapping("/updateTesterCheckResult")
+    @ResponseBody
+    public void updateTesterCheckResult(String tester,String waferId){
+        getDataSourceConfigDao.updateTesterCheckResult(tester,waferId);
+    }
     class Infor {
         private String name;
         private ArrayList<Object> values;

@@ -32,4 +32,6 @@ public interface GetDataSourceConfigDao {
     public List<WaferInforTesterListBean> getTesterStatusList(@Param("tester") String tester);
 
     public void waferFailTypeCheckOthers(@Param("waferId") String waferId, @Param("cp") String cpProcess, @Param("tester") String tester);
+
+    public void updateTesterCheckResult(@Param("tester") String tester,@Param("waferId") String waferId);
 }
