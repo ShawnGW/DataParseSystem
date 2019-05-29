@@ -142,6 +142,7 @@ function getCharts(name,seriesData) {
             var oneDay= 1000000;
             item.z=100;
             if (parseInt(endTime) <parseInt(nowTime) - oneDay) {
+                item.checkResult="normal";
                 idleData.push(item);
                 seriesObjectI.data=idleData;
             }else{
@@ -183,6 +184,7 @@ function getCharts(name,seriesData) {
         subtitle: {
         },
         xAxis: {
+            visible:false,
             opposite: true,
             title: {
                 text:'X'
@@ -192,6 +194,7 @@ function getCharts(name,seriesData) {
             showLastLabel: true
         },
         yAxis: {
+            visible:false,
             title: {
                 text:'Y'
             },
@@ -204,8 +207,8 @@ function getCharts(name,seriesData) {
             layout: 'vertical',
             align: 'left',
             verticalAlign: 'top',
-            x: 150,
-            y: 170,
+            x: 100,
+            y: 0,
             floating: true,
             backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
             borderWidth: 1
@@ -213,7 +216,8 @@ function getCharts(name,seriesData) {
         plotOptions: {
             bubble: {
                 mixSize:20,
-                maxSize: 100,
+                maxSize: 60,
+                pointPadding:0.5
             },
             series: {
                 dataLabels: {
@@ -225,7 +229,7 @@ function getCharts(name,seriesData) {
                                 var checkResultSummary=checkResults.split(";");
                                 var checkResult=this.point.name;
                                 for(var i=0;i<checkResultSummary.length;i++){
-                                    checkResult=checkResult+"<br>"+checkResultSummary[i]
+                                    checkResult=checkResult+"<br>"+checkResultSummary[i].replace("Fail","").trim()
                                 }
                                 return checkResult;
                             }
@@ -419,6 +423,7 @@ function showTester() {
     getCharts("containerA2",AData);
 }
 showTester()
+setInterval(showTester,30*1000);
 $("#A2").click(function () {
     $("#containerA2").show();
     $("#containerD1").hide();
@@ -427,4 +432,3 @@ $("#D1").click(function () {
     $("#containerA2").hide();
     $("#containerD1").show();
 })
-setInterval(showTester,30*1000);

@@ -38,7 +38,7 @@
 </head>
 <body>
 <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 100%;">
-    <div class="modal-dialog" style="width: 1500px" id="detailModal">
+    <div class="modal-dialog" style="width: 1300px" id="detailModal">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -61,7 +61,7 @@
     </div>
 </div>
 <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 100%;">
-    <div class="modal-dialog" style="width: 1500px">
+    <div class="modal-dialog" style="width: 1300px">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
