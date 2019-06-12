@@ -5,4 +5,7 @@
     <select id="getTesterLocation" resultType="com.vtest.it.pojo.testerLocationBean">
         exec pro_gettesterlocation
     </select>
+    <select id="getPassBin" resultType="String">
+          {call dbo.pro_GetBininfo(#{waferId,mode=IN,jdbcType=VARCHAR})}
+    </select>
 </mapper>

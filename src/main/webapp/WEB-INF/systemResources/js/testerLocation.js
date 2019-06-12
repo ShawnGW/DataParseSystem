@@ -146,10 +146,10 @@ function getCharts(name,seriesData) {
                 idleData.push(item);
                 seriesObjectI.data=idleData;
             }else{
-                if(item.checkResult!="normal"&&item.releaseFlag!=true){
+                if(item.checkResult!="normal"&&item.checkResult!="10 interflow Fail;"){
                     failData.push(item);
                     seriesObjectF.data=failData;
-                }else if(item.checkResult!="normal"&&item.releaseFlag==true){
+                }else if(item.checkResult=="10 interflow Fail;"){
                     item.checkResult="normal";
                     passData.push(item);
                     seriesObjectP.data=passData;
@@ -175,7 +175,7 @@ function getCharts(name,seriesData) {
         navigation:{
             buttonOptions:{
                 verticalAlign: "bottom",
-                y:-20
+                y:0
             }
         },
         title: {
@@ -205,9 +205,9 @@ function getCharts(name,seriesData) {
         },
         legend: {
             layout: 'vertical',
-            align: 'left',
+            align: 'right',
             verticalAlign: 'top',
-            x: 100,
+            x: 0,
             y: 0,
             floating: true,
             backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
@@ -229,7 +229,9 @@ function getCharts(name,seriesData) {
                                 var checkResultSummary=checkResults.split(";");
                                 var checkResult=this.point.name;
                                 for(var i=0;i<checkResultSummary.length;i++){
-                                    checkResult=checkResult+"<br>"+checkResultSummary[i].replace("Fail","").trim()
+                                    if(checkResultSummary[i]!="4 Neighborhood Fail"&&checkResultSummary[i]!="8 Neighborhood Fail"){
+                                        checkResult=checkResult+"<br>"+checkResultSummary[i].replace("Fail","").trim()
+                                    }
                                 }
                                 return checkResult;
                             }
@@ -330,9 +332,12 @@ function getCharts(name,seriesData) {
                                                 "<tr><th><label>StartTestTime:</label><td>" + startTime + "</td></td></tr>"+
                                                 "<tr><th><label>EndTestTime:</label><td>" + endTime+ "</td></td></tr>"+
                                                 '<tr><td><p class="div-float"><button class="button button-primary button-tiny button-3d" data-toggle="modal" data-target="#history">历史记录</button></p></td></tr>'+
-                                                '<tr><td><p class="div-float"><a target="_blank" href="/DataParseSystem/Navigation/waferMap?customer='+item.customerCode+'&device='+item.device+'&lot='+item.lotId+'&cp='+item.cpStep+'&wafer='+item.waferNo+'">Map图</a>'+ '</p></td></tr>')
+                                                '<tr><td><p class="div-float"><a target="_blank" href="/DataParseSystem/Navigation/waferMap?customer='+item.customerCode+'&device='+item.device+'&lot='+item.lotId+'&cp='+item.cpStep+'&wafer='+item.waferNo+'">Map图</a>'+ '</p></td></tr>'+
+                                                '<tr id="releaseFlag"><td><p class="div-float"><button class="button button-primary button-tiny button-3d" value='+item.testerId+";"+item.waferNo+";"+pointIndex+";"+seriesIndex+";"+name+' onclick="setTesterData(this.value)">Release</button></p></td></tr>')
                                             if(item.checkResult!="normal"&&seriesName=="Fail"){
-                                                $("#detailsTable").append('<tr><td><button class="button button-primary button-tiny button-3d" value='+item.testerId+";"+item.waferNo+";"+pointIndex+";"+seriesIndex+";"+name+' onclick="setTesterData(this.value)">Release</button></td></tr>');
+                                                $("#releaseFlag").show();
+                                            }else {
+                                                $("#releaseFlag").hide();
                                             }
                                         })
                                         $('#details').modal('show');
@@ -424,11 +429,18 @@ function showTester() {
 }
 showTester()
 setInterval(showTester,30*1000);
-$("#A2").click(function () {
-    $("#containerA2").show();
-    $("#containerD1").hide();
-})
-$("#D1").click(function () {
-    $("#containerA2").hide();
-    $("#containerD1").show();
-})
+$('input[name="my-checkbox"]').bootstrapSwitch({
+    "onColor" : "success",
+    "offColor" : "success",
+    "onText" : "一厂",
+    "offText" : "二厂",
+    onSwitchChange:function (event, state) {
+        if(state){
+            $("#containerA2").show();
+            $("#containerD1").hide();
+        }else {
+            $("#containerA2").hide();
+            $("#containerD1").show();
+        }
+    }
+});

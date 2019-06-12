@@ -13,10 +13,12 @@
     <link rel="stylesheet" href="<c:url value="/resources/system/css/button.css"/>"/>
     <link rel="stylesheet" href="<c:url value="/resources/Font/css/font-awesome.min.css"/>">
     <link rel="stylesheet" href="<c:url value="/resources/bootstrap/css/bootstrap.min.css"/>">
+    <link rel="stylesheet" href="<c:url value="/resources/system/css/bootstrap-switch.min.css"/>">
 
 
     <script src="<c:url value="/resources/system/js/jquery-1.11.0.min.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/bootstrap/js/bootstrap.min.js"/>" type="text/javascript"></script>
+    <script src="<c:url value="/resources/system/js/bootstrap-switch.min.js"/>" type="text/javascript"></script>
     <script src="<c:url value="/resources/system/js/bootstrap-table.js"/>" type="text/javascript"
             charset="utf-8"></script>
     <script src="<c:url value="/resources/system/js/xlsx.core.min.js"/>" type="text/javascript"
@@ -38,7 +40,7 @@
 </head>
 <body>
 <div class="modal fade" id="details" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 100%;">
-    <div class="modal-dialog" style="width: 1300px" id="detailModal">
+    <div class="modal-dialog" style="width: 1250px" id="detailModal">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -61,7 +63,7 @@
     </div>
 </div>
 <div class="modal fade" id="history" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 100%;">
-    <div class="modal-dialog" style="width: 1300px">
+    <div class="modal-dialog" style="width: 1250px">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
@@ -81,12 +83,9 @@
         </div>
     </div>
 </div>
-<P class="button-group">
-    <button type="button" class="button button-primary button-3d button-pill" id="A2">A2</button>
-    <button type="button" class="button button-action button-3d button-pill" id="D1">D1</button>
-</P>
-<div id="containerA2" style="width:100%;display: none" ></div>
-<div id="containerD1" style="width:100%"></div>
+<input type="checkbox" name="my-checkbox" checked/>
+<div id="containerA2" style="width:100%;" ></div>
+<div id="containerD1" style="width:100%;display: none"></div>
 <script src="<c:url value="/resources/system/js/testerLocation.js"/>" type="text/javascript" charset="utf-8"></script>
 </body>
 </html>

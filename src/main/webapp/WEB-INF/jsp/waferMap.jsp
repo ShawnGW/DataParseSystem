@@ -39,15 +39,12 @@
 				</div>
 			</div>
 			<div class="panel-body">
-				<div id="primaryTest">
-					<div id="container" style="width:100%;height:600px"></div>
+				<div class="col-lg-7">
+					<div id="primaryTest">
+						<div id="container" style="width:100%;height:600px"></div>
+					</div>
 				</div>
-			</div>
-			<div class="panel-body">
-				<div class="col-lg-6">
-					<div id="totalContainer"></div>
-				</div>
-				<div class="col-lg-6">
+				<div class="col-lg-5">
 					<div id="lineContainer"></div>
 					<div id="sliders">
 						<table>
@@ -66,6 +63,9 @@
 						</table>
 					</div>
 				</div>
+			</div>
+			<div class="panel-body">
+				<div id="totalContainer"></div>
 			</div>
 			<div class="panel-body" style="width: 100%">
 				<div id="siteContainer"></div>
