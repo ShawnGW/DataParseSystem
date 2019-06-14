@@ -146,38 +146,33 @@ $(document).ready(function () {
                 plotBorderWidth: 1,
                 zoomType: 'xy'
             },
-            // legend: {
-            //     layout: 'vertical',
-            //     align: 'left',
-            //     verticalAlign: 'top',
-            //     x: 70,
-            //     y: 70,
-            //     floating: true,
-            //     backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF',
-            //     borderWidth: 1
-            // },
             title: {
                 text: 'Wafer Map'
             },
             subtitle: {
                 text: title.substring(0,title.length-1)
             },
-            xAxis: {
-                visible:false,
-                title: {
-                    enabled: true,
-                    text: 'x',
-                },
-                startOnTick: true,
-                endOnTick: true,
-                showLastLabel: true
-            },
-            yAxis: {
-                visible:false,
-                title: {
-                    text: 'y'
-                }
-            },
+             xAxis: {
+                 labels: {
+                     enabled: false
+                 },
+                 title: {
+                     enabled: true,
+                     text: 'x',
+                 },
+                 startOnTick: true,
+                 endOnTick: true,
+                 showLastLabel: true
+             },
+             yAxis: {
+                 labels: {
+                     enabled: false
+                 },
+                 title: {
+                     text: 'y'
+                 },
+                 reversed:true
+             },
             tooltip: {
                 useHTML: true,
                 headerFormat: '<table>',
