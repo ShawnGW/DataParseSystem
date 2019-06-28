@@ -348,7 +348,7 @@ public class StdfPlatformMappingDeal extends PlatformMappingDeal {
                 e.printStackTrace();
             }
         }
-        if (customerCode.equals("FUA") && device.equals("BH")) {
+        if (customerCode.equals("FUA")) {
             try {
                 primaryTestYieldReport.write(customerCode, device, lotNum, cpProcess);
             } catch (Exception e) {
