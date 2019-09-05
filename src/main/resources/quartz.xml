@@ -73,13 +73,13 @@
           p:cronExpression="0 */1 * * * ?"
     />
     <util:list id="trigger_list">
-        <ref bean="cronTrigger1"/>
-        <ref bean="cronTrigger2"/>
-        <ref bean="cronTrigger3"/>
-        <ref bean="cronTrigger4"/>
-        <ref bean="cronTrigger5"/>
-        <ref bean="cronTrigger6"/>
-        <ref bean="cronTrigger7"/>
+        <!--<ref bean="cronTrigger1"/>-->
+        <!--<ref bean="cronTrigger2"/>-->
+        <!--<ref bean="cronTrigger3"/>-->
+        <!--<ref bean="cronTrigger4"/>-->
+        <!--<ref bean="cronTrigger5"/>-->
+        <!--<ref bean="cronTrigger6"/>-->
+        <!--<ref bean="cronTrigger7"/>-->
     </util:list>
     <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"
           p:triggers-ref="trigger_list"

@@ -241,10 +241,10 @@ public class TskPlatformMappingDeal extends PlatformMappingDeal{
         BinWaferInforBean binWaferInforBean=new BinWaferInforBean();
         generateWaferInforBean.generate(rawdataInitBean,binWaferInforBean);
         proberDataDAO.insertWaferInforToBinWaferSummary(binWaferInforBean);
-//        if (!checkIfInforToMes.check(customerCode,device))
-//        {
-//            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
-//        }
+        if (!checkIfInforToMes.check(customerCode,device))
+        {
+            waferIdBinSummaryWrite.write(resultMap,rawdataInitBean);
+        }
     }
     private void issueToDataBase(ArrayList<DataParseIssueBean> issueBeans)
     {

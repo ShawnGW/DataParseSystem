@@ -36,7 +36,7 @@
         ON DUPLICATE KEY UPDATE oprator=#{oprator}, tester_program=#{testerProgram}, tester_id=#{testerId}, prober_id=#{proberId}, Prober_card_id=#{proberCardId}, pid_name=#{pidName}, pid_version=#{pidVersion}, start_time=#{startTime}, gross_die=#{grossDie}, pass_die=#{passDie}, fail_die=#{failDie}, yield=#{yield}, end_time=#{endTime}, check_status=#{checkStatus}, map_cols=#{mapCols}, map_rows=#{mapRows}, min_x=#{minX}, min_y=#{minY}, others_params=#{othersParams},load_time=now();
     </insert>
     <delete id="deleteSiteInforToBinInfoSummary">
-          DELETE FROM vtdatester.bin_info_summary WHERE custom_code=#{customerCode} AND device=#{device} AND lot_id=#{lot} AND cp_step=#{cp} AND wafer_no =#{waferId};
+          DELETE FROM vtdatester.bin_info_summary WHERE  id >0 And custom_code=#{customerCode} AND device=#{device} AND lot_id=#{lot} AND cp_step=#{cp} AND wafer_no =#{waferId};
     </delete>
     <insert id="insertSiteInforToBinInfoSummary">
         INSERT INTO vtdatester.bin_info_summary(custom_code, device, lot_id, cp_step, wafer_no, site_id, soft_bin_no,
