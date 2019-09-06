@@ -98,6 +98,34 @@ public class RawDataModify  extends  RawdataModifyParent{
 
 				FileReader reader=new FileReader(BackupFile);
 				BufferedReader bReader=new BufferedReader(reader);
+				TreeSet<Integer> testMinXTree = new TreeSet<Integer>(
+						new Comparator<Integer>() {
+							@Override
+							public int compare(Integer t1, Integer t2) {
+								return t1-t2;
+							}
+						});
+				TreeSet<Integer> testMinYTree = new TreeSet<Integer>(
+						new Comparator<Integer>() {
+							@Override
+							public int compare(Integer t1, Integer t2) {
+								return t1-t2;
+							}
+						});
+				TreeSet<Integer> minXTree = new TreeSet<Integer>(
+						new Comparator<Integer>() {
+							@Override
+							public int compare(Integer t1, Integer t2) {
+								return t1-t2;
+							}
+						});
+				TreeSet<Integer> minYTree = new TreeSet<Integer>(
+						new Comparator<Integer>() {
+							@Override
+							public int compare(Integer t1, Integer t2) {
+								return t1-t2;
+							}
+						});
 				String content;
 				boolean flag=false;
 				HashMap<String, String> Map_infor_Modify=new HashMap<>();
@@ -112,6 +140,8 @@ public class RawDataModify  extends  RawdataModifyParent{
 						String[] CoordinateInfor=content.split(",");
 						String Coordinate_X=CoordinateInfor[0];
 						String Coordinate_Y=CoordinateInfor[1];
+						minXTree.add(Integer.valueOf(Coordinate_X));
+						minYTree.add(Integer.valueOf(Coordinate_Y));
 						Integer BinValue=osBins.get(0);
 						try {
 							if (CoordinateInfor.length>2) {
@@ -135,6 +165,10 @@ public class RawDataModify  extends  RawdataModifyParent{
 						if (CoordinateInfor.length>2&&CoordinateInfor[2].toUpperCase().equals("M")) {
 							map_marked.put(String.format("%4s", Coordinate_X)+String.format("%4s", Coordinate_Y), String.format("%4s", "M")+String.format("%4s", "M")+String.format("%4s", 0));
 							continue;
+						}else {
+							testMinXTree.add(Integer.valueOf(Coordinate_X));
+							testMinYTree.add(Integer.valueOf(Coordinate_Y));
+
 						}
 						Map_infor_Modify.put(String.format("%4s", Coordinate_X)+String.format("%4s", Coordinate_Y), String.format("%4s", BinValue)+String.format("%4s", softBinValue)+String.format("%4s", siteNumber));
 					}
@@ -159,6 +193,12 @@ public class RawDataModify  extends  RawdataModifyParent{
 						continue;
 					}
 					if (Moflag) {
+						Integer testMinX=Integer.valueOf(ModContent.substring(0,4).trim());
+						Integer testMinY=Integer.valueOf(ModContent.substring(4,8).trim());
+						testMinXTree.add(testMinX);
+						testMinYTree.add(testMinY);
+						minXTree.add(testMinX);
+						minYTree.add(testMinY);
 						Map_infor_Rawdata.put(ModContent.substring(0, 8), ModContent.substring(8, 20));
 					}
 					if (ModContent.equals("SkipAndMarkStart")) {
@@ -170,6 +210,10 @@ public class RawDataModify  extends  RawdataModifyParent{
 						continue;
 					}
 					if (markdieFlag) {
+						Integer minX=Integer.valueOf(ModContent.substring(0,4).trim());
+						Integer minY=Integer.valueOf(ModContent.substring(4,8).trim());
+						minXTree.add(minX);
+						minYTree.add(minY);
 						Map_infor_Rawdata_MarkDies.put(ModContent.substring(0, 8), ModContent.substring(8, 20));
 					}
 				}
@@ -209,6 +253,27 @@ public class RawDataModify  extends  RawdataModifyParent{
 						Fail_Die++;
 					}
 				}
+				Integer minX=minXTree.first();
+				Integer maxX=minXTree.last();
+				Integer minY=minYTree.first();
+				Integer maxY=minYTree.last();
+				Integer testMinX=testMinXTree.first();
+				Integer testMaxX=testMinXTree.last();
+				Integer testMinY=testMinYTree.first();
+				Integer testMaxY=testMinYTree.last();
+                Integer mapCols=minXTree.size();
+                Integer mapRows=minYTree.size();
+
+                properties.put("Map Cols",String.valueOf(mapCols));
+                properties.put("Map Rows",String.valueOf(mapRows));
+				properties.put("left",String.valueOf(minX));
+				properties.put("up",String.valueOf(minY));
+				properties.put("right",String.valueOf(maxX));
+				properties.put("down",String.valueOf(maxY));
+				properties.put("TestDieleft",String.valueOf(testMinX));
+				properties.put("TestDieup",String.valueOf(testMinY));
+				properties.put("TestDieright",String.valueOf(testMaxX));
+				properties.put("TestDiedown",String.valueOf(testMaxY));
 				properties.put("Pass Die", String.valueOf(Pass_Die));
 				properties.put("Fail Die", String.valueOf(Fail_Die));
 				properties.put("Gross Die", String.valueOf(Fail_Die+Pass_Die));
