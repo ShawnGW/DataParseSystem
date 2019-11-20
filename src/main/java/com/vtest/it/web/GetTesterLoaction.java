@@ -25,4 +25,9 @@ public class GetTesterLoaction {
         ArrayList<testerLocationBean> testerLocation=vtMesTesterDAO.getTesterLocation();
         return JSON.toJSONString(testerLocation);
     }
+    @ResponseBody
+    @RequestMapping(value = "/sendWaferMail")
+    public void sendWaferMail(String productId,String lotId,String waferNo,String testerId){
+         vtMesTesterDAO.sendWaferMail(productId,lotId,waferNo,testerId);
+    }
 }

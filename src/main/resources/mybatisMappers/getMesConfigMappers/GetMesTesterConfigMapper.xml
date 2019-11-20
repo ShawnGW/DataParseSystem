@@ -8,4 +8,7 @@
     <select id="getPassBin" resultType="String">
           {call dbo.pro_GetBininfo(#{waferId,mode=IN,jdbcType=VARCHAR})}
     </select>
+    <select id="sendWaferMail" resultType="String">
+          {call dbo.P_Send_Mail(#{productId,mode=IN,jdbcType=VARCHAR},#{lotId,mode=IN,jdbcType=VARCHAR},#{waferNo,mode=IN,jdbcType=VARCHAR},#{testerId,mode=IN,jdbcType=VARCHAR})}
+    </select>
 </mapper>

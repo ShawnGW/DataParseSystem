@@ -116,6 +116,28 @@ function setTesterData(value) {
     }
 
 }
+function sendWaferMail(value) {
+    if(value)
+    {
+        var productId=value.split(";")[0];
+        var lotId=value.split(";")[1];
+        var waferNo=value.split(";")[2];
+        var testerId=value.split(";")[3];
+        $.ajax({
+            type:'post',
+            url:'/DataParseSystem/getTesterLocation/sendWaferMail?productId='+productId+'&lotId='+lotId+'&waferNo='+waferNo+'&testerId='+testerId,
+            success:function () {
+                alert("Send Success")
+            },
+            error:function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.status);
+                console.log(XMLHttpRequest.readyState);
+                console.log(textStatus);
+            }
+        })
+    }
+
+}
 function getCharts(name,seriesData) {
     var series=[];
     var  passData=[];
@@ -333,7 +355,8 @@ function getCharts(name,seriesData) {
                                                 "<tr><th><label>EndTestTime:</label><td>" + endTime+ "</td></td></tr>"+
                                                 '<tr><td><p class="div-float"><button class="button button-primary button-tiny button-3d" data-toggle="modal" data-target="#history">历史记录</button></p></td></tr>'+
                                                 '<tr><td><p class="div-float"><a target="_blank" href="/DataParseSystem/Navigation/waferMap?customer='+item.customerCode+'&device='+item.device+'&lot='+item.lotId+'&cp='+item.cpStep+'&wafer='+item.waferNo+'">Map图</a>'+ '</p></td></tr>'+
-                                                '<tr id="releaseFlag"><td><p class="div-float"><button class="button button-primary button-tiny button-3d" value='+item.testerId+";"+item.waferNo+";"+pointIndex+";"+seriesIndex+";"+name+' onclick="setTesterData(this.value)">Release</button></p></td></tr>')
+                                                '<tr id="releaseFlag"><td><p class="div-float"><button class="button button-primary button-tiny button-3d" value='+item.testerId+";"+item.waferNo+";"+pointIndex+";"+seriesIndex+";"+name+' onclick="setTesterData(this.value)">Release</button></p></td></tr>'+
+                                                '<tr><td><p class="div-float"><button class="button button-primary button-tiny button-3d" value='+item.device+";"+item.lotId+";"+item.waferNo+";"+item.testerId+' onclick="sendWaferMail(this.value)">Mail</button></p></td></tr>')
                                             if(item.checkResult!="normal"&&seriesName=="Fail"){
                                                 $("#releaseFlag").show();
                                             }else {
