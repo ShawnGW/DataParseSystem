@@ -356,11 +356,13 @@ function getCharts(name,seriesData) {
                                                 '<tr><td><p class="div-float"><button class="button button-primary button-tiny button-3d" data-toggle="modal" data-target="#history">历史记录</button></p></td></tr>'+
                                                 '<tr><td><p class="div-float"><a target="_blank" href="/DataParseSystem/Navigation/waferMap?customer='+item.customerCode+'&device='+item.device+'&lot='+item.lotId+'&cp='+item.cpStep+'&wafer='+item.waferNo+'">Map图</a>'+ '</p></td></tr>'+
                                                 '<tr id="releaseFlag"><td><p class="div-float"><button class="button button-primary button-tiny button-3d" value='+item.testerId+";"+item.waferNo+";"+pointIndex+";"+seriesIndex+";"+name+' onclick="setTesterData(this.value)">Release</button></p></td></tr>'+
-                                                '<tr><td><p class="div-float"><button class="button button-primary button-tiny button-3d" value='+item.device+";"+item.lotId+";"+item.waferNo+";"+item.testerId+' onclick="sendWaferMail(this.value)">Mail</button></p></td></tr>')
+                                                '<tr id="mail"><td><p class="div-float"><button class="button button-primary button-tiny button-3d" value='+item.device+";"+item.lotId+";"+item.waferNo+";"+item.testerId+' onclick="sendWaferMail(this.value)">Mail</button></p></td></tr>')
                                             if(item.checkResult!="normal"&&seriesName=="Fail"){
                                                 $("#releaseFlag").show();
+                                                $("#mail").show();
                                             }else {
                                                 $("#releaseFlag").hide();
+                                                $("#mail").hide();
                                             }
                                         })
                                         $('#details').modal('show');
