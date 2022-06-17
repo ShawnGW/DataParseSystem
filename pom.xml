@@ -24,7 +24,7 @@
         <mysql.version>5.7.17</mysql.version>
         <spring.version>4.2.2.RELEASE</spring.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
-        <fastjson_version>1.2.28</fastjson_version>
+        <fastjson_version>1.2.83</fastjson_version>
     </properties>
 
     <dependencies>
